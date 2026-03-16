@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MerkleClaw 默克龙虾 — 链上无遁形</title>
+    <meta name="description" content="AI 驱动的链上情报分析工具，面向链上分析师、链上侦探和执法机构。Nothing hides on-chain.">
+    <meta property="og:title" content="MerkleClaw 默克龙虾">
+    <meta property="og:description" content="AI-Powered On-Chain Intelligence. 链上无遁形。">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lobster-red: #E63946;
+            --lobster-dark: #B71C1C;
+            --lobster-glow: #FF5252;
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #12121A;
+            --bg-card: #1A1A2E;
+            --text-primary: #F0F0F5;
+            --text-secondary: #8888A0;
+            --text-muted: #555570;
+            --border: #2A2A40;
+            --accent-blue: #4FC3F7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        .bg-grid {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
+                linear-gradient(rgba(230, 57, 70, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(230, 57, 70, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .bg-glow-1 { top: -200px; right: -100px; background: var(--lobster-red); }
+        .bg-glow-2 { bottom: -200px; left: -100px; background: var(--lobster-dark); }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* NAV */
+        nav {
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+        .logo-icon {
+            font-size: 1.8rem;
+        }
+        .logo-text span {
+            color: var(--lobster-red);
+        }
+        nav a.nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        nav a.nav-link:hover { color: var(--text-primary); }
+
+        /* HERO */
+        .hero {
+            padding: 100px 0 80px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid var(--lobster-red);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--lobster-red);
+            font-weight: 500;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+            background: rgba(230, 57, 70, 0.08);
+        }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        .hero h1 .red { color: var(--lobster-red); }
+        .hero .slogan {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .hero .desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 48px;
+            line-height: 1.8;
+        }
+
+        /* CTA */
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            padding: 14px 36px;
+            background: var(--lobster-red);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary:hover {
+            background: var(--lobster-glow);
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            padding: 14px 36px;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            border-color: var(--lobster-red);
+            color: var(--lobster-red);
+        }
+
+        /* TERMINAL DEMO */
+        .terminal {
+            max-width: 700px;
+            margin: 64px auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: left;
+        }
+        .terminal-header {
+            padding: 12px 16px;
+            background: var(--bg-card);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .terminal-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+        }
+        .terminal-dot.red { background: #FF5F57; }
+        .terminal-dot.yellow { background: #FFBD2E; }
+        .terminal-dot.green { background: #28C840; }
+        .terminal-title {
+            flex: 1;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .terminal-body {
+            padding: 20px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .terminal-body .prompt { color: var(--lobster-red); }
+        .terminal-body .cmd { color: var(--text-primary); }
+        .terminal-body .result { color: var(--accent-blue); }
+        .terminal-body .dim { color: var(--text-muted); }
+
+        /* FEATURES */
+        .features {
+            padding: 100px 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .section-sub {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 64px;
+            font-size: 1rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: var(--lobster-red);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(230, 57, 70, 0.1);
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* WAITLIST */
+        .waitlist {
+            padding: 80px 0 120px;
+            text-align: center;
+        }
+        .waitlist-box {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 40px;
+        }
+        .waitlist-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        .waitlist-box p {
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        .waitlist-form {
+            display: flex;
+            gap: 12px;
+        }
+        .waitlist-form input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .waitlist-form input:focus {
+            border-color: var(--lobster-red);
+        }
+        .waitlist-form input::placeholder {
+            color: var(--text-muted);
+        }
+        .waitlist-form button {
+            padding: 14px 24px;
+            background: var(--lobster-red);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .waitlist-form button:hover {
+            background: var(--lobster-glow);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+        }
+        .form-msg {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            display: none;
+        }
+
+        /* FOOTER */
+        footer {
+            padding: 32px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+        footer a {
+            color: var(--lobster-red);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .hero { padding: 60px 0 40px; }
+            .waitlist-form { flex-direction: column; }
+            .waitlist-box { padding: 32px 24px; }
+            .terminal-body { font-size: 0.75rem; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="container">
+        <!-- NAV -->
+        <nav>
+            <a href="#" class="logo">
+                <span class="logo-icon">🦞</span>
+                <span class="logo-text">Merkle<span>Claw</span></span>
+            </a>
+            <div style="display:flex;gap:24px;">
+                <a href="#features" class="nav-link">功能</a>
+                <a href="#waitlist" class="nav-link">等待列表</a>
+                <a href="https://github.com/zerovector-hk/MerkleClaw" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-badge">🔍 AI-Powered On-Chain Intelligence</div>
+            <h1>Merkle<span class="red">Claw</span></h1>
+            <h1 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:300;color:var(--text-secondary);margin-bottom:16px;">默克龙虾</h1>
+            <div class="slogan">链上无遁形 / Nothing hides on-chain.</div>
+            <p class="desc">
+                AI 驱动的链上情报分析工具。为链上分析师、链上侦探和执法机构而生。<br>
+                追踪资金流向，解析链上行为，生成取证报告——一切尽在掌控。
+            </p>
+            <div class="cta-group">
+                <a href="#waitlist" class="btn-primary">加入等待列表</a>
+                <a href="https://github.com/zerovector-hk/MerkleClaw" class="btn-secondary" target="_blank">查看源码 →</a>
+            </div>
+
+            <!-- TERMINAL -->
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dot red"></div>
+                    <div class="terminal-dot yellow"></div>
+                    <div class="terminal-dot green"></div>
+                    <span class="terminal-title">merkleclaw — investigation</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="prompt">🦞 &gt;</span> <span class="cmd">trace 0x28C6...9e1a --depth 5</span><br>
+                    <br>
+                    <span class="dim">[scanning 847 transactions...]</span><br>
+                    <span class="result">✓ Found 12 related addresses</span><br>
+                    <span class="result">✓ 3 flagged: Tornado Cash interaction</span><br>
+                    <span class="result">✓ $2.4M total flow mapped</span><br>
+                    <br>
+                    <span class="prompt">🦞 &gt;</span> <span class="cmd">ask "这笔资金最终去了哪里？"</span><br>
+                    <br>
+                    <span class="dim">[AI analyzing fund flow graph...]</span><br>
+                    <span class="result">→ 68% 流入 Binance 热钱包 (0x3f5C...)</span><br>
+                    <span class="result">→ 22% 通过 Tornado Cash 混币</span><br>
+                    <span class="result">→ 10% 停留在中间地址 (休眠 47 天)</span><br>
+                    <br>
+                    <span class="prompt">🦞 &gt;</span> <span class="cmd">export --format pdf --case "INV-2026-0314"</span><br>
+                    <span class="result">✓ Report exported: INV-2026-0314.pdf</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="features" id="features">
+            <h2 class="section-title">核心能力</h2>
+            <p class="section-sub">专为链上调查设计的全栈工具集</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔎</div>
+                    <h3>地址情报</h3>
+                    <p>输入任意地址，即时获取余额、交易历史、代币持仓、标签画像。支持 ETH、BSC、SOL、BTC 多链。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🕸️</div>
+                    <h3>资金追踪图谱</h3>
+                    <p>可视化资金流向，自动展开多层关联地址。一眼看清资金从哪来、到哪去、经过了谁。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>取证报告</h3>
+                    <p>一键生成专业取证报告（PDF），包含时间线、交易明细、地址标注，可直接用于执法提交。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚨</div>
+                    <h3>实时监控</h3>
+                    <p>设置监控地址，任何链上活动实时告警。嫌疑地址一旦转账，第一时间通知你。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI 侦探助手</h3>
+                    <p>用自然语言提问："这笔钱最终去了哪里？""这个地址和哪些已知实体有关？" AI 给你答案。</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>本地优先 · 离线可用</h3>
+                    <p>数据存储在你的设备上，支持完全离线调查。加密存储，敏感案件数据不离开你的电脑。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- WAITLIST -->
+        <section class="waitlist" id="waitlist">
+            <div class="waitlist-box">
+                <h2>🦞 加入等待列表</h2>
+                <p>成为第一批用户，抢先体验 MerkleClaw。</p>
+                <form class="waitlist-form" action="https://formspree.io/f/xpwzgkqr" method="POST" id="waitlistForm">
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                    <button type="submit">加入</button>
+                </form>
+                <div class="form-msg" id="formMsg">✅ 已加入等待列表！我们会尽快联系你。</div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 <a href="https://zerovector.hk" target="_blank">ZeroVector</a> · MerkleClaw 默克龙虾 · Built with 🦞</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Form submission
+        const form = document.getElementById('waitlistForm');
+        const msg = document.getElementById('formMsg');
+        form?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(form);
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (res.ok) {
+                    msg.style.display = 'block';
+                    form.reset();
+                } else {
+                    msg.textContent = '❌ 提交失败，请稍后重试。';
+                    msg.style.color = 'var(--lobster-red)';
+                    msg.style.display = 'block';
+                }
+            } catch {
+                msg.textContent = '❌ 网络错误，请稍后重试。';
+                msg.style.color = 'var(--lobster-red)';
+                msg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
