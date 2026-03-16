@@ -1,324 +1,282 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MerkleClaw 默克龍蝦 — 鏈上無遁形</title>
+    <title>MerkleClaw — Chain Intelligence Desktop</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="AI 驅動的鏈上情報分析工具，面向鏈上分析師、鏈上偵探和執法機構。Nothing hides on-chain.">
-    <meta property="og:title" content="MerkleClaw 默克龍蝦">
-    <meta property="og:description" content="AI-Powered On-Chain Intelligence. 鏈上無遁形。">
+    <meta name="description" content="AI 驱动的链上情报分析桌面工具。Every transaction tells a story. We help you read it.">
+    <meta property="og:title" content="MerkleClaw — Chain Intelligence Desktop">
+    <meta property="og:description" content="AI-Powered On-Chain Intelligence. Every transaction tells a story.">
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --lobster-red: #E63946;
-            --lobster-dark: #B71C1C;
-            --lobster-glow: #FF5252;
-            --bg-primary: #0A0A0F;
-            --bg-secondary: #12121A;
-            --bg-card: #1A1A2E;
-            --text-primary: #F0F0F5;
-            --text-secondary: #8888A0;
+            --red: #E63946;
+            --red-dark: #B71C1C;
+            --red-glow: rgba(230,57,70,0.25);
+            --bg: #0a0a0f;
+            --bg2: #12121a;
+            --bg-card: #16162a;
+            --text: #f0f0f5;
+            --text2: #8888a0;
             --text-muted: #555570;
-            --border: #2A2A40;
-            --accent-blue: #4FC3F7;
+            --border: #2a2a40;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
         }
         .bg-grid {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position:fixed; inset:0;
             background-image:
-                linear-gradient(rgba(230, 57, 70, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(230, 57, 70, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px; z-index: 0; pointer-events: none;
+                linear-gradient(rgba(230,57,70,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(230,57,70,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events:none; z-index:0;
         }
-        .bg-glow { position: fixed; width: 600px; height: 600px; border-radius: 50%; filter: blur(150px); opacity: 0.15; z-index: 0; pointer-events: none; }
-        .bg-glow-1 { top: -200px; right: -100px; background: var(--lobster-red); }
-        .bg-glow-2 { bottom: -200px; left: -100px; background: var(--lobster-dark); }
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-        nav { padding: 24px 0; display: flex; align-items: center; justify-content: space-between; }
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.2rem; text-decoration: none; color: var(--text-primary); }
-        .logo-text span { color: var(--lobster-red); }
-        .nav-right { display: flex; gap: 24px; align-items: center; }
-        nav a.nav-link { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
-        nav a.nav-link:hover { color: var(--text-primary); }
-        .lang-btn { background: transparent; border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
-        .lang-btn:hover { border-color: var(--lobster-red); color: var(--text-primary); }
-        .hero { padding: 100px 0 80px; text-align: center; }
-        .hero-badge { display: inline-block; padding: 6px 16px; border: 1px solid var(--lobster-red); border-radius: 100px; font-size: 0.8rem; color: var(--lobster-red); font-weight: 500; margin-bottom: 32px; letter-spacing: 0.5px; background: rgba(230, 57, 70, 0.08); }
-        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 8px; letter-spacing: -1px; }
-        .hero h1 .red { color: var(--lobster-red); }
-        .hero .slogan { font-size: clamp(1.2rem, 3vw, 1.8rem); color: var(--text-secondary); font-weight: 300; margin-bottom: 24px; font-family: 'JetBrains Mono', monospace; }
-        .hero .desc { font-size: 1.1rem; color: var(--text-secondary); max-width: 650px; margin: 0 auto 48px; line-height: 1.8; }
-        .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        .btn-primary { padding: 14px 36px; background: var(--lobster-red); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
-        .btn-primary:hover { background: var(--lobster-glow); box-shadow: 0 0 30px rgba(230, 57, 70, 0.4); transform: translateY(-1px); }
-        .terminal { max-width: 700px; margin: 64px auto 0; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; text-align: left; }
-        .terminal-header { padding: 12px 16px; background: var(--bg-card); display: flex; gap: 8px; align-items: center; }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .terminal-dot.red { background: #FF5F57; }
-        .terminal-dot.yellow { background: #FFBD2E; }
-        .terminal-dot.green { background: #28C840; }
-        .terminal-title { flex: 1; text-align: center; font-size: 0.75rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-        .terminal-body { padding: 20px 24px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; color: var(--text-secondary); }
-        .terminal-body .prompt { color: var(--lobster-red); }
-        .terminal-body .cmd { color: var(--text-primary); }
-        .terminal-body .result { color: var(--accent-blue); }
-        .terminal-body .dim { color: var(--text-muted); }
-        .features { padding: 100px 0; }
-        .section-title { text-align: center; font-size: 2rem; font-weight: 700; margin-bottom: 12px; }
-        .section-sub { text-align: center; color: var(--text-secondary); margin-bottom: 64px; font-size: 1rem; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-        .feature-card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 32px; transition: all 0.3s; }
-        .feature-card:hover { border-color: var(--lobster-red); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(230, 57, 70, 0.1); }
-        .feature-icon { font-size: 2rem; margin-bottom: 16px; }
-        .feature-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
-        .feature-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
-        .waitlist { padding: 80px 0 120px; text-align: center; }
-        .waitlist-box { max-width: 500px; margin: 0 auto; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 48px 40px; }
-        .waitlist-box h2 { font-size: 1.8rem; margin-bottom: 12px; }
-        .waitlist-box p { color: var(--text-secondary); margin-bottom: 32px; }
-        .waitlist-form { display: flex; gap: 12px; }
-        .waitlist-form input[type="email"] { flex: 1; padding: 14px 18px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: border-color 0.2s; }
-        .waitlist-form input[type="email"]:focus { border-color: var(--lobster-red); }
-        .waitlist-form input[type="email"]::placeholder { color: var(--text-muted); }
-        .waitlist-form button { padding: 14px 24px; background: var(--lobster-red); color: #fff; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
-        .waitlist-form button:hover { background: var(--lobster-glow); box-shadow: 0 0 20px rgba(230, 57, 70, 0.3); }
-        .form-msg { margin-top: 16px; font-size: 0.85rem; color: var(--accent-blue); display: none; }
-        footer { padding: 32px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; }
-        footer a { color: var(--lobster-red); text-decoration: none; }
-        @media (max-width: 600px) {
-            .hero { padding: 60px 0 40px; }
-            .waitlist-form { flex-direction: column; }
-            .waitlist-box { padding: 32px 24px; }
-            .terminal-body { font-size: 0.75rem; padding: 16px; }
+        .glow {
+            position:fixed; width:500px; height:500px; border-radius:50%;
+            filter:blur(160px); opacity:0.12; pointer-events:none; z-index:0;
+        }
+        .glow-1 { top:-200px; right:-100px; background:var(--red); }
+        .glow-2 { bottom:-200px; left:-100px; background:var(--red-dark); }
+
+        .container { max-width:1100px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
+        a { color:var(--red); text-decoration:none; }
+        a:hover { text-decoration:underline; }
+
+        /* Nav */
+        nav { padding:24px 0; display:flex; align-items:center; justify-content:space-between; }
+        .logo { font-weight:700; font-size:1.2rem; color:var(--text); display:flex; align-items:center; gap:8px; }
+        .logo span { color:var(--red); }
+        .nav-links { display:flex; gap:24px; }
+        .nav-links a { color:var(--text2); font-size:0.9rem; }
+        .nav-links a:hover { color:var(--text); text-decoration:none; }
+
+        /* Hero */
+        .hero { text-align:center; padding:100px 0 80px; }
+        .hero h1 { font-size:4rem; font-weight:900; letter-spacing:-2px; margin-bottom:12px; }
+        .hero h1 span { color:var(--red); }
+        .hero .subtitle { font-size:1.3rem; color:var(--text2); margin-bottom:8px; }
+        .hero .tagline { font-size:1.05rem; color:var(--text-muted); font-style:italic; margin-bottom:36px; }
+        .btn {
+            display:inline-block; padding:14px 36px; background:var(--red); color:#fff;
+            border:none; border-radius:8px; font-size:1rem; font-weight:600;
+            cursor:pointer; transition:all 0.2s;
+        }
+        .btn:hover { background:#c5303b; transform:translateY(-1px); box-shadow:0 8px 30px var(--red-glow); text-decoration:none; }
+
+        /* Sections */
+        section { padding:80px 0; }
+        .section-title { text-align:center; font-size:2rem; font-weight:700; margin-bottom:48px; }
+        .section-title span { color:var(--red); }
+
+        /* Features Grid */
+        .features-grid {
+            display:grid; grid-template-columns: repeat(3, 1fr); gap:24px;
+        }
+        .feature-card {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+            padding:28px; transition:border-color 0.2s, transform 0.2s;
+        }
+        .feature-card:hover { border-color:var(--red); transform:translateY(-2px); }
+        .feature-card .icon { font-size:2rem; margin-bottom:12px; }
+        .feature-card h3 { font-size:1.1rem; margin-bottom:8px; }
+        .feature-card p { color:var(--text2); font-size:0.9rem; line-height:1.5; }
+
+        /* Screenshot Placeholder */
+        .screenshot-placeholder {
+            background:var(--bg2); border:1px dashed var(--border); border-radius:16px;
+            padding:80px 24px; text-align:center; color:var(--text-muted); font-size:1.1rem;
+        }
+
+        /* Pricing */
+        .pricing-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:32px; max-width:800px; margin:0 auto; }
+        .price-card {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
+            padding:36px; text-align:center; transition:border-color 0.2s;
+        }
+        .price-card:hover { border-color:var(--red); }
+        .price-card.featured { border-color:var(--red); position:relative; }
+        .price-card.featured::before {
+            content:'推荐'; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+            background:var(--red); color:#fff; padding:4px 16px; border-radius:20px; font-size:0.8rem; font-weight:600;
+        }
+        .price-card h3 { font-size:1.5rem; margin-bottom:4px; }
+        .price-card .price { font-size:2.5rem; font-weight:900; color:var(--red); margin:12px 0 4px; }
+        .price-card .price-sub { color:var(--text-muted); font-size:0.85rem; margin-bottom:20px; }
+        .price-card ul { list-style:none; text-align:left; margin-bottom:28px; }
+        .price-card li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--text2); font-size:0.9rem; }
+        .price-card li::before { content:'✓ '; color:var(--red); font-weight:700; }
+
+        /* Waitlist Form */
+        .waitlist { max-width:520px; margin:0 auto; text-align:center; }
+        .waitlist p { color:var(--text2); margin-bottom:28px; }
+        .form-group { margin-bottom:16px; }
+        .form-group input {
+            width:100%; padding:14px 16px; background:var(--bg2); border:1px solid var(--border);
+            border-radius:8px; color:var(--text); font-size:0.95rem; outline:none;
+            transition:border-color 0.2s;
+        }
+        .form-group input:focus { border-color:var(--red); }
+        .form-group input::placeholder { color:var(--text-muted); }
+        .form-submit { width:100%; margin-top:8px; }
+
+        /* Footer */
+        footer { padding:40px 0; border-top:1px solid var(--border); text-align:center; color:var(--text-muted); font-size:0.85rem; }
+        footer a { color:var(--text2); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size:2.5rem; }
+            .hero .subtitle { font-size:1rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .nav-links { gap:12px; }
+        }
+        @media (min-width:769px) and (max-width:1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <div class="bg-grid"></div>
-    <div class="bg-glow bg-glow-1"></div>
-    <div class="bg-glow bg-glow-2"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
 
     <div class="container">
-        <!-- NAV -->
+        <!-- Nav -->
         <nav>
-            <a href="#" class="logo">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" style="width:36px;height:36px;"><g transform="translate(256,256)"><path d="M-60-140C-20-155,40-140,80-100C120-60,130-10,115 30C105 55,80 65,55 60" stroke="#E63946" stroke-width="42" stroke-linecap="round" fill="none"/><path d="M-60-140C-75-105,-80-60,-65-20C-50 20,-20 50,20 60" stroke="#E63946" stroke-width="38" stroke-linecap="round" fill="none"/><circle cx="-60" cy="-140" r="28" fill="#E63946"/><path d="M-60-140C-85-100,-110-40,-115 20C-118 60,-108 100,-85 130" stroke="#E63946" stroke-width="36" stroke-linecap="round" fill="none"/><circle cx="55" cy="60" r="8" fill="#E63946"/><circle cx="20" cy="60" r="7" fill="#E63946"/><circle cx="-85" cy="130" r="10" fill="#E63946"/></g></svg>
-                <span class="logo-text">Merkle<span>Claw</span></span>
-            </a>
-            <div class="nav-right">
-                <a href="#features" class="nav-link" data-zh-tw="功能" data-zh-cn="功能" data-en="Features">功能</a>
-                <a href="#waitlist" class="nav-link" data-zh-tw="等待列表" data-zh-cn="等待列表" data-en="Waitlist">等待列表</a>
-                <button class="lang-btn" id="langToggle" onclick="toggleLanguage()"><span id="langText">簡中</span></button>
+            <div class="logo">🦞 <span>Merkle</span>Claw</div>
+            <div class="nav-links">
+                <a href="#features">功能</a>
+                <a href="#pricing">价格</a>
+                <a href="#waitlist">加入等待列表</a>
             </div>
         </nav>
 
-        <!-- HERO -->
+        <!-- Hero -->
         <section class="hero">
-            <div class="hero-badge" data-zh-tw="AI 驅動的鏈上情報分析" data-zh-cn="AI 驱动的链上情报分析" data-en="AI-Powered On-Chain Intelligence">AI 驅動的鏈上情報分析</div>
-            <h1>Merkle<span class="red">Claw</span></h1>
-            <h1 style="font-size:clamp(1.5rem,4vw,2.5rem);font-weight:300;color:var(--text-secondary);margin-bottom:16px;" data-zh-tw="默克龍蝦" data-zh-cn="默克龙虾" data-en="On-Chain Intelligence">默克龍蝦</h1>
-            <div class="slogan" data-zh-tw="鏈上無遁形 / Nothing hides on-chain." data-zh-cn="链上无遁形 / Nothing hides on-chain." data-en="Nothing hides on-chain.">鏈上無遁形 / Nothing hides on-chain.</div>
-            <p class="desc" data-zh-tw="AI 驅動的鏈上情報分析工具。為鏈上分析師、鏈上偵探和執法機構而生。&lt;br&gt;追蹤資金流向，解析鏈上行為，生成取證報告——一切盡在掌控。" data-zh-cn="AI 驱动的链上情报分析工具。为链上分析师、链上侦探和执法机构而生。&lt;br&gt;追踪资金流向，解析链上行为，生成取证报告——一切尽在掌控。" data-en="AI-powered on-chain intelligence tool. Built for on-chain analysts, investigators, and law enforcement.&lt;br&gt;Trace fund flows, analyze on-chain behavior, generate forensic reports — everything under control.">AI 驅動的鏈上情報分析工具。為鏈上分析師、鏈上偵探和執法機構而生。<br>追蹤資金流向，解析鏈上行為，生成取證報告——一切盡在掌控。</p>
-            <div class="cta-group">
-                <a href="#waitlist" class="btn-primary" data-zh-tw="加入等待列表" data-zh-cn="加入等待列表" data-en="Join Waitlist">加入等待列表</a>
-            </div>
-
-            <!-- TERMINAL -->
-            <div class="terminal">
-                <div class="terminal-header">
-                    <div class="terminal-dot red"></div>
-                    <div class="terminal-dot yellow"></div>
-                    <div class="terminal-dot green"></div>
-                    <span class="terminal-title">merkleclaw — investigation</span>
-                </div>
-                <div class="terminal-body" id="terminalBody" data-zh-tw="&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;trace 0x28C6...9e1a --depth 5&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[掃描 847 筆交易...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 發現 12 個關聯地址&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 3 個標記：Tornado Cash 交互&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ $2.4M 資金流已繪製&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;ask &amp;quot;這筆資金最終去了哪裡？&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[AI 分析資金流圖譜...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 68% 流入 Binance 熱錢包 (0x3f5C...)&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 22% 通過 Tornado Cash 混幣&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 10% 停留在中間地址 (休眠 47 天)&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;export --format pdf --case &amp;quot;INV-2026-0314&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 報告已匯出：INV-2026-0314.pdf&lt;/span&gt;" data-zh-cn="&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;trace 0x28C6...9e1a --depth 5&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[扫描 847 笔交易...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 发现 12 个关联地址&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 3 个标记：Tornado Cash 交互&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ $2.4M 资金流已绘制&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;ask &amp;quot;这笔资金最终去了哪里？&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[AI 分析资金流图谱...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 68% 流入 Binance 热钱包 (0x3f5C...)&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 22% 通过 Tornado Cash 混币&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 10% 停留在中间地址 (休眠 47 天)&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;export --format pdf --case &amp;quot;INV-2026-0314&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 报告已导出：INV-2026-0314.pdf&lt;/span&gt;" data-en="&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;trace 0x28C6...9e1a --depth 5&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[scanning 847 transactions...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ Found 12 related addresses&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ 3 flagged: Tornado Cash interaction&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ $2.4M total flow mapped&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;ask &amp;quot;Where did this money end up?&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='dim'&gt;[AI analyzing fund flow graph...]&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 68% into Binance hot wallet (0x3f5C...)&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 22% through Tornado Cash mixer&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;→ 10% dormant at intermediate address (47 days)&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class='prompt'&gt;🦞 &amp;gt;&lt;/span&gt; &lt;span class='cmd'&gt;export --format pdf --case &amp;quot;INV-2026-0314&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class='result'&gt;✓ Report exported: INV-2026-0314.pdf&lt;/span&gt;">
-                    <span class="prompt">🦞 &gt;</span> <span class="cmd">trace 0x28C6...9e1a --depth 5</span><br>
-                    <br>
-                    <span class="dim">[掃描 847 筆交易...]</span><br>
-                    <span class="result">✓ 發現 12 個關聯地址</span><br>
-                    <span class="result">✓ 3 個標記：Tornado Cash 交互</span><br>
-                    <span class="result">✓ $2.4M 資金流已繪製</span><br>
-                    <br>
-                    <span class="prompt">🦞 &gt;</span> <span class="cmd">ask "這筆資金最終去了哪裡？"</span><br>
-                    <br>
-                    <span class="dim">[AI 分析資金流圖譜...]</span><br>
-                    <span class="result">→ 68% 流入 Binance 熱錢包 (0x3f5C...)</span><br>
-                    <span class="result">→ 22% 通過 Tornado Cash 混幣</span><br>
-                    <span class="result">→ 10% 停留在中間地址 (休眠 47 天)</span><br>
-                    <br>
-                    <span class="prompt">🦞 &gt;</span> <span class="cmd">export --format pdf --case "INV-2026-0314"</span><br>
-                    <span class="result">✓ 報告已匯出：INV-2026-0314.pdf</span>
-                </div>
-            </div>
+            <h1><span>Merkle</span>Claw</h1>
+            <div class="subtitle">Chain Intelligence Desktop</div>
+            <div class="tagline">Every transaction tells a story. We help you read it.</div>
+            <a href="#waitlist" class="btn">Join Waitlist</a>
         </section>
 
-        <!-- FEATURES -->
-        <section class="features" id="features">
-            <h2 class="section-title" data-zh-tw="核心能力" data-zh-cn="核心能力" data-en="Core Capabilities">核心能力</h2>
-            <p class="section-sub" data-zh-tw="專為鏈上調查設計的全棧工具集" data-zh-cn="专为链上调查设计的全栈工具集" data-en="Full-stack toolkit designed for on-chain investigations">專為鏈上調查設計的全棧工具集</p>
+        <!-- Features -->
+        <section id="features">
+            <h2 class="section-title">核心<span>功能</span></h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🔎</div>
-                    <h3 data-zh-tw="地址情報" data-zh-cn="地址情报" data-en="Address Intelligence">地址情報</h3>
-                    <p data-zh-tw="輸入任意地址，即時獲取餘額、交易歷史、代幣持倉、標籤畫像。支持 ETH、BSC、SOL、BTC 多鏈。" data-zh-cn="输入任意地址，即时获取余额、交易历史、代币持仓、标签画像。支持 ETH、BSC、SOL、BTC 多链。" data-en="Enter any address to instantly retrieve balance, transaction history, token holdings, and label profiles. Multi-chain: ETH, BSC, SOL, BTC.">輸入任意地址，即時獲取餘額、交易歷史、代幣持倉、標籤畫像。支持 ETH、BSC、SOL、BTC 多鏈。</p>
+                    <div class="icon">🔍</div>
+                    <h3>地址情报中心</h3>
+                    <p>GoPlus 安全扫描 + AI 身份画像 + 多链支持，一键掌握地址全貌。</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🕸️</div>
-                    <h3 data-zh-tw="資金追蹤圖譜" data-zh-cn="资金追踪图谱" data-en="Fund Flow Graph">資金追蹤圖譜</h3>
-                    <p data-zh-tw="可視化資金流向，自動展開多層關聯地址。一眼看清資金從哪來、到哪去、經過了誰。" data-zh-cn="可视化资金流向，自动展开多层关联地址。一眼看清资金从哪来、到哪去、经过了谁。" data-en="Visualize fund flows with auto-expanded multi-layer address connections. See where money comes from, goes to, and passes through.">可視化資金流向，自動展開多層關聯地址。一眼看清資金從哪來、到哪去、經過了誰。</p>
+                    <div class="icon">🕸️</div>
+                    <h3>跨链资金追踪</h3>
+                    <p>ETH / BTC / TRON 全路径图谱，最深 5 跳，资金流向一目了然。</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📋</div>
-                    <h3 data-zh-tw="取證報告" data-zh-cn="取证报告" data-en="Forensic Reports">取證報告</h3>
-                    <p data-zh-tw="一鍵生成專業取證報告（PDF），包含時間線、交易明細、地址標註，可直接用於執法提交。" data-zh-cn="一键生成专业取证报告（PDF），包含时间线、交易明细、地址标注，可直接用于执法提交。" data-en="One-click professional forensic reports (PDF) with timelines, transaction details, and address annotations — ready for law enforcement submission.">一鍵生成專業取證報告（PDF），包含時間線、交易明細、地址標註，可直接用於執法提交。</p>
+                    <div class="icon">📄</div>
+                    <h3>法庭级取证报告</h3>
+                    <p>PDF 导出 + SHA-256 数字签名 + 中英双语，满足司法取证要求。</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🚨</div>
-                    <h3 data-zh-tw="實時監控" data-zh-cn="实时监控" data-en="Real-time Monitoring">實時監控</h3>
-                    <p data-zh-tw="設置監控地址，任何鏈上活動實時告警。嫌疑地址一旦轉賬，第一時間通知你。" data-zh-cn="设置监控地址，任何链上活动实时告警。嫌疑地址一旦转账，第一时间通知你。" data-en="Set watch addresses for real-time alerts on any on-chain activity. Get notified the moment a suspect address moves funds.">設置監控地址，任何鏈上活動實時告警。嫌疑地址一旦轉賬，第一時間通知你。</p>
+                    <div class="icon">🤖</div>
+                    <h3>AI 侦探助手</h3>
+                    <p>自然语言调查，自动调用链上 API，让分析像对话一样简单。</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🤖</div>
-                    <h3 data-zh-tw="AI 偵探助手" data-zh-cn="AI 侦探助手" data-en="AI Detective Assistant">AI 偵探助手</h3>
-                    <p data-zh-tw="用自然語言提問：「這筆錢最終去了哪裡？」「這個地址和哪些已知實體有關？」AI 給你答案。" data-zh-cn="用自然语言提问：&quot;这笔钱最终去了哪里？&quot;&quot;这个地址和哪些已知实体有关？&quot; AI 给你答案。" data-en="Ask in natural language: &quot;Where did this money end up?&quot; &quot;Which known entities is this address linked to?&quot; AI gives you answers.">用自然語言提問：「這筆錢最終去了哪裡？」「這個地址和哪些已知實體有關？」AI 給你答案。</p>
+                    <div class="icon">📡</div>
+                    <h3>实时监控告警</h3>
+                    <p>批量地址监控 + 大额转账 + 黑名单接触，第一时间推送告警。</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3 data-zh-tw="本地優先 · 離線可用" data-zh-cn="本地优先 · 离线可用" data-en="Local-first · Offline Ready">本地優先 · 離線可用</h3>
-                    <p data-zh-tw="數據存儲在你的設備上，支持完全離線調查。加密存儲，敏感案件數據不離開你的電腦。" data-zh-cn="数据存储在你的设备上，支持完全离线调查。加密存储，敏感案件数据不离开你的电脑。" data-en="Data stored on your device with full offline investigation support. Encrypted storage — sensitive case data never leaves your machine.">數據存儲在你的設備上，支持完全離線調查。加密存儲，敏感案件數據不離開你的電腦。</p>
+                    <div class="icon">📁</div>
+                    <h3>案件管理</h3>
+                    <p>独立案件存档 + 调查笔记 + 地址追踪，让每个案件井井有条。</p>
                 </div>
             </div>
         </section>
 
-        <!-- WAITLIST -->
-        <section class="waitlist" id="waitlist">
-            <div class="waitlist-box">
-                <h2 data-zh-tw="🦞 加入等待列表" data-zh-cn="🦞 加入等待列表" data-en="🦞 Join the Waitlist">🦞 加入等待列表</h2>
-                <p data-zh-tw="成為第一批用戶，搶先體驗 MerkleClaw。" data-zh-cn="成为第一批用户，抢先体验 MerkleClaw。" data-en="Be among the first to experience MerkleClaw.">成為第一批用戶，搶先體驗 MerkleClaw。</p>
-                <form class="waitlist-form" action="https://api.web3forms.com/submit" method="POST" id="waitlistForm">
+        <!-- Screenshot Placeholder -->
+        <section>
+            <div class="screenshot-placeholder">
+                🖥️ 实际界面 — 即将更新
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing">
+            <h2 class="section-title">选择<span>方案</span></h2>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Solo</h3>
+                    <div class="price">$99<span style="font-size:1rem;font-weight:400;color:var(--text2)">/月</span></div>
+                    <div class="price-sub">年付 $79/月</div>
+                    <ul>
+                        <li>1 用户</li>
+                        <li>3 链支持</li>
+                        <li>5 个监控地址</li>
+                        <li>基础 AI 助手</li>
+                        <li>PDF 报告导出</li>
+                    </ul>
+                    <a href="#waitlist" class="btn" style="width:100%;display:block;text-align:center;">Join Waitlist</a>
+                </div>
+                <div class="price-card featured">
+                    <h3>Pro</h3>
+                    <div class="price">$299<span style="font-size:1rem;font-weight:400;color:var(--text2)">/月</span></div>
+                    <div class="price-sub">年付 $239/月</div>
+                    <ul>
+                        <li>5 用户</li>
+                        <li>6 链支持</li>
+                        <li>无限监控地址</li>
+                        <li>高级 AI 分析</li>
+                        <li>优先客户支持</li>
+                        <li>API 访问</li>
+                    </ul>
+                    <a href="#waitlist" class="btn" style="width:100%;display:block;text-align:center;">Join Waitlist</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist -->
+        <section id="waitlist">
+            <h2 class="section-title">加入<span>等待列表</span></h2>
+            <div class="waitlist">
+                <p>MerkleClaw 即将发布。留下您的信息，第一时间获得内测资格。</p>
+                <form action="https://api.web3forms.com/submit" method="POST">
                     <input type="hidden" name="access_key" value="5a2ae0b0-4204-483d-97f4-14df3623604a">
-                    <input type="hidden" name="subject" value="[MerkleClaw] 新等待列表注册">
-                    <input type="hidden" name="from_name" value="MerkleClaw 官网">
-                    <input type="email" name="email" placeholder="you@example.com" required>
-                    <button type="submit" data-zh-tw="加入" data-zh-cn="加入" data-en="Join">加入</button>
+                    <input type="hidden" name="subject" value="MerkleClaw Waitlist">
+                    <input type="hidden" name="from_name" value="MerkleClaw Waitlist">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="电子邮箱" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="company" placeholder="公司（选填）">
+                    </div>
+                    <button type="submit" class="btn form-submit">Join Waitlist</button>
                 </form>
-                <div class="form-msg" id="formMsg" data-zh-tw="✅ 已加入等待列表！我們會盡快聯繫你。" data-zh-cn="✅ 已加入等待列表！我们会尽快联系你。" data-en="✅ You're on the list! We'll reach out soon.">✅ 已加入等待列表！我們會盡快聯繫你。</div>
             </div>
         </section>
 
-        <!-- FOOTER -->
+        <!-- Footer -->
         <footer>
-            <p data-zh-tw="© 2026 &lt;a href='https://zerovector.hk' target='_blank'&gt;ZeroVector&lt;/a&gt; · MerkleClaw 默克龍蝦 · Built with 🦞" data-zh-cn="© 2026 &lt;a href='https://zerovector.hk' target='_blank'&gt;ZeroVector&lt;/a&gt; · MerkleClaw 默克龙虾 · Built with 🦞" data-en="© 2026 &lt;a href='https://zerovector.hk' target='_blank'&gt;ZeroVector&lt;/a&gt; · MerkleClaw · Built with 🦞">© 2026 <a href="https://zerovector.hk" target="_blank">ZeroVector</a> · MerkleClaw 默克龍蝦 · Built with 🦞</p>
+            © 2026 ZEROVECTOR · MerkleClaw &nbsp;|&nbsp;
+            <a href="https://github.com/zerovector-hk" target="_blank">GitHub</a> &nbsp;|&nbsp;
+            <a href="https://merkleclaw.com">merkleclaw.com</a>
         </footer>
     </div>
-
-    <script>
-        // ===== Language Detection & Toggle =====
-        function detectLang() {
-            var saved = localStorage.getItem('mc-lang');
-            if (saved) return saved;
-            var bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'zh-TW').toLowerCase();
-            if (bl === 'zh-tw' || bl === 'zh-hk' || bl === 'zh-mo') return 'zh-TW';
-            if (bl === 'zh-cn' || bl === 'zh-sg' || bl === 'zh') return 'zh-CN';
-            return 'en';
-        }
-
-        var currentLang = detectLang();
-
-        var langConfig = {
-            'zh-TW': { next: 'zh-CN', btnText: '簡中', title: 'MerkleClaw 默克龍蝦 — 鏈上無遁形', desc: 'AI 驅動的鏈上情報分析工具，面向鏈上分析師、鏈上偵探和執法機構。Nothing hides on-chain.' },
-            'zh-CN': { next: 'en', btnText: 'EN', title: 'MerkleClaw 默克龙虾 — 链上无遁形', desc: 'AI 驱动的链上情报分析工具，面向链上分析师、链上侦探和执法机构。Nothing hides on-chain.' },
-            'en':    { next: 'zh-TW', btnText: '繁中', title: 'MerkleClaw — Nothing Hides On-Chain', desc: 'AI-powered on-chain intelligence tool for analysts, investigators, and law enforcement.' }
-        };
-
-        function applyLang() {
-            var cfg = langConfig[currentLang];
-            // Update button text
-            var langTextEl = document.getElementById('langText');
-            if (langTextEl) langTextEl.textContent = cfg.btnText;
-            // Update document
-            document.title = cfg.title;
-            document.documentElement.lang = currentLang === 'en' ? 'en' : currentLang;
-            var metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) metaDesc.setAttribute('content', cfg.desc);
-
-            // Update all i18n elements
-            var attrKey = currentLang === 'zh-TW' ? 'data-zh-tw' : currentLang === 'zh-CN' ? 'data-zh-cn' : 'data-en';
-            document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(function(el) {
-                var val = el.getAttribute(attrKey);
-                if (!val) return;
-                // Skip lang toggle button itself
-                if (el.id === 'langText') return;
-                // getAttribute auto-decodes HTML entities, so val contains raw HTML
-                // For elements that contain child HTML (terminal, footer, desc), use innerHTML
-                if (el.id === 'terminalBody' || val.indexOf('<') !== -1) {
-                    el.innerHTML = val;
-                } else {
-                    el.textContent = val;
-                }
-            });
-
-            localStorage.setItem('mc-lang', currentLang);
-        }
-
-        function toggleLanguage() {
-            currentLang = langConfig[currentLang].next;
-            applyLang();
-        }
-
-        // Apply on load
-        applyLang();
-
-        // ===== Smooth Scroll =====
-        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
-            a.addEventListener('click', function(e) {
-                e.preventDefault();
-                var target = document.querySelector(a.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-
-        // ===== Form Submission =====
-        var form = document.getElementById('waitlistForm');
-        var msg = document.getElementById('formMsg');
-        if (form) {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                var data = new FormData(form);
-                try {
-                    var res = await fetch('https://api.web3forms.com/submit', {
-                        method: 'POST',
-                        body: data,
-                        headers: { 'Accept': 'application/json' }
-                    });
-                    if (res.ok) {
-                        msg.style.display = 'block';
-                        msg.style.color = 'var(--accent-blue)';
-                        applyLang(); // refresh msg text
-                        form.reset();
-                    } else {
-                        msg.textContent = currentLang === 'en' ? '❌ Submission failed. Please try again.' : '❌ 提交失败，请稍后重试。';
-                        msg.style.color = 'var(--lobster-red)';
-                        msg.style.display = 'block';
-                    }
-                } catch(err) {
-                    msg.textContent = currentLang === 'en' ? '❌ Network error. Please try again.' : '❌ 网络错误，请稍后重试。';
-                    msg.style.color = 'var(--lobster-red)';
-                    msg.style.display = 'block';
-                }
-            });
-        }
-    </script>
 </body>
 </html>
