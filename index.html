@@ -258,12 +258,12 @@
             document.querySelectorAll('[data-zh-tw], [data-zh-cn], [data-en]').forEach(function(el) {
                 var val = el.getAttribute(attrKey);
                 if (!val) return;
-                // For elements with HTML content (terminal, footer, desc)
-                if (val.indexOf('<') !== -1 || val.indexOf('&lt;') !== -1) {
-                    // Decode HTML entities
-                    var tmp = document.createElement('div');
-                    tmp.innerHTML = val;
-                    el.innerHTML = tmp.textContent || tmp.innerText;
+                // Skip lang toggle button itself
+                if (el.id === 'langText') return;
+                // getAttribute auto-decodes HTML entities, so val contains raw HTML
+                // For elements that contain child HTML (terminal, footer, desc), use innerHTML
+                if (el.id === 'terminalBody' || val.indexOf('<') !== -1) {
+                    el.innerHTML = val;
                 } else {
                     el.textContent = val;
                 }
