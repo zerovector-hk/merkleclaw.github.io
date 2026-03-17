@@ -98,23 +98,41 @@
         }
 
         /* Pricing */
-        .pricing-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:32px; max-width:800px; margin:0 auto; }
+        .pricing-subtitle { text-align:center; color:var(--text2); max-width:700px; margin:-28px auto 40px; font-size:0.95rem; line-height:1.7; }
+        .pricing-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; max-width:1100px; margin:0 auto; }
         .price-card {
             background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
-            padding:36px; text-align:center; transition:border-color 0.2s;
+            padding:32px; text-align:center; transition:border-color 0.2s, transform 0.2s;
         }
-        .price-card:hover { border-color:var(--red); }
-        .price-card.featured { border-color:var(--red); position:relative; }
+        .price-card:hover { border-color:var(--red); transform:translateY(-2px); }
+        .price-card.featured { border-color:var(--red); position:relative; box-shadow:0 0 30px var(--red-glow); }
         .price-card.featured::before {
-            content:'推荐'; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+            content:'⭐ 推荐'; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
             background:var(--red); color:#fff; padding:4px 16px; border-radius:20px; font-size:0.8rem; font-weight:600;
         }
-        .price-card h3 { font-size:1.5rem; margin-bottom:4px; }
-        .price-card .price { font-size:2.5rem; font-weight:900; color:var(--red); margin:12px 0 4px; }
-        .price-card .price-sub { color:var(--text-muted); font-size:0.85rem; margin-bottom:20px; }
+        .price-card .tier-icon { font-size:2.5rem; margin-bottom:8px; }
+        .price-card h3 { font-size:1.3rem; margin-bottom:4px; }
+        .price-card .tier-fit { color:var(--text-muted); font-size:0.85rem; margin-bottom:16px; font-style:italic; }
         .price-card ul { list-style:none; text-align:left; margin-bottom:28px; }
-        .price-card li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--text2); font-size:0.9rem; }
+        .price-card li { padding:8px 0; border-bottom:1px solid var(--border); color:var(--text2); font-size:0.88rem; }
         .price-card li::before { content:'✓ '; color:var(--red); font-weight:700; }
+
+        /* Pilot */
+        .pilot-block {
+            background:var(--bg-card); border:2px solid var(--red); border-radius:16px;
+            padding:48px; text-align:center; max-width:700px; margin:0 auto;
+            box-shadow:0 0 40px var(--red-glow);
+        }
+        .pilot-block h3 { font-size:1.8rem; margin-bottom:12px; }
+        .pilot-block p { color:var(--text2); font-size:0.95rem; line-height:1.7; margin-bottom:24px; }
+        .pilot-form { max-width:420px; margin:0 auto; }
+
+        /* Trust */
+        .trust-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:20px; max-width:800px; margin:0 auto; }
+        .trust-item {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:12px;
+            padding:20px; font-size:0.95rem; color:var(--text2); text-align:center;
+        }
 
         /* Waitlist Form */
         .waitlist { max-width:520px; margin:0 auto; text-align:center; }
@@ -139,6 +157,7 @@
             .hero .subtitle { font-size:1rem; }
             .features-grid { grid-template-columns: 1fr; }
             .pricing-grid { grid-template-columns: 1fr; }
+            .trust-grid { grid-template-columns: 1fr; }
             .nav-links { gap:12px; }
         }
         @media (min-width:769px) and (max-width:1024px) {
@@ -158,7 +177,7 @@
             <div class="nav-links">
                 <a href="#features">功能</a>
                 <a href="#pricing">价格</a>
-                <a href="#waitlist">加入等待列表</a>
+                <a href="#pilot">试点计划</a>
             </div>
         </nav>
 
@@ -167,7 +186,7 @@
             <h1><span>Merkle</span>Claw</h1>
             <div class="subtitle">Chain Intelligence Desktop</div>
             <div class="tagline">Every transaction tells a story. We help you read it.</div>
-            <a href="#waitlist" class="btn">Join Waitlist</a>
+            <a href="#pilot" class="btn">Apply for Pilot Access</a>
         </section>
 
         <!-- Features -->
@@ -216,58 +235,100 @@
 
         <!-- Pricing -->
         <section id="pricing">
-            <h2 class="section-title">选择<span>方案</span></h2>
+            <h2 class="section-title">Pricing for <span>Law Enforcement</span> Agencies</h2>
+            <div class="pricing-subtitle">
+                执法机构专属定价<br>
+                Purpose-built for law enforcement. Pricing is tailored to agency size and deployment requirements. Contact us for a quote.<br>
+                专为执法机构设计，定价根据机构规模和部署需求定制，请联系我们获取报价。
+            </div>
             <div class="pricing-grid">
+                <!-- Agency Starter -->
                 <div class="price-card">
-                    <h3>Solo</h3>
-                    <div class="price">$99<span style="font-size:1rem;font-weight:400;color:var(--text2)">/月</span></div>
-                    <div class="price-sub">年付 $79/月</div>
+                    <div class="tier-icon">🔵</div>
+                    <h3>Agency Starter</h3>
+                    <div class="tier-fit">适合：小型执法单位 / 单一部门试点</div>
                     <ul>
-                        <li>1 用户</li>
-                        <li>3 链支持</li>
-                        <li>5 个监控地址</li>
-                        <li>基础 AI 助手</li>
-                        <li>PDF 报告导出</li>
+                        <li>3名调查员席位</li>
+                        <li>主流链：BTC / ETH / TRON / BNB Chain</li>
+                        <li>交易图谱可视化 + AI地址聚类 + PDF取证报告</li>
+                        <li>本地部署，数据不离开机构网络</li>
+                        <li>年度合同，含邮件技术支持</li>
                     </ul>
-                    <a href="#waitlist" class="btn" style="width:100%;display:block;text-align:center;">Join Waitlist</a>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
                 </div>
+                <!-- Agency Professional -->
                 <div class="price-card featured">
-                    <h3>Pro</h3>
-                    <div class="price">$299<span style="font-size:1rem;font-weight:400;color:var(--text2)">/月</span></div>
-                    <div class="price-sub">年付 $239/月</div>
+                    <div class="tier-icon">🟣</div>
+                    <h3>Agency Professional</h3>
+                    <div class="tier-fit">适合：省/州级警察 / 国家级专项部门</div>
                     <ul>
-                        <li>5 用户</li>
-                        <li>6 链支持</li>
-                        <li>无限监控地址</li>
-                        <li>高级 AI 分析</li>
-                        <li>优先客户支持</li>
-                        <li>API 访问</li>
+                        <li>10名调查员席位</li>
+                        <li>全链支持（含 Solana / Polygon / L2）</li>
+                        <li>高级地址聚类 + 完整实体标签库（1000万+）</li>
+                        <li>全格式导出：PDF / CSV / JSON</li>
+                        <li>可选内网服务器部署，支持空气隔离网络</li>
+                        <li>专属客户成功经理，24h响应</li>
+                        <li>远程入驻培训（2次/年）</li>
                     </ul>
-                    <a href="#waitlist" class="btn" style="width:100%;display:block;text-align:center;">Join Waitlist</a>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
+                </div>
+                <!-- Enterprise / National License -->
+                <div class="price-card">
+                    <div class="tier-icon">⚫</div>
+                    <h3>Enterprise / National License</h3>
+                    <div class="tier-fit">适合：国家级机构 / 跨部门联合使用</div>
+                    <ul>
+                        <li>无限席位（部门级授权）</li>
+                        <li>全功能 + API接入 + 内部系统集成</li>
+                        <li>白标取证报告（定制机构抬头）</li>
+                        <li>私有化定制部署，最高安全等级</li>
+                        <li>专属技术团队 + 现场支持</li>
+                        <li>2–3年框架合同</li>
+                    </ul>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
                 </div>
             </div>
         </section>
 
-        <!-- Waitlist -->
-        <section id="waitlist">
-            <h2 class="section-title">加入<span>等待列表</span></h2>
-            <div class="waitlist">
-                <p>MerkleClaw 即将发布。留下您的信息，第一时间获得内测资格。</p>
-                <form action="https://api.web3forms.com/submit" method="POST">
-                    <input type="hidden" name="access_key" value="5a2ae0b0-4204-483d-97f4-14df3623604a">
-                    <input type="hidden" name="subject" value="MerkleClaw Waitlist">
-                    <input type="hidden" name="from_name" value="MerkleClaw Waitlist">
-                    <div class="form-group">
-                        <input type="text" name="name" placeholder="姓名" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" name="email" placeholder="电子邮箱" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" name="company" placeholder="公司（选填）">
-                    </div>
-                    <button type="submit" class="btn form-submit">Join Waitlist</button>
-                </form>
+        <!-- Pilot Program -->
+        <section id="pilot">
+            <h2 class="section-title">🦞 Law Enforcement <span>Pilot Program</span></h2>
+            <div class="pilot-block">
+                <h3>90-Day Free Pilot</h3>
+                <p>
+                    Complimentary 90-day pilot for verified law enforcement agencies. Full Agency Professional access. No procurement commitment required. Apply with your official agency email.<br><br>
+                    为经认证的执法机构提供90天免费试点，完整Agency Professional功能，无需采购承诺，使用机构官方邮箱申请。
+                </p>
+                <div class="pilot-form">
+                    <form action="https://api.web3forms.com/submit" method="POST">
+                        <input type="hidden" name="access_key" value="0594432c-2702-4f3b-860f-552d00a16d23">
+                        <input type="hidden" name="subject" value="MerkleClaw LE Pilot Application">
+                        <input type="hidden" name="from_name" value="MerkleClaw Pilot">
+                        <div class="form-group">
+                            <input type="text" name="name" placeholder="姓名 / Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" placeholder="name@agency.gov" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="agency" placeholder="机构名称 / Agency Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="department" placeholder="部门 / Department" required>
+                        </div>
+                        <button type="submit" class="btn form-submit">Apply for Pilot Access / 申请试点资格</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust -->
+        <section id="trust">
+            <div class="trust-grid">
+                <div class="trust-item">🔒 本地优先架构，案件数据不离开机构网络</div>
+                <div class="trust-item">📋 所有套餐提供正式合同和发票</div>
+                <div class="trust-item">🌐 多语言支持：English / 普通话 / 粵語</div>
+                <div class="trust-item">⚖️ 取证报告格式符合多司法管辖区法庭要求</div>
             </div>
         </section>
 
