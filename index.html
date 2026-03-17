@@ -54,11 +54,22 @@
 
         /* Nav */
         nav { padding:24px 0; display:flex; align-items:center; justify-content:space-between; }
-        .logo { font-weight:700; font-size:1.2rem; color:var(--text); display:flex; align-items:center; gap:8px; }
+        .logo { font-weight:700; font-size:1.2rem; color:var(--text); display:flex; align-items:center; gap:8px; text-decoration:none; }
+        .logo:hover { text-decoration:none; }
         .logo span { color:var(--red); }
+        .nav-right { display:flex; align-items:center; gap:24px; }
         .nav-links { display:flex; gap:24px; }
         .nav-links a { color:var(--text2); font-size:0.9rem; }
         .nav-links a:hover { color:var(--text); text-decoration:none; }
+        .lang-switcher { display:flex; gap:8px; }
+        .lang-switcher button {
+            background:transparent; border:1px solid var(--border); color:var(--text2);
+            padding:4px 10px; border-radius:6px; font-size:0.8rem; cursor:pointer;
+            transition:all 0.2s; font-family:inherit;
+        }
+        .lang-switcher button:hover, .lang-switcher button.active {
+            border-color:var(--red); color:var(--red);
+        }
 
         /* Hero */
         .hero { text-align:center; padding:100px 0 80px; }
@@ -91,11 +102,87 @@
         .feature-card h3 { font-size:1.1rem; margin-bottom:8px; }
         .feature-card p { color:var(--text2); font-size:0.9rem; line-height:1.5; }
 
-        /* Screenshot Placeholder */
-        .screenshot-placeholder {
-            background:var(--bg2); border:1px dashed var(--border); border-radius:16px;
-            padding:80px 24px; text-align:center; color:var(--text-muted); font-size:1.1rem;
+        /* Feature Screenshots */
+        .hero-screenshot { text-align:center; margin-bottom:48px; }
+        .hero-screenshot img {
+            max-width:100%; border-radius:16px; border:1px solid var(--border);
+            box-shadow:0 20px 60px rgba(0,0,0,0.5);
         }
+        .screenshot-grid {
+            display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; margin-top:24px;
+        }
+        .feature-screenshot {
+            background:#1a1a2e; border:1px solid var(--border); border-radius:12px;
+            padding:20px; transition:all 0.3s; opacity:0; transform:translateY(20px);
+        }
+        .feature-screenshot.visible { opacity:1; transform:translateY(0); }
+        .feature-screenshot:hover { border-color:var(--red); box-shadow:0 0 20px var(--red-glow); }
+        .mock-ui {
+            background:#0d0d1a; border-radius:8px; padding:16px; margin-bottom:16px;
+            min-height:160px; position:relative; overflow:hidden;
+        }
+        .feature-screenshot h4 { font-size:1rem; margin-bottom:6px; }
+        .feature-screenshot .desc { color:var(--text2); font-size:0.85rem; }
+
+        /* Mock UI Components */
+        .mock-searchbar {
+            background:#1e1e3a; border-radius:6px; padding:8px 12px; margin-bottom:12px;
+            display:flex; align-items:center; gap:8px; font-size:0.75rem; color:var(--text-muted);
+        }
+        .mock-searchbar::before { content:'🔍'; }
+        .mock-score {
+            width:60px; height:60px; border-radius:50%; border:3px solid var(--red);
+            display:flex; align-items:center; justify-content:center; font-size:1.2rem;
+            font-weight:700; color:var(--red); margin:8px auto;
+        }
+        .mock-table { width:100%; }
+        .mock-table-row {
+            display:flex; justify-content:space-between; padding:4px 0;
+            border-bottom:1px solid #1e1e3a; font-size:0.7rem; color:var(--text-muted);
+        }
+        .mock-label { background:var(--red); color:#fff; padding:1px 6px; border-radius:3px; font-size:0.65rem; }
+
+        .mock-node {
+            width:12px; height:12px; border-radius:50%; position:absolute;
+        }
+        .mock-line {
+            position:absolute; height:2px; transform-origin:left center;
+        }
+        .mock-node.n1 { background:#E63946; top:30px; left:40px; }
+        .mock-node.n2 { background:#4ecdc4; top:60px; left:120px; }
+        .mock-node.n3 { background:#ffe66d; top:25px; right:40px; }
+        .mock-node.n4 { background:#6c5ce7; bottom:40px; left:80px; }
+        .mock-node.n5 { background:#a8e6cf; bottom:30px; right:60px; }
+        .mock-line.l1 { background:rgba(230,57,70,0.4); width:90px; top:36px; left:52px; transform:rotate(18deg); }
+        .mock-line.l2 { background:rgba(78,205,196,0.4); width:70px; top:62px; left:132px; transform:rotate(-25deg); }
+        .mock-line.l3 { background:rgba(108,92,231,0.4); width:60px; bottom:45px; left:92px; transform:rotate(-15deg); }
+
+        .mock-pdf-header { background:#1e1e3a; padding:8px; border-radius:4px; margin-bottom:8px; text-align:center; font-size:0.7rem; color:var(--text-muted); font-weight:600; }
+        .mock-pdf-line { height:6px; background:#1e1e3a; border-radius:3px; margin-bottom:6px; }
+        .mock-pdf-line.short { width:60%; }
+        .mock-pdf-line.medium { width:80%; }
+        .mock-pdf-sig { border-top:1px dashed var(--border); margin-top:12px; padding-top:8px; font-size:0.65rem; color:var(--text-muted); text-align:right; }
+
+        .mock-chat { display:flex; flex-direction:column; gap:8px; }
+        .mock-msg {
+            padding:8px 12px; border-radius:10px; font-size:0.7rem; max-width:80%;
+            line-height:1.4;
+        }
+        .mock-msg.user { background:#1e1e3a; color:var(--text2); align-self:flex-end; border-bottom-right-radius:2px; }
+        .mock-msg.bot { background:rgba(230,57,70,0.15); color:var(--text2); align-self:flex-start; border-bottom-left-radius:2px; }
+
+        .mock-sidebar { display:flex; gap:8px; height:100%; }
+        .mock-case-list { width:35%; display:flex; flex-direction:column; gap:4px; }
+        .mock-case-item {
+            background:#1e1e3a; padding:6px 8px; border-radius:4px; font-size:0.65rem;
+            color:var(--text-muted); cursor:default;
+        }
+        .mock-case-item.active { border-left:2px solid var(--red); color:var(--text2); }
+        .mock-case-detail {
+            flex:1; background:#1e1e3a; border-radius:6px; padding:10px;
+            font-size:0.65rem; color:var(--text-muted);
+        }
+        .mock-case-detail-title { font-size:0.8rem; color:var(--text2); margin-bottom:6px; font-weight:600; }
 
         /* Pricing */
         .pricing-subtitle { text-align:center; color:var(--text2); max-width:700px; margin:-28px auto 40px; font-size:0.95rem; line-height:1.7; }
@@ -107,8 +194,9 @@
         .price-card:hover { border-color:var(--red); transform:translateY(-2px); }
         .price-card.featured { border-color:var(--red); position:relative; box-shadow:0 0 30px var(--red-glow); }
         .price-card.featured::before {
-            content:'⭐ 推荐'; position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+            content:attr(data-badge); position:absolute; top:-12px; left:50%; transform:translateX(-50%);
             background:var(--red); color:#fff; padding:4px 16px; border-radius:20px; font-size:0.8rem; font-weight:600;
+            white-space:nowrap;
         }
         .price-card .tier-icon { font-size:2.5rem; margin-bottom:8px; }
         .price-card h3 { font-size:1.3rem; margin-bottom:4px; }
@@ -150,18 +238,23 @@
         /* Footer */
         footer { padding:40px 0; border-top:1px solid var(--border); text-align:center; color:var(--text-muted); font-size:0.85rem; }
         footer a { color:var(--text2); }
+        .footer-logo { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; color:var(--text2); font-weight:600; font-size:0.9rem; }
 
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size:2.5rem; }
             .hero .subtitle { font-size:1rem; }
             .features-grid { grid-template-columns: 1fr; }
+            .screenshot-grid { grid-template-columns: 1fr; }
             .pricing-grid { grid-template-columns: 1fr; }
             .trust-grid { grid-template-columns: 1fr; }
+            .nav-right { gap:12px; }
             .nav-links { gap:12px; }
+            .lang-switcher { gap:4px; }
         }
         @media (min-width:769px) and (max-width:1024px) {
             .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .screenshot-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -173,150 +266,236 @@
     <div class="container">
         <!-- Nav -->
         <nav>
-            <div class="logo">🦞 <span>Merkle</span>Claw</div>
-            <div class="nav-links">
-                <a href="#features">功能</a>
-                <a href="#pricing">价格</a>
-                <a href="#pilot">试点计划</a>
+            <a href="#" class="logo">
+                <img src="favicon.svg" alt="MerkleClaw" style="height:28px;width:auto;">
+                <span>Merkle</span>Claw
+            </a>
+            <div class="nav-right">
+                <div class="nav-links">
+                    <a href="#features" data-i18n="nav.features">Features</a>
+                    <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+                    <a href="#pilot" data-i18n="nav.pilot">Pilot Program</a>
+                </div>
+                <div class="lang-switcher">
+                    <button onclick="setLang('en')" data-lang="en">EN</button>
+                    <button onclick="setLang('zh-CN')" data-lang="zh-CN">简</button>
+                    <button onclick="setLang('zh-TW')" data-lang="zh-TW">繁</button>
+                </div>
             </div>
         </nav>
 
         <!-- Hero -->
         <section class="hero">
             <h1><span>Merkle</span>Claw</h1>
-            <div class="subtitle">Chain Intelligence Desktop</div>
-            <div class="tagline">Every transaction tells a story. We help you read it.</div>
-            <a href="#pilot" class="btn">Apply for Pilot Access</a>
+            <div class="subtitle" data-i18n="hero.subtitle">Chain Intelligence Desktop</div>
+            <div class="tagline" data-i18n="hero.tagline">Every transaction tells a story. We help you read it.</div>
+            <a href="#pilot" class="btn" data-i18n="hero.cta">Apply for Pilot Access</a>
         </section>
 
         <!-- Features -->
         <section id="features">
-            <h2 class="section-title">核心<span>功能</span></h2>
+            <h2 class="section-title" data-i18n="features.title"><span>Core</span> Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
                     <div class="icon">🔍</div>
-                    <h3>地址情报中心</h3>
-                    <p>GoPlus 安全扫描 + AI 身份画像 + 多链支持，一键掌握地址全貌。</p>
+                    <h3 data-i18n="feature.intel.title">Address Intelligence Hub</h3>
+                    <p data-i18n="feature.intel.desc">GoPlus security scan + AI identity profiling + multi-chain support. Full address overview in one click.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🕸️</div>
-                    <h3>跨链资金追踪</h3>
-                    <p>ETH / BTC / TRON 全路径图谱，最深 5 跳，资金流向一目了然。</p>
+                    <h3 data-i18n="feature.trace.title">Cross-Chain Fund Tracing</h3>
+                    <p data-i18n="feature.trace.desc">ETH / BTC / TRON full-path graph, up to 5 hops deep. Crystal-clear fund flow visualization.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📄</div>
-                    <h3>法庭级取证报告</h3>
-                    <p>PDF 导出 + SHA-256 数字签名 + 中英双语，满足司法取证要求。</p>
+                    <h3 data-i18n="feature.report.title">Court-Grade Forensic Reports</h3>
+                    <p data-i18n="feature.report.desc">PDF export + SHA-256 digital signature + bilingual EN/CN. Meets judicial evidence standards.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">🤖</div>
-                    <h3>AI 侦探助手</h3>
-                    <p>自然语言调查，自动调用链上 API，让分析像对话一样简单。</p>
+                    <h3 data-i18n="feature.ai.title">AI Detective Assistant</h3>
+                    <p data-i18n="feature.ai.desc">Natural language investigation, auto-invokes on-chain APIs. Analysis as simple as conversation.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📡</div>
-                    <h3>实时监控告警</h3>
-                    <p>批量地址监控 + 大额转账 + 黑名单接触，第一时间推送告警。</p>
+                    <h3 data-i18n="feature.monitor.title">Real-Time Monitoring &amp; Alerts</h3>
+                    <p data-i18n="feature.monitor.desc">Batch address monitoring + large transfers + blacklist contact detection. Instant push alerts.</p>
                 </div>
                 <div class="feature-card">
                     <div class="icon">📁</div>
-                    <h3>案件管理</h3>
-                    <p>独立案件存档 + 调查笔记 + 地址追踪，让每个案件井井有条。</p>
+                    <h3 data-i18n="feature.case.title">Case Management</h3>
+                    <p data-i18n="feature.case.desc">Independent case archiving + investigation notes + address tracking. Keep every case organized.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Screenshot Placeholder -->
-        <section>
-            <div class="screenshot-placeholder">
-                🖥️ 实际界面 — 即将更新
+        <!-- Feature Screenshots -->
+        <section id="screenshots">
+            <h2 class="section-title" data-i18n="screenshots.title">Product <span>Preview</span></h2>
+            <div class="hero-screenshot">
+                <img src="hero.png" alt="MerkleClaw Interface" onerror="this.parentElement.style.display='none'">
+            </div>
+            <div class="screenshot-grid">
+                <!-- Card 1: Address Intelligence -->
+                <div class="feature-screenshot">
+                    <div class="mock-ui">
+                        <div class="mock-searchbar">0x742d35Cc6634C0532925a3b844...</div>
+                        <div class="mock-score">87</div>
+                        <div class="mock-table">
+                            <div class="mock-table-row"><span>Entity</span><span class="mock-label">Exchange</span></div>
+                            <div class="mock-table-row"><span>Risk</span><span class="mock-label" style="background:#e67e22">Medium</span></div>
+                            <div class="mock-table-row"><span>Tags</span><span class="mock-label" style="background:#6c5ce7">DeFi User</span></div>
+                        </div>
+                    </div>
+                    <h4 data-i18n="screenshot.intel.title">🔍 Address Intelligence Hub</h4>
+                    <div class="desc" data-i18n="screenshot.intel.desc">Risk scoring, entity identification, and label aggregation</div>
+                </div>
+                <!-- Card 2: Fund Flow Graph -->
+                <div class="feature-screenshot">
+                    <div class="mock-ui">
+                        <div class="mock-node n1"></div>
+                        <div class="mock-node n2"></div>
+                        <div class="mock-node n3"></div>
+                        <div class="mock-node n4"></div>
+                        <div class="mock-node n5"></div>
+                        <div class="mock-line l1"></div>
+                        <div class="mock-line l2"></div>
+                        <div class="mock-line l3"></div>
+                        <div style="position:absolute;bottom:8px;right:12px;font-size:0.65rem;color:var(--text-muted);">5 hops · 23 txns</div>
+                    </div>
+                    <h4 data-i18n="screenshot.flow.title">🕸️ Fund Flow Graph</h4>
+                    <div class="desc" data-i18n="screenshot.flow.desc">Multi-hop transaction tracing with interactive visualization</div>
+                </div>
+                <!-- Card 3: Forensic Report -->
+                <div class="feature-screenshot">
+                    <div class="mock-ui">
+                        <div class="mock-pdf-header">📄 FORENSIC INVESTIGATION REPORT</div>
+                        <div class="mock-pdf-line"></div>
+                        <div class="mock-pdf-line medium"></div>
+                        <div class="mock-pdf-line"></div>
+                        <div class="mock-pdf-line short"></div>
+                        <div class="mock-pdf-line medium"></div>
+                        <div class="mock-pdf-line"></div>
+                        <div class="mock-pdf-sig">SHA-256: 7a3f...e91b ✓</div>
+                    </div>
+                    <h4 data-i18n="screenshot.report.title">📄 Forensic Report</h4>
+                    <div class="desc" data-i18n="screenshot.report.desc">Court-admissible PDF with digital signature verification</div>
+                </div>
+                <!-- Card 4: AI Detective -->
+                <div class="feature-screenshot">
+                    <div class="mock-ui">
+                        <div class="mock-chat">
+                            <div class="mock-msg user" data-i18n="screenshot.ai.msg1">Trace all outflows from 0x742d... in the last 7 days</div>
+                            <div class="mock-msg bot" data-i18n="screenshot.ai.msg2">Found 12 transactions totaling 45.3 ETH. 3 flagged addresses detected. Generating flow graph...</div>
+                            <div class="mock-msg user" data-i18n="screenshot.ai.msg3">Export as forensic report</div>
+                            <div class="mock-msg bot" data-i18n="screenshot.ai.msg4">✓ Report generated. SHA-256 signed. Ready to download.</div>
+                        </div>
+                    </div>
+                    <h4 data-i18n="screenshot.ai.title">🤖 AI Detective Assistant</h4>
+                    <div class="desc" data-i18n="screenshot.ai.desc">Natural language investigation with automated on-chain analysis</div>
+                </div>
+                <!-- Card 5: Case Management -->
+                <div class="feature-screenshot">
+                    <div class="mock-ui">
+                        <div class="mock-sidebar">
+                            <div class="mock-case-list">
+                                <div class="mock-case-item active">Case #2024-017</div>
+                                <div class="mock-case-item">Case #2024-016</div>
+                                <div class="mock-case-item">Case #2024-015</div>
+                                <div class="mock-case-item">Case #2024-014</div>
+                            </div>
+                            <div class="mock-case-detail">
+                                <div class="mock-case-detail-title">Case #2024-017</div>
+                                <div style="margin-bottom:4px;">📌 3 addresses tracked</div>
+                                <div style="margin-bottom:4px;">📝 5 investigation notes</div>
+                                <div style="margin-bottom:4px;">📄 2 reports generated</div>
+                                <div style="color:var(--red);margin-top:8px;">● Active</div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 data-i18n="screenshot.case.title">📁 Case Management</h4>
+                    <div class="desc" data-i18n="screenshot.case.desc">Organized case files with notes, address tracking, and reports</div>
+                </div>
             </div>
         </section>
 
         <!-- Pricing -->
         <section id="pricing">
-            <h2 class="section-title">Pricing for <span>Law Enforcement</span> Agencies</h2>
-            <div class="pricing-subtitle">
-                执法机构专属定价<br>
-                Purpose-built for law enforcement. Pricing is tailored to agency size and deployment requirements. Contact us for a quote.<br>
-                专为执法机构设计，定价根据机构规模和部署需求定制，请联系我们获取报价。
-            </div>
+            <h2 class="section-title" data-i18n="pricing.title">Pricing for <span>Law Enforcement</span> Agencies</h2>
+            <div class="pricing-subtitle" data-i18n="pricing.subtitle">Purpose-built for law enforcement. Pricing is tailored to agency size and deployment requirements. Contact us for a quote.</div>
             <div class="pricing-grid">
                 <!-- Agency Starter -->
                 <div class="price-card">
                     <div class="tier-icon">🔵</div>
-                    <h3>Agency Starter</h3>
-                    <div class="tier-fit">适合：小型执法单位 / 单一部门试点</div>
+                    <h3 data-i18n="pricing.starter.name">Agency Starter</h3>
+                    <div class="tier-fit" data-i18n="pricing.starter.fit">For: Small LE units / single department pilots</div>
                     <ul>
-                        <li>3名调查员席位</li>
-                        <li>主流链：BTC / ETH / TRON / BNB Chain</li>
-                        <li>交易图谱可视化 + AI地址聚类 + PDF取证报告</li>
-                        <li>本地部署，数据不离开机构网络</li>
-                        <li>年度合同，含邮件技术支持</li>
+                        <li data-i18n="pricing.starter.f1">3 investigator seats</li>
+                        <li data-i18n="pricing.starter.f2">Major chains: BTC / ETH / TRON / BNB Chain</li>
+                        <li data-i18n="pricing.starter.f3">Transaction graph + AI address clustering + PDF forensic reports</li>
+                        <li data-i18n="pricing.starter.f4">On-premise deployment, data never leaves agency network</li>
+                        <li data-i18n="pricing.starter.f5">Annual contract with email technical support</li>
                     </ul>
-                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;" data-i18n="pricing.contact">Contact Sales for Quote</a>
                 </div>
                 <!-- Agency Professional -->
-                <div class="price-card featured">
+                <div class="price-card featured" data-badge="⭐ Recommended">
                     <div class="tier-icon">🟣</div>
-                    <h3>Agency Professional</h3>
-                    <div class="tier-fit">适合：省/州级警察 / 国家级专项部门</div>
+                    <h3 data-i18n="pricing.pro.name">Agency Professional</h3>
+                    <div class="tier-fit" data-i18n="pricing.pro.fit">For: State/provincial police / national specialized units</div>
                     <ul>
-                        <li>10名调查员席位</li>
-                        <li>全链支持（含 Solana / Polygon / L2）</li>
-                        <li>高级地址聚类 + 完整实体标签库（1000万+）</li>
-                        <li>全格式导出：PDF / CSV / JSON</li>
-                        <li>可选内网服务器部署，支持空气隔离网络</li>
-                        <li>专属客户成功经理，24h响应</li>
-                        <li>远程入驻培训（2次/年）</li>
+                        <li data-i18n="pricing.pro.f1">10 investigator seats</li>
+                        <li data-i18n="pricing.pro.f2">Full chain support (incl. Solana / Polygon / L2)</li>
+                        <li data-i18n="pricing.pro.f3">Advanced address clustering + complete entity label library (10M+)</li>
+                        <li data-i18n="pricing.pro.f4">All export formats: PDF / CSV / JSON</li>
+                        <li data-i18n="pricing.pro.f5">Optional intranet server deployment, air-gapped network support</li>
+                        <li data-i18n="pricing.pro.f6">Dedicated customer success manager, 24h response</li>
+                        <li data-i18n="pricing.pro.f7">Remote onboarding training (2x/year)</li>
                     </ul>
-                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;" data-i18n="pricing.contact">Contact Sales for Quote</a>
                 </div>
                 <!-- Enterprise / National License -->
                 <div class="price-card">
                     <div class="tier-icon">⚫</div>
-                    <h3>Enterprise / National License</h3>
-                    <div class="tier-fit">适合：国家级机构 / 跨部门联合使用</div>
+                    <h3 data-i18n="pricing.enterprise.name">Enterprise / National License</h3>
+                    <div class="tier-fit" data-i18n="pricing.enterprise.fit">For: National agencies / cross-department joint deployment</div>
                     <ul>
-                        <li>无限席位（部门级授权）</li>
-                        <li>全功能 + API接入 + 内部系统集成</li>
-                        <li>白标取证报告（定制机构抬头）</li>
-                        <li>私有化定制部署，最高安全等级</li>
-                        <li>专属技术团队 + 现场支持</li>
-                        <li>2–3年框架合同</li>
+                        <li data-i18n="pricing.enterprise.f1">Unlimited seats (department-level licensing)</li>
+                        <li data-i18n="pricing.enterprise.f2">Full features + API access + internal system integration</li>
+                        <li data-i18n="pricing.enterprise.f3">White-label forensic reports (custom agency letterhead)</li>
+                        <li data-i18n="pricing.enterprise.f4">Private custom deployment, highest security clearance</li>
+                        <li data-i18n="pricing.enterprise.f5">Dedicated technical team + on-site support</li>
+                        <li data-i18n="pricing.enterprise.f6">2–3 year framework contract</li>
                     </ul>
-                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;">联系销售获取报价</a>
+                    <a href="mailto:sales@zerovector.hk" class="btn" style="width:100%;display:block;text-align:center;" data-i18n="pricing.contact">Contact Sales for Quote</a>
                 </div>
             </div>
         </section>
 
         <!-- Pilot Program -->
         <section id="pilot">
-            <h2 class="section-title">🦞 Law Enforcement <span>Pilot Program</span></h2>
+            <h2 class="section-title" data-i18n="pilot.section.title">🦞 Law Enforcement <span>Pilot Program</span></h2>
             <div class="pilot-block">
-                <h3>90-Day Free Pilot</h3>
-                <p>
-                    Complimentary 90-day pilot for verified law enforcement agencies. Full Agency Professional access. No procurement commitment required. Apply with your official agency email.<br><br>
-                    为经认证的执法机构提供90天免费试点，完整Agency Professional功能，无需采购承诺，使用机构官方邮箱申请。
-                </p>
+                <h3 data-i18n="pilot.title">90-Day Free Pilot</h3>
+                <p data-i18n="pilot.desc">Complimentary 90-day pilot for verified law enforcement agencies. Full Agency Professional access. No procurement commitment required. Apply with your official agency email.</p>
                 <div class="pilot-form">
                     <form action="https://api.web3forms.com/submit" method="POST">
                         <input type="hidden" name="access_key" value="0594432c-2702-4f3b-860f-552d00a16d23">
                         <input type="hidden" name="subject" value="MerkleClaw LE Pilot Application">
                         <input type="hidden" name="from_name" value="MerkleClaw Pilot">
                         <div class="form-group">
-                            <input type="text" name="name" placeholder="姓名 / Name" required>
+                            <input type="text" name="name" data-i18n-placeholder="pilot.form.name" placeholder="Name" required>
                         </div>
                         <div class="form-group">
                             <input type="email" name="email" placeholder="name@agency.gov" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="agency" placeholder="机构名称 / Agency Name" required>
+                            <input type="text" name="agency" data-i18n-placeholder="pilot.form.agency" placeholder="Agency Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="department" placeholder="部门 / Department" required>
+                            <input type="text" name="department" data-i18n-placeholder="pilot.form.dept" placeholder="Department" required>
                         </div>
-                        <button type="submit" class="btn form-submit">Apply for Pilot Access / 申请试点资格</button>
+                        <button type="submit" class="btn form-submit" data-i18n="pilot.form.submit">Apply for Pilot Access</button>
                     </form>
                 </div>
             </div>
@@ -325,19 +504,320 @@
         <!-- Trust -->
         <section id="trust">
             <div class="trust-grid">
-                <div class="trust-item">🔒 本地优先架构，案件数据不离开机构网络</div>
-                <div class="trust-item">📋 所有套餐提供正式合同和发票</div>
-                <div class="trust-item">🌐 多语言支持：English / 普通话 / 粵語</div>
-                <div class="trust-item">⚖️ 取证报告格式符合多司法管辖区法庭要求</div>
+                <div class="trust-item" data-i18n="trust.1">🔒 Local-first architecture — case data never leaves agency network</div>
+                <div class="trust-item" data-i18n="trust.2">📋 Formal contracts and invoices provided for all tiers</div>
+                <div class="trust-item" data-i18n="trust.3">🌐 Multi-language support: English / 普通话 / 粵語</div>
+                <div class="trust-item" data-i18n="trust.4">⚖️ Forensic report format meets multi-jurisdictional court requirements</div>
             </div>
         </section>
 
         <!-- Footer -->
         <footer>
-            © 2026 ZEROVECTOR · MerkleClaw &nbsp;|&nbsp;
-            <a href="https://github.com/zerovector-hk" target="_blank">GitHub</a> &nbsp;|&nbsp;
-            <a href="https://merkleclaw.com">merkleclaw.com</a>
+            <div class="footer-logo">
+                <img src="favicon.svg" alt="MerkleClaw" style="height:20px;width:auto;">
+                MerkleClaw
+            </div>
+            <div data-i18n="footer.text">© 2026 ZEROVECTOR · MerkleClaw</div>
+            <div style="margin-top:8px;">
+                <a href="https://github.com/zerovector-hk" target="_blank">GitHub</a> &nbsp;|&nbsp;
+                <a href="https://merkleclaw.com">merkleclaw.com</a>
+            </div>
         </footer>
     </div>
+
+    <script>
+    const translations = {
+        en: {
+            'nav.features': 'Features',
+            'nav.pricing': 'Pricing',
+            'nav.pilot': 'Pilot Program',
+            'hero.subtitle': 'Chain Intelligence Desktop',
+            'hero.tagline': 'Every transaction tells a story. We help you read it.',
+            'hero.cta': 'Apply for Pilot Access',
+            'features.title': 'Core <span>Features</span>',
+            'feature.intel.title': 'Address Intelligence Hub',
+            'feature.intel.desc': 'GoPlus security scan + AI identity profiling + multi-chain support. Full address overview in one click.',
+            'feature.trace.title': 'Cross-Chain Fund Tracing',
+            'feature.trace.desc': 'ETH / BTC / TRON full-path graph, up to 5 hops deep. Crystal-clear fund flow visualization.',
+            'feature.report.title': 'Court-Grade Forensic Reports',
+            'feature.report.desc': 'PDF export + SHA-256 digital signature + bilingual EN/CN. Meets judicial evidence standards.',
+            'feature.ai.title': 'AI Detective Assistant',
+            'feature.ai.desc': 'Natural language investigation, auto-invokes on-chain APIs. Analysis as simple as conversation.',
+            'feature.monitor.title': 'Real-Time Monitoring & Alerts',
+            'feature.monitor.desc': 'Batch address monitoring + large transfers + blacklist contact detection. Instant push alerts.',
+            'feature.case.title': 'Case Management',
+            'feature.case.desc': 'Independent case archiving + investigation notes + address tracking. Keep every case organized.',
+            'screenshots.title': 'Product <span>Preview</span>',
+            'screenshot.intel.title': '🔍 Address Intelligence Hub',
+            'screenshot.intel.desc': 'Risk scoring, entity identification, and label aggregation',
+            'screenshot.flow.title': '🕸️ Fund Flow Graph',
+            'screenshot.flow.desc': 'Multi-hop transaction tracing with interactive visualization',
+            'screenshot.report.title': '📄 Forensic Report',
+            'screenshot.report.desc': 'Court-admissible PDF with digital signature verification',
+            'screenshot.ai.title': '🤖 AI Detective Assistant',
+            'screenshot.ai.desc': 'Natural language investigation with automated on-chain analysis',
+            'screenshot.ai.msg1': 'Trace all outflows from 0x742d... in the last 7 days',
+            'screenshot.ai.msg2': 'Found 12 transactions totaling 45.3 ETH. 3 flagged addresses detected. Generating flow graph...',
+            'screenshot.ai.msg3': 'Export as forensic report',
+            'screenshot.ai.msg4': '✓ Report generated. SHA-256 signed. Ready to download.',
+            'screenshot.case.title': '📁 Case Management',
+            'screenshot.case.desc': 'Organized case files with notes, address tracking, and reports',
+            'pricing.title': 'Pricing for <span>Law Enforcement</span> Agencies',
+            'pricing.subtitle': 'Purpose-built for law enforcement. Pricing is tailored to agency size and deployment requirements. Contact us for a quote.',
+            'pricing.starter.name': 'Agency Starter',
+            'pricing.starter.fit': 'For: Small LE units / single department pilots',
+            'pricing.starter.f1': '3 investigator seats',
+            'pricing.starter.f2': 'Major chains: BTC / ETH / TRON / BNB Chain',
+            'pricing.starter.f3': 'Transaction graph + AI address clustering + PDF forensic reports',
+            'pricing.starter.f4': 'On-premise deployment, data never leaves agency network',
+            'pricing.starter.f5': 'Annual contract with email technical support',
+            'pricing.pro.name': 'Agency Professional',
+            'pricing.pro.fit': 'For: State/provincial police / national specialized units',
+            'pricing.pro.f1': '10 investigator seats',
+            'pricing.pro.f2': 'Full chain support (incl. Solana / Polygon / L2)',
+            'pricing.pro.f3': 'Advanced address clustering + complete entity label library (10M+)',
+            'pricing.pro.f4': 'All export formats: PDF / CSV / JSON',
+            'pricing.pro.f5': 'Optional intranet server deployment, air-gapped network support',
+            'pricing.pro.f6': 'Dedicated customer success manager, 24h response',
+            'pricing.pro.f7': 'Remote onboarding training (2x/year)',
+            'pricing.enterprise.name': 'Enterprise / National License',
+            'pricing.enterprise.fit': 'For: National agencies / cross-department joint deployment',
+            'pricing.enterprise.f1': 'Unlimited seats (department-level licensing)',
+            'pricing.enterprise.f2': 'Full features + API access + internal system integration',
+            'pricing.enterprise.f3': 'White-label forensic reports (custom agency letterhead)',
+            'pricing.enterprise.f4': 'Private custom deployment, highest security clearance',
+            'pricing.enterprise.f5': 'Dedicated technical team + on-site support',
+            'pricing.enterprise.f6': '2–3 year framework contract',
+            'pricing.contact': 'Contact Sales for Quote',
+            'pricing.badge': '⭐ Recommended',
+            'pilot.section.title': '🦞 Law Enforcement <span>Pilot Program</span>',
+            'pilot.title': '90-Day Free Pilot',
+            'pilot.desc': 'Complimentary 90-day pilot for verified law enforcement agencies. Full Agency Professional access. No procurement commitment required. Apply with your official agency email.',
+            'pilot.form.name': 'Name',
+            'pilot.form.agency': 'Agency Name',
+            'pilot.form.dept': 'Department',
+            'pilot.form.submit': 'Apply for Pilot Access',
+            'trust.1': '🔒 Local-first architecture — case data never leaves agency network',
+            'trust.2': '📋 Formal contracts and invoices provided for all tiers',
+            'trust.3': '🌐 Multi-language support: English / 普通话 / 粵語',
+            'trust.4': '⚖️ Forensic report format meets multi-jurisdictional court requirements',
+            'footer.text': '© 2026 ZEROVECTOR · MerkleClaw'
+        },
+        'zh-CN': {
+            'nav.features': '功能',
+            'nav.pricing': '价格',
+            'nav.pilot': '试点计划',
+            'hero.subtitle': '链上情报分析桌面工具',
+            'hero.tagline': '每一笔交易都在讲述一个故事，我们帮你读懂它。',
+            'hero.cta': '申请试点资格',
+            'features.title': '核心<span>功能</span>',
+            'feature.intel.title': '地址情报中心',
+            'feature.intel.desc': 'GoPlus 安全扫描 + AI 身份画像 + 多链支持，一键掌握地址全貌。',
+            'feature.trace.title': '跨链资金追踪',
+            'feature.trace.desc': 'ETH / BTC / TRON 全路径图谱，最深 5 跳，资金流向一目了然。',
+            'feature.report.title': '法庭级取证报告',
+            'feature.report.desc': 'PDF 导出 + SHA-256 数字签名 + 中英双语，满足司法取证要求。',
+            'feature.ai.title': 'AI 侦探助手',
+            'feature.ai.desc': '自然语言调查，自动调用链上 API，让分析像对话一样简单。',
+            'feature.monitor.title': '实时监控告警',
+            'feature.monitor.desc': '批量地址监控 + 大额转账 + 黑名单接触，第一时间推送告警。',
+            'feature.case.title': '案件管理',
+            'feature.case.desc': '独立案件存档 + 调查笔记 + 地址追踪，让每个案件井井有条。',
+            'screenshots.title': '产品<span>预览</span>',
+            'screenshot.intel.title': '🔍 地址情报中心',
+            'screenshot.intel.desc': '风险评分、实体识别与标签聚合',
+            'screenshot.flow.title': '🕸️ 资金流向图谱',
+            'screenshot.flow.desc': '多跳交易追踪与交互式可视化',
+            'screenshot.report.title': '📄 取证报告',
+            'screenshot.report.desc': '可作为法庭证据的 PDF 报告，含数字签名验证',
+            'screenshot.ai.title': '🤖 AI 侦探助手',
+            'screenshot.ai.desc': '自然语言调查，自动化链上分析',
+            'screenshot.ai.msg1': '追踪 0x742d... 过去7天的所有转出',
+            'screenshot.ai.msg2': '发现12笔交易，共计45.3 ETH。检测到3个标记地址。正在生成流向图谱...',
+            'screenshot.ai.msg3': '导出取证报告',
+            'screenshot.ai.msg4': '✓ 报告已生成。SHA-256 已签名。可供下载。',
+            'screenshot.case.title': '📁 案件管理',
+            'screenshot.case.desc': '有序的案件文件，含笔记、地址追踪和报告',
+            'pricing.title': '执法机构<span>专属定价</span>',
+            'pricing.subtitle': '专为执法机构设计，定价根据机构规模和部署需求定制，请联系我们获取报价。',
+            'pricing.starter.name': 'Agency Starter',
+            'pricing.starter.fit': '适合：小型执法单位 / 单一部门试点',
+            'pricing.starter.f1': '3名调查员席位',
+            'pricing.starter.f2': '主流链：BTC / ETH / TRON / BNB Chain',
+            'pricing.starter.f3': '交易图谱可视化 + AI 地址聚类 + PDF 取证报告',
+            'pricing.starter.f4': '本地部署，数据不离开机构网络',
+            'pricing.starter.f5': '年度合同，含邮件技术支持',
+            'pricing.pro.name': 'Agency Professional',
+            'pricing.pro.fit': '适合：省/州级警察 / 国家级专项部门',
+            'pricing.pro.f1': '10名调查员席位',
+            'pricing.pro.f2': '全链支持（含 Solana / Polygon / L2）',
+            'pricing.pro.f3': '高级地址聚类 + 完整实体标签库（1000万+）',
+            'pricing.pro.f4': '全格式导出：PDF / CSV / JSON',
+            'pricing.pro.f5': '可选内网服务器部署，支持空气隔离网络',
+            'pricing.pro.f6': '专属客户成功经理，24h 响应',
+            'pricing.pro.f7': '远程入驻培训（2次/年）',
+            'pricing.enterprise.name': 'Enterprise / National License',
+            'pricing.enterprise.fit': '适合：国家级机构 / 跨部门联合使用',
+            'pricing.enterprise.f1': '无限席位（部门级授权）',
+            'pricing.enterprise.f2': '全功能 + API 接入 + 内部系统集成',
+            'pricing.enterprise.f3': '白标取证报告（定制机构抬头）',
+            'pricing.enterprise.f4': '私有化定制部署，最高安全等级',
+            'pricing.enterprise.f5': '专属技术团队 + 现场支持',
+            'pricing.enterprise.f6': '2–3年框架合同',
+            'pricing.contact': '联系销售获取报价',
+            'pricing.badge': '⭐ 推荐',
+            'pilot.section.title': '🦞 执法机构<span>试点计划</span>',
+            'pilot.title': '90天免费试点',
+            'pilot.desc': '为经认证的执法机构提供90天免费试点，完整 Agency Professional 功能，无需采购承诺，使用机构官方邮箱申请。',
+            'pilot.form.name': '姓名',
+            'pilot.form.agency': '机构名称',
+            'pilot.form.dept': '部门',
+            'pilot.form.submit': '申请试点资格',
+            'trust.1': '🔒 本地优先架构，案件数据不离开机构网络',
+            'trust.2': '📋 所有套餐提供正式合同和发票',
+            'trust.3': '🌐 多语言支持：English / 普通话 / 粵語',
+            'trust.4': '⚖️ 取证报告格式符合多司法管辖区法庭要求',
+            'footer.text': '© 2026 ZEROVECTOR · MerkleClaw'
+        },
+        'zh-TW': {
+            'nav.features': '功能',
+            'nav.pricing': '價格',
+            'nav.pilot': '試點計劃',
+            'hero.subtitle': '鏈上情報分析桌面工具',
+            'hero.tagline': '每一筆交易都在講述一個故事，我們幫你讀懂它。',
+            'hero.cta': '申請試點資格',
+            'features.title': '核心<span>功能</span>',
+            'feature.intel.title': '地址情報中心',
+            'feature.intel.desc': 'GoPlus 安全掃描 + AI 身份畫像 + 多鏈支持，一鍵掌握地址全貌。',
+            'feature.trace.title': '跨鏈資金追蹤',
+            'feature.trace.desc': 'ETH / BTC / TRON 全路徑圖譜，最深 5 跳，資金流向一目了然。',
+            'feature.report.title': '法庭級取證報告',
+            'feature.report.desc': 'PDF 導出 + SHA-256 數位簽名 + 中英雙語，滿足司法取證要求。',
+            'feature.ai.title': 'AI 偵探助手',
+            'feature.ai.desc': '自然語言調查，自動調用鏈上 API，讓分析像對話一樣簡單。',
+            'feature.monitor.title': '即時監控告警',
+            'feature.monitor.desc': '批量地址監控 + 大額轉帳 + 黑名單接觸，第一時間推送告警。',
+            'feature.case.title': '案件管理',
+            'feature.case.desc': '獨立案件存檔 + 調查筆記 + 地址追蹤，讓每個案件井井有條。',
+            'screenshots.title': '產品<span>預覽</span>',
+            'screenshot.intel.title': '🔍 地址情報中心',
+            'screenshot.intel.desc': '風險評分、實體識別與標籤聚合',
+            'screenshot.flow.title': '🕸️ 資金流向圖譜',
+            'screenshot.flow.desc': '多跳交易追蹤與互動式視覺化',
+            'screenshot.report.title': '📄 取證報告',
+            'screenshot.report.desc': '可作為法庭證據的 PDF 報告，含數位簽名驗證',
+            'screenshot.ai.title': '🤖 AI 偵探助手',
+            'screenshot.ai.desc': '自然語言調查，自動化鏈上分析',
+            'screenshot.ai.msg1': '追蹤 0x742d... 過去7天的所有轉出',
+            'screenshot.ai.msg2': '發現12筆交易，共計45.3 ETH。偵測到3個標記地址。正在生成流向圖譜...',
+            'screenshot.ai.msg3': '導出取證報告',
+            'screenshot.ai.msg4': '✓ 報告已生成。SHA-256 已簽名。可供下載。',
+            'screenshot.case.title': '📁 案件管理',
+            'screenshot.case.desc': '有序的案件文件，含筆記、地址追蹤和報告',
+            'pricing.title': '執法機構<span>專屬定價</span>',
+            'pricing.subtitle': '專為執法機構設計，定價根據機構規模和部署需求定制，請聯繫我們獲取報價。',
+            'pricing.starter.name': 'Agency Starter',
+            'pricing.starter.fit': '適合：小型執法單位 / 單一部門試點',
+            'pricing.starter.f1': '3名調查員席位',
+            'pricing.starter.f2': '主流鏈：BTC / ETH / TRON / BNB Chain',
+            'pricing.starter.f3': '交易圖譜視覺化 + AI 地址聚類 + PDF 取證報告',
+            'pricing.starter.f4': '本地部署，數據不離開機構網路',
+            'pricing.starter.f5': '年度合約，含郵件技術支援',
+            'pricing.pro.name': 'Agency Professional',
+            'pricing.pro.fit': '適合：省/州級警察 / 國家級專項部門',
+            'pricing.pro.f1': '10名調查員席位',
+            'pricing.pro.f2': '全鏈支持（含 Solana / Polygon / L2）',
+            'pricing.pro.f3': '進階地址聚類 + 完整實體標籤庫（1000萬+）',
+            'pricing.pro.f4': '全格式導出：PDF / CSV / JSON',
+            'pricing.pro.f5': '可選內網伺服器部署，支持氣隙隔離網路',
+            'pricing.pro.f6': '專屬客戶成功經理，24h 回應',
+            'pricing.pro.f7': '遠端進駐培訓（2次/年）',
+            'pricing.enterprise.name': 'Enterprise / National License',
+            'pricing.enterprise.fit': '適合：國家級機構 / 跨部門聯合使用',
+            'pricing.enterprise.f1': '無限席位（部門級授權）',
+            'pricing.enterprise.f2': '全功能 + API 接入 + 內部系統整合',
+            'pricing.enterprise.f3': '白標取證報告（定製機構抬頭）',
+            'pricing.enterprise.f4': '私有化定製部署，最高安全等級',
+            'pricing.enterprise.f5': '專屬技術團隊 + 現場支援',
+            'pricing.enterprise.f6': '2–3年框架合約',
+            'pricing.contact': '聯繫銷售獲取報價',
+            'pricing.badge': '⭐ 推薦',
+            'pilot.section.title': '🦞 執法機構<span>試點計劃</span>',
+            'pilot.title': '90天免費試點',
+            'pilot.desc': '為經認證的執法機構提供90天免費試點，完整 Agency Professional 功能，無需採購承諾，使用機構官方郵箱申請。',
+            'pilot.form.name': '姓名',
+            'pilot.form.agency': '機構名稱',
+            'pilot.form.dept': '部門',
+            'pilot.form.submit': '申請試點資格',
+            'trust.1': '🔒 本地優先架構，案件數據不離開機構網路',
+            'trust.2': '📋 所有套餐提供正式合約和發票',
+            'trust.3': '🌐 多語言支持：English / 普通話 / 粵語',
+            'trust.4': '⚖️ 取證報告格式符合多司法管轄區法庭要求',
+            'footer.text': '© 2026 ZEROVECTOR · MerkleClaw'
+        }
+    };
+
+    let currentLang = localStorage.getItem('mc_lang');
+    if (!currentLang) {
+        const nav = navigator.language || 'en';
+        if (nav.startsWith('zh-TW') || nav.startsWith('zh-HK') || nav === 'zh-Hant') {
+            currentLang = 'zh-TW';
+        } else if (nav.startsWith('zh')) {
+            currentLang = 'zh-CN';
+        } else {
+            currentLang = 'en';
+        }
+    }
+
+    function setLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('mc_lang', lang);
+        applyTranslations();
+    }
+
+    function applyTranslations() {
+        const t = translations[currentLang] || translations.en;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (t[key] !== undefined) {
+                el.innerHTML = t[key];
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (t[key] !== undefined) {
+                el.placeholder = t[key];
+            }
+        });
+        // Update featured badge
+        const featured = document.querySelector('.price-card.featured');
+        if (featured && t['pricing.badge']) {
+            featured.setAttribute('data-badge', t['pricing.badge']);
+        }
+        // Update lang switcher active state
+        document.querySelectorAll('.lang-switcher button').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+        });
+        // Update html lang
+        document.documentElement.lang = currentLang === 'en' ? 'en' : currentLang;
+    }
+
+    // Scroll animation for screenshot cards
+    function initScrollAnimation() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.feature-screenshot').forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        applyTranslations();
+        initScrollAnimation();
+    });
+    </script>
 </body>
 </html>
