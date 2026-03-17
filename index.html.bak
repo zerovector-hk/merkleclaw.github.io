@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <script>if(location.protocol!=='https:')location.replace('https://'+location.host+location.pathname+location.search);</script>
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <link rel="canonical" href="https://merkleclaw.com/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MerkleClaw — Chain Intelligence Desktop</title>
