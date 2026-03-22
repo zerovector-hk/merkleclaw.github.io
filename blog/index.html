@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — MerkleClaw</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <meta name="description" content="MerkleClaw 博客 — 链上取证案例拆解、技术分析与行业洞察。">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --lobster-red: #E63946; --bg-primary: #0A0A0F; --bg-secondary: #12121A; --bg-card: #1A1A2E; --text-primary: #F0F0F5; --text-secondary: #8888A0; --text-muted: #555570; --border: #2A2A40; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; }
+        .blog-nav { padding: 16px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); max-width: 900px; margin: 0 auto; }
+        .blog-nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; }
+        .blog-nav a:hover { color: var(--lobster-red); }
+        .blog-nav .logo { font-weight: 700; color: var(--text-primary); font-size: 1.1rem; }
+        .blog-nav .logo span { color: var(--lobster-red); }
+        .blog-list { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+        .blog-list h1 { font-size: 2rem; font-weight: 900; margin-bottom: 8px; }
+        .blog-list .subtitle { color: var(--text-secondary); margin-bottom: 48px; }
+        .post-card { display: block; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; padding: 32px; margin-bottom: 24px; text-decoration: none; transition: all 0.3s; }
+        .post-card:hover { border-color: var(--lobster-red); transform: translateY(-4px); box-shadow: 0 8px 30px rgba(230,57,70,0.1); }
+        .post-card .tag { display: inline-block; padding: 3px 10px; border: 1px solid var(--lobster-red); border-radius: 100px; font-size: 0.7rem; color: var(--lobster-red); font-weight: 500; margin-bottom: 12px; }
+        .post-card h2 { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; line-height: 1.4; }
+        .post-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 12px; }
+        .post-card .meta { color: var(--text-muted); font-size: 0.8rem; }
+        footer { padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+        footer a { color: var(--lobster-red); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="blog-nav">
+        <a href="/" class="logo">Merkle<span>Claw</span></a>
+        <a href="/">首页</a>
+        <a href="/blog/" style="color:var(--lobster-red);">博客</a>
+    </nav>
+
+    <div class="blog-list">
+        <h1>🦞 MerkleClaw Blog</h1>
+        <p class="subtitle">链上取证案例拆解 · 技术分析 · 行业洞察</p>
+
+        <a href="/blog/bybit-hack-onchain-tracing-merkleclaw" class="post-card">
+            <span class="tag">Case Study</span>
+            <h2>15 亿美元，48 小时：用 MerkleClaw 追踪 Bybit 黑客事件</h2>
+            <p>深度拆解 Bybit $1.5B 黑客事件的链上追踪方法论。从攻击起点到混币穿透，展示 MerkleClaw 如何一步步还原资金流向。</p>
+            <div class="meta">MerkleClaw 团队 · 2026-03-22 · 阅读约 8 分钟</div>
+        </a>
+    </div>
+
+    <footer>
+        <p>© 2026 <a href="https://zerovector.hk">ZeroVector</a> · MerkleClaw 默克龙虾 · Built with 🦞</p>
+    </footer>
+</body>
+</html>
