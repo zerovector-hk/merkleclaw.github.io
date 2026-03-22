@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>执法机构合作 — MerkleClaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;--bg-card:#12121A;--text:#F0F0F5;--accent:#E63946;
+  --secondary:#8888A0;--border:#2A2A40;--radius:10px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;transition:opacity .2s}
+a:hover{opacity:.85}
+img{max-width:100%}
+
+/* — Nav — */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
+.nav-logo .white{color:#fff}
+.nav-logo .red{color:var(--accent)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--secondary);font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+
+/* — Utilities — */
+.container{max-width:1080px;margin:0 auto;padding:0 1.5rem}
+.section{padding:5rem 0}
+.section-title{font-size:2rem;font-weight:700;margin-bottom:.75rem}
+.section-subtitle{color:var(--secondary);font-size:1.05rem;max-width:640px;margin-bottom:2.5rem}
+.badge{display:inline-block;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);border-radius:20px;padding:.25rem .9rem;margin-bottom:1.25rem}
+
+/* — Buttons — */
+.btn{display:inline-flex;align-items:center;gap:.4rem;font-family:inherit;font-weight:600;font-size:.95rem;padding:.75rem 1.6rem;border-radius:8px;cursor:pointer;transition:all .2s;border:2px solid transparent}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:#d0313e}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-outline:hover{border-color:var(--secondary)}
+.btn-group{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+
+/* — Hero — */
+.hero{padding:6rem 0 5rem;text-align:center}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.15;margin-bottom:1.25rem;letter-spacing:-.03em}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--secondary);font-size:1.15rem;max-width:620px;margin:0 auto 2rem}
+
+/* — Cards Grid — */
+.why-grid{display:grid;gap:2rem}
+.why-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:2.25rem}
+.why-card .icon{font-size:2rem;margin-bottom:1rem}
+.why-card h3{font-size:1.35rem;font-weight:700;margin-bottom:.6rem}
+.why-card ul{list-style:none;padding:0;margin:.75rem 0}
+.why-card ul li{position:relative;padding-left:1.4rem;margin-bottom:.5rem;color:var(--secondary);font-size:.95rem}
+.why-card ul li::before{content:'';position:absolute;left:0;top:.55rem;width:6px;height:6px;background:var(--accent);border-radius:50%}
+.why-card ul li strong{color:var(--text)}
+.why-card blockquote{margin-top:1rem;padding-left:1rem;border-left:3px solid var(--accent);color:var(--secondary);font-style:italic;font-size:.95rem}
+
+/* — Chain Table — */
+.chain-table{width:100%;border-collapse:collapse;margin-top:1.25rem;font-size:.95rem}
+.chain-table th,.chain-table td{text-align:left;padding:.65rem 1rem;border-bottom:1px solid var(--border)}
+.chain-table th{color:var(--secondary);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em}
+.chain-table td{color:var(--text)}
+.chain-note{margin-top:1rem;color:var(--secondary);font-size:.9rem;line-height:1.6}
+
+/* — Feature Table — */
+.feature-table-wrap{overflow-x:auto;margin-top:1.5rem;border:1px solid var(--border);border-radius:var(--radius)}
+.feature-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.feature-table th,.feature-table td{padding:.8rem 1.1rem;text-align:left;border-bottom:1px solid var(--border)}
+.feature-table th{background:var(--bg-card);color:var(--secondary);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.feature-table td:first-child{font-weight:600;color:var(--text);white-space:nowrap}
+.feature-table td:last-child{color:var(--secondary)}
+.feature-table tr:last-child td{border-bottom:none}
+.feature-table tr:hover td{background:rgba(230,57,70,.04)}
+
+/* — Trial Section — */
+.trial-section{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:3rem;text-align:center;margin:2rem 0}
+.trial-section h2{font-size:1.75rem;font-weight:700;margin-bottom:.5rem}
+.trial-section>p{color:var(--secondary);max-width:540px;margin:0 auto 2rem}
+.trial-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;text-align:left;margin:2rem 0}
+.trial-features .item{display:flex;gap:.6rem;align-items:flex-start;font-size:.95rem;color:var(--secondary)}
+.trial-features .item .check{color:var(--accent);font-weight:700;flex-shrink:0}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin:2.5rem 0 2rem;text-align:left}
+.step{position:relative;padding-left:2.5rem}
+.step-num{position:absolute;left:0;top:0;width:1.8rem;height:1.8rem;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
+.step-text{font-size:.9rem;color:var(--secondary)}
+.step-text strong{color:var(--text);display:block;margin-bottom:.2rem}
+
+/* — Agencies — */
+.agencies{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem}
+.agency-tag{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:.5rem 1rem;font-size:.85rem;color:var(--secondary)}
+
+/* — FAQ — */
+.faq-list{display:grid;gap:1rem}
+.faq-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.faq-q{padding:1.25rem 1.5rem;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;user-select:none}
+.faq-q::after{content:'+';color:var(--accent);font-size:1.3rem;font-weight:400;transition:transform .2s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:0 1.5rem;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease;color:var(--secondary);font-size:.95rem;line-height:1.7}
+.faq-item.open .faq-a{max-height:300px;padding:0 1.5rem 1.25rem}
+
+/* — Bottom CTA — */
+.bottom-cta{text-align:center;padding:5rem 0 3rem}
+.bottom-cta h2{font-size:2rem;font-weight:800;margin-bottom:.75rem}
+.bottom-cta p{color:var(--secondary);font-size:1.05rem;max-width:520px;margin:0 auto 2rem}
+.bottom-cta .contact{margin-top:2rem;color:var(--secondary);font-size:.9rem}
+.bottom-cta .contact a{color:var(--text)}
+
+/* — Footer — */
+.footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.8rem;color:var(--secondary)}
+.footer a{color:var(--secondary);margin:0 .75rem}
+.footer a:hover{color:var(--text)}
+
+/* — Responsive — */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero{padding:4rem 0 3rem}
+  .hero h1{font-size:1.8rem}
+  .trial-section{padding:2rem 1.25rem}
+  .section{padding:3.5rem 0}
+}
+@media(min-width:768px){
+  .why-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-logo"><span class="white">Merkle</span><span class="red">Claw</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/blog">Blog</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="badge">Law Enforcement</div>
+    <h1>为执法机构而生的<span>链上情报工具</span></h1>
+    <p>案件数据从不离开你的网络。链上证据符合法庭要求。90 天免费试用，无需采购承诺。</p>
+    <div class="btn-group" style="justify-content:center">
+      <a href="#trial" class="btn btn-primary">申请 90 天免费试用 →</a>
+      <a href="#demo" class="btn btn-outline">预约技术演示</a>
+    </div>
+  </div>
+</section>
+
+<!-- Why Law Enforcement -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">为什么执法机构选择 MerkleClaw</h2>
+    <p class="section-subtitle">数据主权、法庭级证据、跨链追踪、AI 加速——为调查人员打造的专业工具链。</p>
+
+    <div class="why-grid">
+      <!-- Data Sovereignty -->
+      <div class="why-card">
+        <div class="icon">🔒</div>
+        <h3>数据主权，绝不妥协</h3>
+        <p style="color:var(--secondary);font-size:.95rem;margin-bottom:.5rem">大多数链上分析工具需要将你的案件数据上传至服务商云端。MerkleClaw 完全相反。</p>
+        <ul>
+          <li><strong>本地部署</strong>：软件运行在你的设备或内网服务器上</li>
+          <li><strong>Air-gapped 支持</strong>：完整离线环境可用，适合高安全等级网络</li>
+          <li><strong>无数据泄露风险</strong>：案件内容、嫌疑人地址、调查进展全部留在你的管辖范围内</li>
+        </ul>
+        <blockquote>你的案件，只属于你。</blockquote>
+      </div>
+
+      <!-- Court-grade Evidence -->
+      <div class="why-card">
+        <div class="icon">⚖️</div>
+        <h3>法庭级证据，开箱即用</h3>
+        <p style="color:var(--secondary);font-size:.95rem;margin-bottom:.5rem">链上数据在法庭上的证明力，取决于证据链的完整性。MerkleClaw 的报告导出专为司法程序设计：</p>
+        <ul>
+          <li><strong>PDF 取证报告</strong>：包含完整资金流转路径、地址标注、时间戳</li>
+          <li><strong>证据链审计日志</strong>：记录每一步分析操作，证明分析过程的完整性</li>
+          <li><strong>标准化格式</strong>：与国际通行司法取证标准对齐，支持跨司法管辖区使用</li>
+          <li><strong>分析员签名</strong>：每份报告含分析员身份信息和报告哈希，防篡改</li>
+        </ul>
+      </div>
+
+      <!-- Cross-chain -->
+      <div class="why-card">
+        <div class="icon">🌐</div>
+        <h3>跨链追踪，无死角覆盖</h3>
+        <p style="color:var(--secondary);font-size:.95rem;margin-bottom:.5rem">加密犯罪不会停在一条链上。MerkleClaw 支持：</p>
+        <table class="chain-table">
+          <thead><tr><th>链</th><th>状态</th></tr></thead>
+          <tbody>
+            <tr><td>Bitcoin (BTC)</td><td>✅ 完整支持</td></tr>
+            <tr><td>Ethereum (ETH + ERC-20)</td><td>✅ 完整支持</td></tr>
+            <tr><td>Tron (TRX + TRC-20)</td><td>✅ 完整支持</td></tr>
+            <tr><td>BNB Chain</td><td>✅ 完整支持</td></tr>
+            <tr><td>Solana</td><td>🔄 开发中</td></tr>
+          </tbody>
+        </table>
+        <p class="chain-note">跨链追踪模式：当资金通过跨链桥从 ETH 转移至 BTC，MerkleClaw 自动关联两链上的对应地址，保持追踪连续性。</p>
+      </div>
+
+      <!-- AI -->
+      <div class="why-card">
+        <div class="icon">🤖</div>
+        <h3>AI 辅助，加速案件推进</h3>
+        <ul>
+          <li><strong>地址聚类</strong>：自动识别同一实体控制的多个钱包地址</li>
+          <li><strong>混币穿透</strong>：基于时间窗口和面额匹配，概率性关联混币前后资金</li>
+          <li><strong>实体标签库</strong>：1000万+ 预标注地址，涵盖交易所、制裁名单、混币器、暗网市场</li>
+          <li><strong>风险评分</strong>：每个地址自动生成风险评级，优先聚焦高风险节点</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Exclusive Features -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 class="section-title">执法机构专属功能</h2>
+    <p class="section-subtitle">超越标准版——为高安全要求和多部门协同而设计。</p>
+    <div class="feature-table-wrap">
+      <table class="feature-table">
+        <thead>
+          <tr><th>功能</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>离线 / Air-gapped 部署</td><td>无需互联网连接即可运行核心功能</td></tr>
+          <tr><td>自定义情报导入</td><td>将内部情报数据库导入标签库</td></tr>
+          <tr><td>多部门协作</td><td>不同部门独立案件空间，统一管理</td></tr>
+          <tr><td>权限与角色管理</td><td>按岗位设置访问权限</td></tr>
+          <tr><td>证据链审计日志</td><td>完整记录每一步操作，防御辩护质疑</td></tr>
+          <tr><td>专属客户成功经理</td><td>一对一支持，协助部署与培训</td></tr>
+          <tr><td>定制培训</td><td>远程或现场，针对你的团队工作流</td></tr>
+          <tr><td>24h SLA</td><td>紧急案件期间有保障</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 90-Day Trial -->
+<section class="section" id="trial" style="padding-top:0">
+  <div class="container">
+    <div class="trial-section">
+      <h2>90 天免费试用</h2>
+      <p>加入 MerkleClaw 执法机构合作计划——90 天 Enforcement 版完全免费，无需采购承诺。</p>
+
+      <div class="trial-features">
+        <div class="item"><span class="check">✅</span><span>完整 Enforcement 功能访问权限</span></div>
+        <div class="item"><span class="check">✅</span><span>专属入驻支持（远程配置协助）</span></div>
+        <div class="item"><span class="check">✅</span><span>书面产品安全文档（供内部审阅）</span></div>
+        <div class="item"><span class="check">✅</span><span>技术演示（远程或现场，按你的时间安排）</span></div>
+      </div>
+
+      <h3 style="font-size:1.1rem;margin-bottom:1.5rem;color:var(--secondary)">申请流程</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>填写申请表</strong>机构名称、部门、联系人、使用场景</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>2 个工作日内回复</strong>我们确认资格并联系你</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>开始试用</strong>收到访问凭证，立即上手</div>
+        </div>
+      </div>
+
+      <a href="#apply" class="btn btn-primary">申请 90 天免费试用 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Agencies Served -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 class="section-title">已服务机构类型</h2>
+    <p class="section-subtitle" style="font-style:italic">具体机构名称因保密协议不予披露</p>
+    <div class="agencies">
+      <div class="agency-tag">🌏 亚太地区网络警察部门</div>
+      <div class="agency-tag">🏦 金融监管局数字资产合规团队</div>
+      <div class="agency-tag">🕵️ 国际刑警组织合作机构</div>
+      <div class="agency-tag">⚖️ 跨国律所司法取证部门</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <h2 class="section-title">常见问题</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">MerkleClaw 是否符合我们所在司法管辖区的证据规则？</div>
+        <div class="faq-a">MerkleClaw 的取证报告格式参照国际通行司法取证标准设计，包含完整的证据链元数据。具体司法管辖区的证据可采性，建议咨询专业律师。我们可以提供报告格式技术说明供法律团队审阅。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">数据安全如何保障？</div>
+        <div class="faq-a">MerkleClaw 本地运行，案件数据不离开你的网络。我们的服务器仅处理软件更新和标签库同步。Enforcement 方案支持完整离线部署，可在物理隔离网络中运行。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">支持内网部署吗？</div>
+        <div class="faq-a">支持。Enforcement 方案提供完整的本地/内网部署包，我们的技术团队会提供部署协助。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">如何申请免费试用？</div>
+        <div class="faq-a">点击页面上的「申请 90 天免费试用」按钮，填写基本信息，我们会在 2 个工作日内联系你。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="bottom-cta">
+  <div class="container">
+    <h2>准备好了吗？</h2>
+    <p>链上犯罪不等人。你的调查工具也不应该受限于预算。</p>
+    <div class="btn-group" style="justify-content:center">
+      <a href="#apply" class="btn btn-primary">申请 90 天免费试用 →</a>
+      <a href="#demo" class="btn btn-outline">预约技术演示</a>
+      <a href="#" class="btn btn-outline">下载产品说明书（PDF）</a>
+    </div>
+    <div class="contact">
+      📧 <a href="mailto:enforcement@merkleclaw.com">enforcement@merkleclaw.com</a> &nbsp;·&nbsp; 🌐 <a href="https://merkleclaw.com/law-enforcement">merkleclaw.com/law-enforcement</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>© 2026 ZeroVector Limited. All rights reserved.</p>
+  <p style="margin-top:.5rem"><a href="/privacy">Privacy Policy</a><a href="/terms">Terms of Service</a></p>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement;
+    item.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
