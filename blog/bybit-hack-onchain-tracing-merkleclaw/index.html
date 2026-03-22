@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15亿美元，48小时：用 MerkleClaw 追踪 Bybit 黑客事件 — MerkleClaw Blog</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <meta name="description" content="深度拆解 Bybit $1.5B 黑客事件的链上追踪方法论。从攻击起点到混币穿透，展示 MerkleClaw 如何一步步还原资金流向。">
+    <meta property="og:title" content="15亿美元，48小时：用 MerkleClaw 追踪 Bybit 黑客事件">
+    <meta property="og:description" content="A step-by-step breakdown of how MerkleClaw would trace the $1.5B Bybit hack.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://merkleclaw.com/blog/bybit-hack-onchain-tracing-merkleclaw">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --lobster-red: #E63946;
+            --bg-primary: #0A0A0F;
+            --bg-secondary: #12121A;
+            --bg-card: #1A1A2E;
+            --text-primary: #F0F0F5;
+            --text-secondary: #8888A0;
+            --text-muted: #555570;
+            --border: #2A2A40;
+            --accent-blue: #4FC3F7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.8; }
+        .blog-nav { padding: 16px 24px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--border); max-width: 900px; margin: 0 auto; }
+        .blog-nav a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; }
+        .blog-nav a:hover { color: var(--lobster-red); }
+        .blog-nav .logo { font-weight: 700; color: var(--text-primary); font-size: 1.1rem; }
+        .blog-nav .logo span { color: var(--lobster-red); }
+        article { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+        article h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 900; line-height: 1.3; margin-bottom: 16px; }
+        .post-meta { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 32px; }
+        .disclaimer { background: var(--bg-card); border-left: 3px solid var(--lobster-red); padding: 16px 20px; margin: 24px 0; border-radius: 0 8px 8px 0; font-size: 0.88rem; color: var(--text-secondary); }
+        article h2 { font-size: 1.5rem; font-weight: 700; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        article h3 { font-size: 1.15rem; font-weight: 600; margin: 32px 0 12px; color: var(--accent-blue); }
+        article p { margin-bottom: 16px; color: var(--text-secondary); }
+        article strong { color: var(--text-primary); }
+        article a { color: var(--lobster-red); text-decoration: none; }
+        article a:hover { text-decoration: underline; }
+        article ul, article ol { margin: 16px 0 16px 24px; color: var(--text-secondary); }
+        article li { margin-bottom: 8px; }
+        article blockquote { border-left: 3px solid var(--lobster-red); padding: 12px 20px; margin: 24px 0; background: rgba(230,57,70,0.05); font-style: italic; color: var(--text-secondary); border-radius: 0 8px 8px 0; }
+        article code { background: var(--bg-card); padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--accent-blue); }
+        article pre { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 20px; overflow-x: auto; margin: 20px 0; }
+        article pre code { background: none; padding: 0; font-size: 0.82rem; line-height: 1.7; color: var(--text-secondary); }
+        article table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.88rem; }
+        article th { text-align: left; padding: 10px 12px; background: var(--bg-secondary); color: var(--text-primary); border-bottom: 1px solid var(--border); font-weight: 600; }
+        article td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-secondary); }
+        article hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+        .merkleclaw-tip { background: rgba(230,57,70,0.08); border: 1px solid rgba(230,57,70,0.2); border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .tip-icon { font-size: 1.2rem; margin-right: 8px; }
+        .merkleclaw-tip strong { color: var(--lobster-red); }
+        .report-sample { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 24px 0; }
+        .report-sample pre { margin: 0; border: none; border-radius: 0; }
+        .cta-box { text-align: center; background: var(--bg-secondary); border: 1px solid var(--lobster-red); border-radius: 16px; padding: 40px 32px; margin: 48px 0; }
+        .cta-box h2 { border: none; margin-top: 0; font-size: 1.4rem; }
+        .cta-button { display: inline-block; margin-top: 20px; padding: 14px 36px; background: var(--lobster-red); color: #fff; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s; }
+        .cta-button:hover { background: #FF5252; box-shadow: 0 0 30px rgba(230,57,70,0.4); text-decoration: none; transform: translateY(-2px); }
+        .post-footer { text-align: center; color: var(--text-muted); font-size: 0.8rem; margin-top: 48px; }
+        .post-footer em { font-style: normal; }
+        footer { padding: 24px; text-align: center; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--border); }
+        footer a { color: var(--lobster-red); text-decoration: none; }
+        @media (max-width: 600px) { article { padding: 32px 16px 60px; } }
+    </style>
+</head>
+<body>
+    <nav class="blog-nav">
+        <a href="/" class="logo">Merkle<span>Claw</span></a>
+        <a href="/">首页</a>
+        <a href="/blog/">博客</a>
+    </nav>
+
+    <article>
+        <h1>15 亿美元，48 小时：用 MerkleClaw 追踪 Bybit 黑客事件</h1>
+        <p class="post-meta">MerkleClaw 团队 · 2026-03-22 · 链上案例拆解 #001</p>
+
+        <blockquote class="disclaimer">
+            <strong>声明：</strong>本文所有链上数据来源于公开区块链记录及安全机构已发布的公开报告。本文不包含任何非公开或涉密信息。分析仅用于教育目的，展示链上取证方法论。
+        </blockquote>
+
+        <hr>
+
+        <h2>事件概述</h2>
+        <p>2025 年 2 月 21 日，加密货币交易所 Bybit 遭遇史上最大单次交易所黑客攻击。攻击者在约 30 分钟内从 Bybit 的以太坊冷钱包中盗取约 <strong>40 万枚 ETH</strong>，按当时价格折合约 <strong>15 亿美元</strong>。</p>
+        <p>多家安全机构随后将此次攻击归因于 <strong>Lazarus Group</strong>（朝鲜国家级黑客组织）。</p>
+        <p>这不只是一次盗窃——这是一场精心设计的多步骤链上洗钱行动。而链上数据，全程公开可查。</p>
+        <p><strong>本文将展示：如果我们用 MerkleClaw 来追踪这笔资金，每一步会看到什么。</strong></p>
+
+        <hr>
+
+        <h2>第一步：定位攻击起点</h2>
+        <h3>攻击者如何入侵</h3>
+        <p>攻击并非从链上开始。Lazarus Group 使用了一种被称为<strong>「盲签名攻击」（Blind Signing Attack）</strong>的手法：</p>
+        <ol>
+            <li>攻击者入侵了 Bybit 使用的第三方多签管理工具 <strong>Safe{Wallet}</strong> 的前端界面</li>
+            <li>篡改了 Bybit 运营团队看到的交易 UI——界面显示的是正常的内部转账，实际签名的却是将资金转移给攻击者的恶意交易</li>
+            <li>Bybit 的多位签名者在不知情的情况下，授权了这笔交易</li>
+        </ol>
+        <p><strong>链上第一个可追踪节点：</strong>攻击者控制地址首次出现在以太坊主网，接收来自 Bybit 冷钱包的 ETH 转账。</p>
+
+        <div class="merkleclaw-tip">
+            <span class="tip-icon">🦞</span>
+            <strong>MerkleClaw 操作：</strong>在交易图谱中输入 Bybit 已公开的冷钱包地址，MerkleClaw 会自动渲染出资金流出的第一跳，标记该地址为「未标记新地址」，并触发风险预警。
+        </div>
+
+        <hr>
+
+        <h2>第二步：资金分层（Layering）</h2>
+        <p>攻击者深知大额 ETH 直接变现会立即触发交易所警报。因此，资金流转遵循了经典的洗钱三层模式：</p>
+
+        <h3>阶段 A：初始分散（Placement）</h3>
+        <p>在攻击后数小时内，40 万枚 ETH 被迅速分拆至<strong>数十个中间钱包</strong>，每笔金额不规则，目的是规避基于金额阈值的监控。</p>
+<pre><code>Bybit Cold Wallet
+    ├── Attacker Wallet 1 (~50,000 ETH)
+    ├── Attacker Wallet 2 (~38,000 ETH)
+    ├── Attacker Wallet 3 (~27,500 ETH)
+    └── ... (数十个地址)</code></pre>
+
+        <div class="merkleclaw-tip">
+            <span class="tip-icon">🦞</span>
+            <strong>MerkleClaw 操作：</strong>开启「多跳展开」功能，自动追踪资金流出的前三跳，将所有中间地址聚合为同一实体集群（基于共同输入启发式）。图谱会清晰呈现分散网络结构。
+        </div>
+
+        <h3>阶段 B：混淆（Layering）</h3>
+        <p>ETH 随后通过以下途径进一步混淆：</p>
+        <ol>
+            <li><strong>DEX 兑换</strong>：部分 ETH 在 Uniswap 等去中心化交易所兑换为其他代币（主要是 DAI 稳定币），规避中心化交易所的冻结</li>
+            <li><strong>跨链桥转移</strong>：资金经由跨链桥转移至比特币链，进一步增加追踪难度</li>
+            <li><strong>混币服务</strong>：部分资金流入已知混币协议</li>
+        </ol>
+
+        <div class="merkleclaw-tip">
+            <span class="tip-icon">🦞</span>
+            <strong>MerkleClaw 操作：</strong>实体标签库自动识别 Uniswap 路由合约、跨链桥合约地址；混币器地址触发高风险标记（红色节点）；跨链追踪模式在 BTC 图谱中继续追踪对应比特币地址。
+        </div>
+
+        <hr>
+
+        <h2>第三步：混币穿透分析</h2>
+        <p>Lazarus Group 此次攻击中，部分资金流入了去中心化混币协议。</p>
+        <p>混币后的资金并非「消失」，而是「分散」——在链上留下了可分析的模式：</p>
+
+        <table>
+            <thead><tr><th>特征</th><th>说明</th></tr></thead>
+            <tbody>
+                <tr><td><strong>固定面额输出</strong></td><td>混币器通常以固定面额（如 0.1 BTC、1 BTC）输出，形成可识别模式</td></tr>
+                <tr><td><strong>时间聚类</strong></td><td>大量混币输出在短时间内出现，与输入时间存在统计相关性</td></tr>
+                <tr><td><strong>地址行为特征</strong></td><td>混币后地址通常只使用一次，但后续流向可继续追踪</td></tr>
+            </tbody>
+        </table>
+
+        <div class="merkleclaw-tip">
+            <span class="tip-icon">🦞</span>
+            <strong>MerkleClaw 操作：</strong>启用「混币穿透分析」模式，基于时间窗口和面额匹配算法，以概率方式关联混币前后的资金路径。图谱中虚线表示概率关联，置信度标注在连线上。
+        </div>
+
+        <hr>
+
+        <h2>第四步：出金路径追踪（Integration）</h2>
+        <p>已公开追踪到的出金路径包括：</p>
+        <ol>
+            <li><strong>OTC 场外交易平台</strong>：通过与朝鲜有关联的 OTC 渠道将资产兑换为法币</li>
+            <li><strong>东南亚小型交易所</strong>：部分资金流入 KYC 执行薄弱的小型交易所</li>
+            <li><strong>持续滞留</strong>：相当一部分资金至今仍滞留在未动用的中间钱包中，等待时机</li>
+        </ol>
+
+        <div class="merkleclaw-tip">
+            <span class="tip-icon">🦞</span>
+            <strong>MerkleClaw 操作：</strong>实体标签库标注已知高风险 OTC 地址和小型交易所存款地址，触发报告中的「高风险出金节点」标记，自动生成冻结申请建议列表。
+        </div>
+
+        <hr>
+
+        <h2>MerkleClaw 取证报告样本</h2>
+        <div class="report-sample">
+<pre><code>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MerkleClaw Forensic Report
+Case ID:    BYBIT-2025-0221
+Generated:  2025-02-22 08:14:33 UTC
+Analyst:    [Redacted for Demo]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EXECUTIVE SUMMARY
+  Stolen Amount:  ~$1.5B (400,000 ETH)
+  Attack Time:    2025-02-21 ~14:00 UTC
+  Attribution:    Lazarus Group (HIGH confidence)
+  Chains:         Ethereum → Bitcoin
+
+FUND FLOW SUMMARY
+  Hop 1: Bybit Cold Wallet → Attacker Address #1
+  Dispersion: 47 intermediate addresses
+              (clustered into 3 entities)
+  Cross-chain: ETH → BTC via [Bridge]
+  Mixer nodes: 12 addresses [HIGH RISK]
+
+KEY ADDRESSES
+  [0x...] Attacker Initial | CRITICAL | Active
+  [0x...] Mixer Input      | HIGH     | Dormant
+  [bc1...]BTC Cluster A    | HIGH     | Active
+
+EVIDENCE METADATA
+  Software:   MerkleClaw v1.0
+  Data source: Ethereum Mainnet, Bitcoin Mainnet
+  Timestamp:  2025-02-22 08:14:33 UTC
+  Report hash: sha256:[...]
+
+RECOMMENDED ACTIONS
+  Freeze requests: [Exchange list]
+  INTERPOL referral: Recommended
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code></pre>
+        </div>
+
+        <hr>
+
+        <h2>链上数据从不说谎</h2>
+        <p>Bybit 攻击展示了链上取证的核心价值：<strong>无论攻击者多么复杂，他们终究无法抹去区块链上的每一笔记录。</strong></p>
+        <p>混币让追踪变难，但不是不可能。跨链让路径变长，但每一跳都留有痕迹。时间会让资金沉淀，而我们可以等。</p>
+        <blockquote>🦞 <em>链上的每一笔钱，都逃不过爪子。</em></blockquote>
+
+        <hr>
+
+        <div class="cta-box">
+            <h2>你也可以做这样的分析</h2>
+            <p>MerkleClaw 正在为链上分析师、独立侦探和执法机构构建这套工具。</p>
+            <p><strong>前 100 名早鸟用户现已开放注册。</strong></p>
+            <a href="https://merkleclaw.com" class="cta-button">加入等待列表 →</a>
+        </div>
+
+        <hr>
+
+        <div class="post-footer">
+            <p><em>作者：MerkleClaw 团队 | Powered by ZeroVector</em></p>
+            <p><em>本文所有链上数据来源于公开区块链记录及已发布的公开安全报告。本文不构成法律建议。</em></p>
+        </div>
+
+        <h3>延伸阅读</h3>
+        <ul>
+            <li>Lazarus Group 历史攻击图谱分析 <em>(即将发布)</em></li>
+            <li>混币器穿透技术详解 <em>(即将发布)</em></li>
+            <li>执法机构如何使用链上证据起诉 <em>(即将发布)</em></li>
+        </ul>
+    </article>
+
+    <footer>
+        <p>© 2026 <a href="https://zerovector.hk">ZeroVector</a> · MerkleClaw 默克龙虾 · Built with 🦞</p>
+    </footer>
+</body>
+</html>
