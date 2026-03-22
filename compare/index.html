@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw vs Chainalysis vs Arkham — 竞品对比</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0A0A0F;
+  --bg-card: #12121A;
+  --bg-highlight: #161622;
+  --text: #F0F0F5;
+  --text-dim: #8888A0;
+  --accent: #E63946;
+  --accent-glow: rgba(230, 57, 70, 0.15);
+  --border: #2A2A40;
+  --green: #22C55E;
+  --yellow: #FACC15;
+  --red: #EF4444;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-size: 1.35rem; font-weight: 800; letter-spacing: -0.5px;
+  text-decoration: none;
+}
+.nav-logo .merkle { color: #fff; }
+.nav-logo .claw { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  padding: 10rem 2rem 5rem;
+  text-align: center;
+  max-width: 900px; margin: 0 auto;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 64px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--accent-glow);
+  border: 1px solid rgba(230, 57, 70, 0.3);
+  color: var(--accent);
+  font-size: 0.8rem; font-weight: 600;
+  padding: 0.35rem 1rem; border-radius: 100px;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1px;
+}
+.hero h1 .accent { color: var(--accent); }
+.hero p {
+  font-size: 1.15rem;
+  color: var(--text-dim);
+  max-width: 640px; margin: 0 auto;
+}
+
+/* POSITIONING */
+.positioning {
+  max-width: 1000px; margin: 0 auto;
+  padding: 3rem 2rem 4rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.pos-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.pos-card:hover { border-color: #3A3A55; transform: translateY(-2px); }
+.pos-card.highlight {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(230,57,70,0.06) 100%);
+}
+.pos-card h3 {
+  font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;
+}
+.pos-card.highlight h3 { color: var(--accent); }
+.pos-card p { color: var(--text-dim); font-size: 0.92rem; }
+
+/* SECTION */
+section { padding: 4rem 2rem; }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  color: var(--accent); font-size: 0.8rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.75rem;
+}
+.section-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.5px;
+}
+.section-subtitle {
+  color: var(--text-dim); font-size: 1rem; max-width: 600px; margin-bottom: 3rem;
+}
+
+/* TABLE */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-card);
+}
+table {
+  width: 100%; border-collapse: collapse; min-width: 700px;
+}
+thead th {
+  background: var(--bg-highlight);
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+thead th:first-child { border-radius: 12px 0 0 0; }
+thead th:last-child { border-radius: 0 12px 0 0; }
+thead th.mc-col {
+  color: var(--accent);
+  background: linear-gradient(180deg, rgba(230,57,70,0.08) 0%, var(--bg-highlight) 100%);
+  position: relative;
+}
+thead th.mc-col::after {
+  content: '推荐';
+  position: absolute; top: -10px; right: 12px;
+  background: var(--accent); color: #fff;
+  font-size: 0.65rem; padding: 2px 8px; border-radius: 4px;
+  font-weight: 700;
+}
+tbody td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.015); }
+td.dim-label { font-weight: 600; color: var(--text); }
+td.mc-col { background: rgba(230,57,70,0.03); }
+.check { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); font-weight: 700; }
+.warn { color: var(--yellow); font-weight: 700; }
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.tag-green { background: rgba(34,197,94,0.12); color: var(--green); }
+.tag-red { background: rgba(239,68,68,0.12); color: var(--red); }
+.tag-yellow { background: rgba(250,204,21,0.12); color: var(--yellow); }
+
+/* DIFFERENTIATORS */
+.diff-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+.diff-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+  display: grid; grid-template-columns: 80px 1fr; gap: 2rem;
+  align-items: start;
+  transition: border-color 0.3s;
+}
+.diff-card:hover { border-color: var(--accent); }
+.diff-num {
+  font-size: 3rem; font-weight: 900; color: var(--accent);
+  opacity: 0.6; line-height: 1;
+}
+.diff-card h3 {
+  font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
+}
+.diff-card p {
+  color: var(--text-dim); font-size: 0.95rem; line-height: 1.8;
+}
+.diff-card .highlight-text {
+  color: var(--text); font-weight: 600;
+}
+
+/* USE CASES */
+.usecase-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;
+}
+.usecase-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: border-color 0.3s;
+}
+.usecase-card:hover { border-color: #3A3A55; }
+.usecase-card.mc {
+  border-color: rgba(230,57,70,0.3);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(230,57,70,0.04) 100%);
+}
+.usecase-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.usecase-card .recommend {
+  font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem;
+}
+.usecase-card .recommend.mc-rec { color: var(--accent); }
+.usecase-card .recommend.other-rec { color: var(--text-dim); }
+.usecase-card p { color: var(--text-dim); font-size: 0.88rem; }
+
+/* QUOTES */
+.quotes-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
+}
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+}
+.quote-card .audience {
+  color: var(--accent);
+  font-size: 0.78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+.quote-card blockquote {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-style: italic;
+  line-height: 1.8;
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+}
+
+/* WHY SECTION */
+.why-section {
+  background: linear-gradient(180deg, var(--bg) 0%, rgba(230,57,70,0.04) 50%, var(--bg) 100%);
+}
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  margin-top: 2rem;
+}
+.why-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.why-icon {
+  font-size: 2.5rem; margin-bottom: 1rem;
+}
+.why-card h4 {
+  font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;
+}
+.why-card p {
+  color: var(--text-dim); font-size: 0.88rem;
+}
+
+/* CTA */
+.cta-section {
+  text-align: center;
+  padding: 6rem 2rem;
+}
+.cta-section h2 {
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  font-weight: 800; margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+.cta-section p {
+  color: var(--text-dim); font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+  max-width: 500px; margin-left: auto; margin-right: auto;
+}
+.cta-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1rem; font-weight: 700;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 30px rgba(230,57,70,0.3);
+}
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(230,57,70,0.45);
+}
+.cta-sub {
+  display: block;
+  margin-top: 1rem;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .positioning { grid-template-columns: 1fr; }
+  .diff-card { grid-template-columns: 1fr; gap: 1rem; }
+  .diff-num { font-size: 2rem; }
+  .why-grid { grid-template-columns: 1fr; }
+  .nav-links { gap: 1rem; }
+  .nav-links a { font-size: 0.8rem; }
+  section { padding: 3rem 1rem; }
+  .hero { padding: 8rem 1rem 3rem; }
+}
+@media (max-width: 480px) {
+  nav { padding: 0 1rem; }
+  .nav-logo { font-size: 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="merkle">Merkle</span><span class="claw">Claw</span></a>
+  <ul class="nav-links">
+    <li><a href="#">首页</a></li>
+    <li><a href="#">定价</a></li>
+    <li><a href="#">博客</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-badge">竞品对比 2026</span>
+  <h1>MerkleClaw vs Chainalysis vs Arkham<br><span class="accent">谁才是你的链上情报工具？</span></h1>
+  <p>三款工具，三种哲学。我们从价格、隐私、取证能力等 14 个维度做了一次坦诚对比——帮你选最适合的那一个。</p>
+</section>
+
+<!-- POSITIONING -->
+<div class="positioning">
+  <div class="pos-card highlight">
+    <h3>MerkleClaw</h3>
+    <p>给调查员用的桌面情报工具——专业、本地、买得起</p>
+  </div>
+  <div class="pos-card">
+    <h3>Chainalysis</h3>
+    <p>企业级合规基础设施，服务银行、交易所和政府</p>
+  </div>
+  <div class="pos-card">
+    <h3>Arkham Intelligence</h3>
+    <p>链上实体归因平台，开放社区，数据驱动</p>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">核心对比</p>
+    <h2 class="section-title">14 个维度，一表看清</h2>
+    <p class="section-subtitle">绿色 = 优势，黄色 = 部分支持，红色 = 不支持或存在风险</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th class="mc-col">MerkleClaw</th>
+            <th>Chainalysis</th>
+            <th>Arkham</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dim-label">价格</td>
+            <td class="mc-col"><span class="tag tag-green">$99–$299/月</span></td>
+            <td><span class="tag tag-red">$10万+/年</span></td>
+            <td><span class="tag tag-yellow">免费/付费社区</span></td>
+          </tr>
+          <tr>
+            <td class="dim-label">目标用户</td>
+            <td class="mc-col">独立侦探 · 合规团队 · 执法机构</td>
+            <td>大型机构 · 交易所 · 政府</td>
+            <td>链上研究社区 · 散户</td>
+          </tr>
+          <tr>
+            <td class="dim-label">部署方式</td>
+            <td class="mc-col"><span class="check">✔</span> 本地桌面（无需上云）</td>
+            <td>云端 SaaS</td>
+            <td>云端 Web</td>
+          </tr>
+          <tr>
+            <td class="dim-label">数据隐私</td>
+            <td class="mc-col"><span class="check">✔</span> 案件数据不离设备</td>
+            <td><span class="warn">⚠</span> 数据在服务商云端</td>
+            <td><span class="cross">✘</span> 公开/共享平台</td>
+          </tr>
+          <tr>
+            <td class="dim-label">离线 / Air-gapped</td>
+            <td class="mc-col"><span class="check">✔</span> 支持（Enforcement）</td>
+            <td><span class="cross">✘</span></td>
+            <td><span class="cross">✘</span></td>
+          </tr>
+          <tr>
+            <td class="dim-label">取证报告导出</td>
+            <td class="mc-col"><span class="check">✔</span> 法庭级 PDF + 审计日志</td>
+            <td><span class="check">✔</span> 专业报告</td>
+            <td><span class="cross">✘</span> 无正式取证报告</td>
+          </tr>
+          <tr>
+            <td class="dim-label">混币穿透分析</td>
+            <td class="mc-col"><span class="check">✔</span> Pro+</td>
+            <td><span class="check">✔</span></td>
+            <td><span class="warn">⚠</span> 有限</td>
+          </tr>
+          <tr>
+            <td class="dim-label">跨链追踪</td>
+            <td class="mc-col"><span class="check">✔</span> BTC · ETH · TRX · BNB</td>
+            <td><span class="check">✔</span> 多链</td>
+            <td><span class="check">✔</span> 多链</td>
+          </tr>
+          <tr>
+            <td class="dim-label">地址标签库</td>
+            <td class="mc-col">1000万+</td>
+            <td>1亿+（更大）</td>
+            <td>开放贡献型</td>
+          </tr>
+          <tr>
+            <td class="dim-label">AI 地址聚类</td>
+            <td class="mc-col"><span class="check">✔</span> Pro+</td>
+            <td><span class="check">✔</span></td>
+            <td><span class="check">✔</span></td>
+          </tr>
+          <tr>
+            <td class="dim-label">案件管理</td>
+            <td class="mc-col"><span class="check">✔</span> 本地案件系统</td>
+            <td><span class="check">✔</span></td>
+            <td><span class="cross">✘</span></td>
+          </tr>
+          <tr>
+            <td class="dim-label">学习门槛</td>
+            <td class="mc-col"><span class="tag tag-green">低—中</span></td>
+            <td><span class="tag tag-red">高（需培训）</span></td>
+            <td><span class="tag tag-green">低</span></td>
+          </tr>
+          <tr>
+            <td class="dim-label">执法机构合规</td>
+            <td class="mc-col"><span class="check">✔</span> 专属方案</td>
+            <td><span class="check">✔</span> 行业标准</td>
+            <td><span class="warn">⚠</span> 非主要定位</td>
+          </tr>
+          <tr>
+            <td class="dim-label">数据主权</td>
+            <td class="mc-col"><span class="check">✔</span> 完全自主</td>
+            <td><span class="warn">⚠</span> 依赖服务商</td>
+            <td><span class="cross">✘</span> 数据公开</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- THREE DIFFERENTIATORS -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">关键差异</p>
+    <h2 class="section-title">三个理由，选择 MerkleClaw</h2>
+    <p class="section-subtitle">不是更好，而是更适合——为真正做调查的人设计</p>
+
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="diff-num">01</div>
+        <div>
+          <h3>价格：为独立调查员定价，而非财富 500 强</h3>
+          <p>Chainalysis 年费起步 <span class="highlight-text">$10万美元</span>——这不是预算问题，是准入门槛问题。独立链上侦探、小型律所、新兴市场执法机构，根本无法进入这个市场。</p>
+          <p style="margin-top:0.75rem">MerkleClaw Solo 月费 <span class="highlight-text">$99</span>，提供同等核心追踪能力。<span class="highlight-text">专业工具不应该只属于有预算的人。</span></p>
+        </div>
+      </div>
+
+      <div class="diff-card">
+        <div class="diff-num">02</div>
+        <div>
+          <h3>数据主权：你的案件不在别人的服务器上</h3>
+          <p>Arkham 是公开平台——你的分析行为、标注的地址、追踪的目标，在一定程度上都是可见的。对执法机构和独立侦探来说，这是不可接受的。</p>
+          <p style="margin-top:0.75rem">Chainalysis 是云端 SaaS，你的案件数据存储在其服务器上。对于对数据主权要求严格的机构，这是安全顾虑。</p>
+          <p style="margin-top:0.75rem">MerkleClaw 本地运行。<span class="highlight-text">你的案件，只在你的设备上。</span></p>
+        </div>
+      </div>
+
+      <div class="diff-card">
+        <div class="diff-num">03</div>
+        <div>
+          <h3>取证报告：从数据到法庭证据的最后一步</h3>
+          <p>Arkham 提供数据可视化，但没有设计司法证据的输出流程。Chainalysis 有专业报告，但面向机构客户，操作复杂。</p>
+          <p style="margin-top:0.75rem">MerkleClaw 的每一份报告都包含证据链元数据、分析员签名和防篡改哈希——<span class="highlight-text">开箱即用的法庭证据</span>，而非需要二次整理的数据导出。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">适用场景</p>
+    <h2 class="section-title">不同场景，不同选择</h2>
+    <p class="section-subtitle">我们不回避竞品的优势——选最适合你的工具</p>
+
+    <div class="usecase-grid">
+      <div class="usecase-card mc">
+        <p class="recommend mc-rec">→ 推荐 MerkleClaw</p>
+        <h4>独立侦探追踪诈骗 / Rug Pull</h4>
+        <p>价格可承受，本地运行，分析结果可安全分享</p>
+      </div>
+      <div class="usecase-card">
+        <p class="recommend other-rec">→ 推荐 Chainalysis</p>
+        <h4>交易所合规 KYT（实时监控）</h4>
+        <p>专为交易所设计，覆盖范围最广</p>
+      </div>
+      <div class="usecase-card">
+        <p class="recommend other-rec">→ 推荐 Arkham</p>
+        <h4>链上研究 / 实体归因（公开）</h4>
+        <p>社区数据丰富，适合开放研究</p>
+      </div>
+      <div class="usecase-card mc">
+        <p class="recommend mc-rec">→ 推荐 MerkleClaw</p>
+        <h4>执法机构案件取证</h4>
+        <p>离线部署 + 法庭报告 + 数据不外传</p>
+      </div>
+      <div class="usecase-card mc">
+        <p class="recommend mc-rec">→ 推荐 MerkleClaw</p>
+        <h4>律所 / 司法会计取证支持</h4>
+        <p>取证报告格式符合司法要求</p>
+      </div>
+      <div class="usecase-card">
+        <p class="recommend other-rec">→ 推荐 Chainalysis / Elliptic</p>
+        <h4>大型银行 / 金融机构合规</h4>
+        <p>机构级覆盖和 SLA 保障</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SALES QUOTES -->
+<section>
+  <div class="section-inner">
+    <p class="section-label">销售话术</p>
+    <h2 class="section-title">面向不同受众，怎么说</h2>
+
+    <div class="quotes-grid">
+      <div class="quote-card">
+        <p class="audience">独立分析师 / 侦探</p>
+        <blockquote>"你用 Etherscan 手动追了几个小时，还差 Chainalysis 十万里。MerkleClaw 是中间那一档——专业级追踪，你付得起的价格，数据留在你自己手里。"</blockquote>
+      </div>
+      <div class="quote-card">
+        <p class="audience">执法机构</p>
+        <blockquote>"Chainalysis 的数据确实更全，但你们的案件数据能传到第三方云端吗？MerkleClaw 离线运行，报告直接出法庭格式，没有数据合规顾虑。"</blockquote>
+      </div>
+      <div class="quote-card">
+        <p class="audience">律所 / 司法机构</p>
+        <blockquote>"Arkham 的图谱好看，但它输出的不是证据。MerkleClaw 每份报告都有证据链日志和防篡改哈希，辩护律师质疑不了分析过程的完整性。"</blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY MERKLECLAW -->
+<section class="why-section">
+  <div class="section-inner" style="text-align:center">
+    <p class="section-label">为什么选择我们</p>
+    <h2 class="section-title">Why MerkleClaw</h2>
+
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">💰</div>
+        <h4>买得起的专业工具</h4>
+        <p>$99/月起，不到 Chainalysis 1% 的价格，获得同等核心追踪能力</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🔒</div>
+        <h4>数据完全自主</h4>
+        <p>本地运行，支持离线 / Air-gapped 部署，案件数据永远不离开你的设备</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⚖️</div>
+        <h4>法庭级取证输出</h4>
+        <p>证据链元数据 + 分析员签名 + 防篡改哈希，开箱即用的司法证据</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>准备好升级你的链上调查能力了吗？</h2>
+  <p>从 Etherscan 手动追踪，到专业级情报工具——只需 $99/月</p>
+  <a href="#" class="cta-btn">立即开始免费试用</a>
+  <span class="cta-sub">无需信用卡 · 14 天免费 · 随时取消</span>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 ZeroVector Limited. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
