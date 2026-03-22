@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw — 威胁情报报告 / Threat Intelligence Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0A0A0F;--bg2:#12121A;--bg3:#1A1A25;--text:#F0F0F5;--text2:#A0A0B0;--accent:#E63946;--accent-hover:#FF4D5A;--border:#2A2A3A;--radius:10px}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-hover)}
+
+nav{display:flex;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto;padding:1.25rem 1.5rem}
+.logo{font-size:1.35rem;font-weight:800;letter-spacing:-.5px}
+.logo span{color:var(--accent)}
+nav ul{display:flex;gap:1.5rem;list-style:none}
+nav ul a{color:var(--text2);font-size:.9rem;font-weight:500;transition:color .2s}
+nav ul a:hover{color:var(--text)}
+
+.hero{text-align:center;padding:3.5rem 1.5rem 1rem}
+.hero h1{font-size:clamp(1.8rem,5vw,2.8rem);font-weight:800;letter-spacing:-.5px;margin-bottom:.75rem}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--text2);max-width:580px;margin:0 auto;font-size:1rem}
+
+.reports{max-width:760px;margin:2.5rem auto 2rem;padding:0 1.5rem}
+
+.report-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-bottom:2rem;transition:border-color .2s}
+.report-card:hover{border-color:var(--accent)}
+.report-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem;font-size:.8rem;color:var(--text2);margin-bottom:.75rem}
+.report-meta .author{font-weight:600;color:var(--text)}
+.report-meta .dot{opacity:.4}
+.report-card h2{font-size:1.3rem;font-weight:700;margin-bottom:.75rem;line-height:1.4}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.tag{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:.2rem .6rem;font-size:.75rem;font-weight:500;color:var(--text2)}
+.report-card p{color:var(--text2);font-size:.95rem;margin-bottom:1.25rem;line-height:1.7}
+.cta{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.4rem;border-radius:6px;background:var(--accent);color:#fff;font-weight:700;font-size:.95rem;transition:background .2s,transform .1s}
+.cta:hover{background:var(--accent-hover);color:#fff}
+.cta:active{transform:scale(.97)}
+
+.coming-soon{text-align:center;padding:2rem 1.5rem 4rem}
+.coming-soon .icon{font-size:2.5rem;margin-bottom:.75rem}
+.coming-soon h3{font-size:1.1rem;font-weight:600;margin-bottom:.4rem}
+.coming-soon p{color:var(--text2);font-size:.9rem;max-width:400px;margin:0 auto}
+
+footer{text-align:center;padding:2rem 1rem;color:var(--text2);font-size:.8rem;border-top:1px solid var(--border)}
+
+@media(max-width:480px){
+  nav{flex-direction:column;gap:.75rem}
+  .report-card{padding:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Merkle<span>Claw</span></div>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/pricing">Pricing</a></li>
+    <li><a href="/blog">Blog</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <h1>威胁情报报告 / <span>Threat Intelligence Reports</span></h1>
+  <p>MerkleClaw 团队定期发布的深度威胁分析报告</p>
+</section>
+
+<section class="reports">
+
+  <article class="report-card">
+    <div class="report-meta">
+      <span class="author">MerkleClaw Intelligence Team</span>
+      <span class="dot">·</span>
+      <time datetime="2026-03-22">2026-03-22</time>
+    </div>
+    <h2>朝鲜加密货币窃取行动深度分析 (2024-2025)<br><small style="font-size:.7em;color:var(--text2);font-weight:500">DPRK Crypto Theft Operations 2024-2025</small></h2>
+    <div class="tags">
+      <span class="tag">DPRK</span>
+      <span class="tag">Lazarus Group</span>
+      <span class="tag">APT</span>
+      <span class="tag">State-sponsored</span>
+    </div>
+    <p>深度分析朝鲜关联黑客组织2024-2025年的加密货币窃取行动，涵盖 Bybit、Radiant Capital、WazirX 等重大事件。报告详细剖析攻击手法、资金流转路径及洗钱基础设施。</p>
+    <a href="/reports/dprk-crypto-2024-2025/" class="cta">阅读完整报告 →</a>
+  </article>
+
+</section>
+
+<section class="coming-soon">
+  <div class="icon">🔍</div>
+  <h3>更多报告即将发布 / More Reports Coming Soon</h3>
+  <p>我们的情报团队正在撰写更多深度分析报告，敬请关注。</p>
+</section>
+
+<footer>© 2026 ZeroVector Limited</footer>
+
+</body>
+</html>
