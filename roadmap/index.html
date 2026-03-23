@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw Roadmap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0F;--bg2:#12121A;--bg3:#1A1A25;--bg4:#22222F;
+  --text:#F0F0F5;--text2:#A0A0B0;--text3:#707080;
+  --accent:#E63946;--green:#22C55E;--yellow:#F59E0B;--blue:#0A84FF;
+  --radius:12px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;transition:opacity .2s}
+a:hover{opacity:.8}
+
+/* Nav */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-weight:800;font-size:1.25rem;letter-spacing:-.5px;display:flex;align-items:center;gap:8px}
+.logo span{color:var(--accent)}
+.nav-links{display:flex;gap:28px;font-size:.9rem;font-weight:500}
+.nav-links a{color:var(--text2)}
+.nav-links a:hover{color:var(--text)}
+
+/* Hero */
+.hero{text-align:center;padding:80px 24px 60px;max-width:800px;margin:0 auto}
+.hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-1px;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),#ff6b6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:1.1rem;color:var(--text2);max-width:600px;margin:0 auto 24px}
+.hero .updated{font-size:.85rem;color:var(--text3);margin-bottom:32px}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--accent);color:#fff;font-weight:600;font-size:1rem;border:none;border-radius:50px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(230,57,70,.35);opacity:1}
+
+/* Progress bar */
+.progress-section{max-width:1200px;margin:0 auto 60px;padding:0 24px}
+.progress-bar-wrap{background:var(--bg3);border-radius:50px;height:8px;overflow:hidden;position:relative}
+.progress-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--green) 0%,var(--green) 45%,var(--yellow) 45%,var(--yellow) 70%,var(--blue) 70%,var(--blue) 100%);width:100%}
+.progress-labels{display:flex;justify-content:space-between;margin-top:10px;font-size:.8rem;color:var(--text3);font-weight:500}
+.progress-labels span{display:flex;align-items:center;gap:5px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot-green{background:var(--green)}.dot-yellow{background:var(--yellow)}.dot-blue{background:var(--blue)}
+
+/* Stages */
+.stage{max-width:1200px;margin:0 auto 64px;padding:0 24px}
+.stage-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;flex-wrap:wrap}
+.stage-header h2{font-size:1.6rem;font-weight:700;letter-spacing:-.5px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:50px;font-size:.8rem;font-weight:600;letter-spacing:.3px}
+.badge-green{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.2)}
+.badge-yellow{background:rgba(245,158,11,.12);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.badge-blue{background:rgba(10,132,255,.12);color:var(--blue);border:1px solid rgba(10,132,255,.2)}
+.stage-subtitle{color:var(--text3);font-size:.95rem;font-style:italic;margin-bottom:24px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:28px;transition:transform .2s,border-color .3s,box-shadow .3s}
+.card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.12);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.card h3{font-size:1.05rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.card p{font-size:.9rem;color:var(--text2);line-height:1.65}
+.card .eta{display:inline-block;margin-top:12px;font-size:.78rem;color:var(--text3);background:var(--bg3);padding:4px 12px;border-radius:50px;font-weight:500}
+.card .api-link{display:inline-flex;align-items:center;gap:4px;margin-top:10px;font-size:.82rem;font-weight:500}
+
+/* Not Planned */
+.not-planned{max-width:1200px;margin:0 auto 64px;padding:0 24px}
+.not-planned h2{font-size:1.4rem;font-weight:700;margin-bottom:20px;color:var(--text3)}
+.np-item{background:var(--bg2);border:1px solid rgba(255,255,255,.04);border-radius:var(--radius);padding:20px 24px;margin-bottom:12px}
+.np-item h4{font-size:.95rem;font-weight:600;margin-bottom:4px;color:var(--text2)}
+.np-item p{font-size:.85rem;color:var(--text3);line-height:1.6}
+
+/* Vote CTA */
+.vote-section{text-align:center;padding:60px 24px;margin:0 auto;max-width:700px}
+.vote-section h2{font-size:1.8rem;font-weight:700;margin-bottom:12px}
+.vote-section p{color:var(--text2);margin-bottom:28px;font-size:1rem}
+.vote-section .sub{font-size:.9rem;color:var(--text3);margin-top:20px}
+.vote-section .sub a{color:var(--blue)}
+
+/* Footer */
+footer{border-top:1px solid rgba(255,255,255,.06);padding:32px 24px;text-align:center;font-size:.82rem;color:var(--text3)}
+
+/* Timeline connector */
+.timeline-connector{width:3px;height:40px;margin:0 auto;background:linear-gradient(to bottom,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+
+@media(max-width:600px){
+  .hero{padding:60px 20px 40px}
+  .cards{grid-template-columns:1fr}
+  .nav-links{gap:16px;font-size:.82rem}
+  .stage-header h2{font-size:1.3rem}
+  .progress-labels{flex-wrap:wrap;gap:8px;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">🔍 Merkle<span>Claw</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/blog">Blog</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Merkle<span>Claw</span> Roadmap</h1>
+  <p>Where we've been, where we are, and where we're going.<br>We believe in building in public — your feedback directly shapes this roadmap.</p>
+  <div class="updated">Last updated: March 2026</div>
+  <a href="https://merkleclaw.canny.io" class="cta-btn">🗳️ Vote on Features</a>
+</section>
+
+<!-- Progress Bar -->
+<section class="progress-section">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill"></div>
+  </div>
+  <div class="progress-labels">
+    <span><span class="dot dot-green"></span> 7 Shipped</span>
+    <span><span class="dot dot-yellow"></span> 5 In Progress</span>
+    <span><span class="dot dot-blue"></span> 9 Planned</span>
+  </div>
+</section>
+
+<!-- Stage 1: Already Shipped -->
+<section class="stage">
+  <div class="stage-header">
+    <h2>Already Shipped</h2>
+    <span class="badge badge-green">✅ Complete</span>
+  </div>
+  <p class="stage-subtitle">The foundation is in place.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>🔗 Core Investigation Engine</h3>
+      <p>Multi-chain transaction graph visualization — trace fund flows across Bitcoin, Ethereum, Tron, and BNB Chain with multi-hop path expansion and interactive node selection.</p>
+    </div>
+    <div class="card">
+      <h3>🏷️ Entity Label Library v1</h3>
+      <p>10M+ pre-tagged addresses covering exchanges, sanctioned entities (OFAC SDN), mixers, darknet markets, and known threat actors. Updated weekly.</p>
+    </div>
+    <div class="card">
+      <h3>🤖 AI Address Clustering</h3>
+      <p>Automatically group related wallets controlled by the same entity using heuristic and ML-based analysis. Turn 50 addresses into 1 investigative target.</p>
+    </div>
+    <div class="card">
+      <h3>📄 Forensic Report Export</h3>
+      <p>One-click PDF report generation with complete chain-of-custody metadata, analyst signature, tamper-evident SHA-256 hash, and legal proceeding-compatible formatting.</p>
+    </div>
+    <div class="card">
+      <h3>🗂️ Case Management</h3>
+      <p>Local case file system — organize investigations, attach notes, manage evidence, and run multiple cases simultaneously. All data stays on your machine.</p>
+    </div>
+    <div class="card">
+      <h3>🔒 Offline / Air-Gapped Deployment</h3>
+      <p>Full offline operation for high-security law enforcement environments. Label library distributable via USB media. No internet connection required.</p>
+    </div>
+    <div class="card">
+      <h3>🌀 Mixer Penetration Analysis</h3>
+      <p>Probabilistic linking of pre- and post-mix fund flows using time-window and denomination-matching algorithms. Confidence scoring on all probabilistic links.</p>
+    </div>
+  </div>
+</section>
+
+<div class="timeline-connector"></div>
+
+<!-- Stage 2: In Progress -->
+<section class="stage">
+  <div class="stage-header">
+    <h2>In Progress</h2>
+    <span class="badge badge-yellow">🔨 Building Now</span>
+  </div>
+  <p class="stage-subtitle">What the team is building right now.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>☀️ Solana Chain Support</h3>
+      <p>Adding SOL and SPL token tracking to the transaction graph.</p>
+      <span class="eta">Expected: Q2 2026</span>
+    </div>
+    <div class="card">
+      <h3>🌉 Cross-Chain Tracing Improvements</h3>
+      <p>Enhanced bridge detection and automatic address correlation across ETH ↔ BTC ↔ TRX paths. Better handling of wrapped token flows.</p>
+      <span class="eta">Expected: Q2 2026</span>
+    </div>
+    <div class="card">
+      <h3>📋 Enforcement Reporting Format Updates</h3>
+      <p>Expanding the forensic report template library with jurisdiction-specific formats (HK Police, Singapore CAD, Taiwan CIB). Community input welcome.</p>
+      <span class="eta">Expected: Q3 2026</span>
+    </div>
+    <div class="card">
+      <h3>⚡ Developer API v1 (Beta)</h3>
+      <p>REST API enabling integration of MerkleClaw's address intelligence and tracing capabilities into external workflows, SIEM systems, and compliance platforms.</p>
+      <span class="eta">Expected: Q3 2026</span>
+      <a href="https://merkleclaw.com/developers" class="api-link">→ Join the API waitlist</a>
+    </div>
+    <div class="card">
+      <h3>👥 Label Library v2 — Community Contributions</h3>
+      <p>Opening the label library to community-verified contributions, backed by our public threat intelligence repository on GitHub. Quality-reviewed before deployment.</p>
+      <span class="eta">Expected: Q3 2026</span>
+    </div>
+  </div>
+</section>
+
+<div class="timeline-connector"></div>
+
+<!-- Stage 3: Planned -->
+<section class="stage">
+  <div class="stage-header">
+    <h2>Planned</h2>
+    <span class="badge badge-blue">🔮 Coming Soon</span>
+  </div>
+  <p class="stage-subtitle">Planned for the next 3–12 months. Subject to change based on user feedback.</p>
+  <div class="cards">
+    <div class="card">
+      <h3>🔗 ThreatLedger Integration</h3>
+      <p>Native integration with ThreatLedger's community threat intelligence — real-time sync of newly identified threat actor addresses and attack patterns.</p>
+      <span class="eta">Expected: Q4 2026</span>
+    </div>
+    <div class="card">
+      <h3>👥 Collaborative Investigation Mode <small style="color:var(--accent);font-size:.7rem;vertical-align:middle">PRO+</small></h3>
+      <p>Multi-analyst case sharing with role-based permissions. Teams can work on the same case simultaneously with audit logging.</p>
+      <span class="eta">Expected: Q4 2026</span>
+    </div>
+    <div class="card">
+      <h3>🎯 Advanced Pattern Detection</h3>
+      <p>Automated detection of known laundering patterns (e.g., DPRK behavioral fingerprints, pig butchering fund flow signatures) with one-click flagging.</p>
+    </div>
+    <div class="card">
+      <h3>👁️ Real-Time Address Monitoring</h3>
+      <p>Persistent watchlist with instant alerts when monitored addresses show activity. Webhook and email notification support.</p>
+    </div>
+    <div class="card">
+      <h3>⚖️ Court Exhibit Package</h3>
+      <p>Automated generation of a complete court exhibit package — multiple reports, affidavit templates, and chain-of-custody declaration formatted for Asia-Pacific jurisdictions.</p>
+    </div>
+    <div class="card">
+      <h3>🔐 Monero / Privacy Chain Research Mode</h3>
+      <p>Experimental analytical tools for Monero transaction analysis (probabilistic, not deterministic). We'll be honest about the limitations.</p>
+      <span class="eta">Expected: 2027</span>
+    </div>
+    <div class="card">
+      <h3>🧩 API Marketplace / Plugin Ecosystem</h3>
+      <p>Allow third-party developers to build and publish MerkleClaw plugins — custom label sources, specialized report formats, regional exchange integrations.</p>
+    </div>
+    <div class="card">
+      <h3>📱 Mobile Companion App</h3>
+      <p>Read-only mobile dashboard for reviewing active cases and receiving alerts. Investigation remains on desktop; mobile is for monitoring.</p>
+      <span class="eta">Expected: 2027</span>
+    </div>
+    <div class="card">
+      <h3>🌐 Multi-Language Interface</h3>
+      <p>Full UI localization: Traditional Chinese, Simplified Chinese, Korean, Japanese.</p>
+    </div>
+  </div>
+</section>
+
+<div class="timeline-connector"></div>
+
+<!-- Not Planned -->
+<section class="not-planned">
+  <h2>❌ Consciously Not Planned</h2>
+  <div class="np-item">
+    <h4>Social Media Tracking / OSINT Integration</h4>
+    <p>We focus on on-chain data. Linking blockchain addresses to social profiles introduces significant privacy and legal complexity we're not ready to navigate responsibly.</p>
+  </div>
+  <div class="np-item">
+    <h4>Custodial Key Management</h4>
+    <p>MerkleClaw is a tracing tool, not a wallet. We will never touch private keys.</p>
+  </div>
+  <div class="np-item">
+    <h4>Automated Seizure / Freeze Execution</h4>
+    <p>Identifying assets to freeze is our job. Executing the freeze is law enforcement's job. We provide evidence packages; we don't replace the legal process.</p>
+  </div>
+</section>
+
+<!-- Vote CTA -->
+<section class="vote-section">
+  <h2>Shape What We Build Next</h2>
+  <p>The features with the most community votes from verified investigators get prioritized. Your input directly shapes what we build next.</p>
+  <a href="https://merkleclaw.canny.io" class="cta-btn">🗳️ Vote on Features</a>
+  <p class="sub">Beta users get double voting weight and direct access to the product team.<br><a href="https://merkleclaw.com/beta">Join the beta →</a></p>
+</section>
+
+<footer>
+  <p>© 2026 ZeroVector Limited. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
