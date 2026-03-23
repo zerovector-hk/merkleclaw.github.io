@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog — MerkleClaw</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0A0A0F;color:#F0F0F5;font-family:'Inter',sans-serif;line-height:1.7;min-height:100vh;display:flex;flex-direction:column}
+a{color:#E63946;text-decoration:none;transition:opacity .2s}
+a:hover{opacity:.8}
+
+/* Nav */
+nav{display:flex;align-items:center;justify-content:space-between;max-width:860px;width:100%;margin:0 auto;padding:1.5rem 1.5rem 0}
+.logo{font-weight:800;font-size:1.35rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.45rem}
+.logo .claw{color:#E63946}
+.nav-links{display:flex;gap:1.5rem;font-size:.95rem;font-weight:500}
+.nav-links a{color:#F0F0F5}
+.nav-links a:hover{color:#E63946}
+
+/* Main */
+main{flex:1;max-width:860px;width:100%;margin:0 auto;padding:2.5rem 1.5rem 4rem}
+.page-title{font-size:2.2rem;font-weight:800;margin-bottom:.3rem}
+.page-sub{color:#888;font-size:1rem;margin-bottom:3rem}
+
+/* Version block */
+.version-header{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:1.8rem}
+.version-tag{font-size:1.6rem;font-weight:700;color:#E63946}
+.version-date{font-size:.95rem;color:#888;font-weight:500}
+.version-badge{background:#E63946;color:#fff;font-size:.7rem;font-weight:700;padding:.2rem .6rem;border-radius:9999px;text-transform:uppercase;letter-spacing:.04em}
+
+/* Section */
+.section{margin-bottom:2rem}
+.section-title{font-size:1.1rem;font-weight:700;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.section ul{list-style:none;padding-left:0}
+.section li{position:relative;padding-left:1.2rem;margin-bottom:.35rem;font-size:.93rem;color:#ccc}
+.section li::before{content:'';position:absolute;left:0;top:.65em;width:5px;height:5px;border-radius:50%;background:#E63946}
+
+/* Divider */
+hr.sep{border:none;border-top:1px solid #1a1a25;margin:3rem 0}
+
+/* Footer */
+footer{text-align:center;padding:2rem 1.5rem;font-size:.82rem;color:#555;border-top:1px solid #131318}
+
+/* Responsive */
+@media(max-width:600px){
+  .page-title{font-size:1.6rem}
+  .version-tag{font-size:1.3rem}
+  nav{padding:1rem 1rem 0}
+  main{padding:1.5rem 1rem 3rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Merkle<span class="claw">Claw</span></div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/blog">Blog</a>
+  </div>
+</nav>
+
+<main>
+  <h1 class="page-title">更新日志</h1>
+  <p class="page-sub">Changelog — 每次发布的详细变更记录</p>
+
+  <div class="version-header">
+    <span class="version-tag">v0.1.0</span>
+    <span class="version-date">2026-03-22</span>
+    <span class="version-badge">Initial Release</span>
+  </div>
+
+  <!-- 🔎 Investigation -->
+  <div class="section">
+    <h3 class="section-title">🔎 链上调查 · Investigation</h3>
+    <ul>
+      <li>9 链支持：ETH / BSC / Polygon / Arbitrum / Optimism / Avalanche / SOL / BTC / TRON</li>
+      <li>Cytoscape.js 资金流向图，支持 10+ 跳追踪</li>
+      <li>地址风险评分（7 维度，0–100 分）</li>
+      <li>威胁行为者画像（6 个 APT 组织）</li>
+      <li>DeFi 检测规则（13 条内置规则）</li>
+    </ul>
+  </div>
+
+  <!-- 🕸️ Graph & Analysis -->
+  <div class="section">
+    <h3 class="section-title">🕸️ 图谱与分析 · Graph &amp; Analysis</h3>
+    <ul>
+      <li>20+ 跨链桥检测</li>
+      <li>Tornado Cash / Railgun / Wasabi / Monero 混币器分析</li>
+      <li>BTC UTXO 聚类（CIOH 共同输入所有权启发式）</li>
+      <li>Lightning Network 通道检测</li>
+      <li>实体标签库（500+ 内置，百万级通过 Dune 扩展）</li>
+    </ul>
+  </div>
+
+  <!-- 🤖 AI Assistant -->
+  <div class="section">
+    <h3 class="section-title">🤖 AI 助手 · AI Assistant</h3>
+    <ul>
+      <li>自然语言查询</li>
+      <li>7 步自动化调查流程</li>
+      <li>资金流向追踪</li>
+      <li>风险评估</li>
+    </ul>
+  </div>
+
+  <!-- 📄 Forensic Reports -->
+  <div class="section">
+    <h3 class="section-title">📄 取证报告 · Forensic Reports</h3>
+    <ul>
+      <li>PDF 导出，附 SHA-256 签名</li>
+      <li>法庭级证据链</li>
+      <li>时间线 + 交易明细</li>
+    </ul>
+  </div>
+
+  <!-- 🚨 Monitoring -->
+  <div class="section">
+    <h3 class="section-title">🚨 实时监控 · Monitoring</h3>
+    <ul>
+      <li>实时地址监控</li>
+      <li>自定义规则（7 种类型）</li>
+      <li>桌面通知推送</li>
+      <li>CSV 批量导入</li>
+    </ul>
+  </div>
+
+  <!-- 📁 Case Management -->
+  <div class="section">
+    <h3 class="section-title">📁 案件管理 · Case Management</h3>
+    <ul>
+      <li>创建 / 编辑 / 归档案件</li>
+      <li>地址角色标注（嫌疑人 / 受害者 / 交易所）</li>
+      <li>调查笔记</li>
+      <li>JSON 导出</li>
+    </ul>
+  </div>
+
+  <!-- 🔒 Security -->
+  <div class="section">
+    <h3 class="section-title">🔒 安全 · Security</h3>
+    <ul>
+      <li>AES-256-GCM 加密存储</li>
+      <li>启动时 Vault 锁定</li>
+      <li>离线模式支持</li>
+      <li>安全审计已通过</li>
+    </ul>
+  </div>
+
+  <!-- 🖥️ Desktop App -->
+  <div class="section">
+    <h3 class="section-title">🖥️ 桌面应用 · Desktop App</h3>
+    <ul>
+      <li>Tauri 2.0（macOS .dmg，Windows CI 构建）</li>
+      <li>自动更新机制</li>
+      <li>本地优先架构</li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  © 2026 ZeroVector Limited. All rights reserved.
+</footer>
+
+</body>
+</html>
