@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw Q1 2026 威胁情报季报</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0F;
+    --bg-card: #10101A;
+    --bg-code: #12121A;
+    --text: #F0F0F5;
+    --text-dim: #8888A0;
+    --accent: #E63946;
+    --accent-glow: rgba(230, 57, 70, 0.15);
+    --border: #1E1E2E;
+    --green: #2ECC71;
+    --yellow: #F1C40F;
+    --blue: #3498DB;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .logo-merkle { color: #fff; }
+  .logo-claw { color: var(--accent); }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* LAYOUT */
+  .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 4rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent-glow);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 1rem;
+    border-radius: 100px;
+    border: 1px solid rgba(230,57,70,0.25);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .hero .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-bottom: 2rem;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  .hero-meta span { white-space: nowrap; }
+
+  /* SECTION */
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 3rem 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--text);
+  }
+  p { margin-bottom: 1rem; color: #D0D0DA; }
+
+  /* SUMMARY TABLE (stats cards) */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .stat-delta {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 0.25rem;
+  }
+
+  /* BLOCKQUOTE */
+  blockquote {
+    background: var(--accent-glow);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--text);
+  }
+  blockquote strong { color: #fff; }
+
+  /* CODE */
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin: 1rem 0 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #C0C0D0;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--bg-code);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+  }
+  pre code { background: none; padding: 0; font-size: 1em; }
+
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  thead th {
+    background: var(--bg-code);
+    color: var(--text);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--accent);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: #D0D0DA;
+  }
+  tbody tr:hover { background: rgba(230, 57, 70, 0.04); }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1.5rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+  .tl-month {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--accent);
+    margin: 1.5rem 0 0.5rem;
+    position: relative;
+  }
+  .tl-month::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+  }
+  .tl-item {
+    display: grid;
+    grid-template-columns: 70px 1fr auto;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    position: relative;
+  }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.68rem;
+    top: 0.7rem;
+    width: 8px;
+    height: 8px;
+    background: var(--bg-card);
+    border: 2px solid var(--text-dim);
+    border-radius: 50%;
+  }
+  .tl-date { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+  .tl-name { color: var(--text); font-weight: 500; }
+  .tl-amount { color: var(--accent); font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; white-space: nowrap; }
+  .tl-desc { grid-column: 1 / -1; color: var(--text-dim); font-size: 0.82rem; padding-left: 70px; margin-top: -0.25rem; }
+
+  /* BAR CHART */
+  .bar-chart { margin: 1.5rem 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .bar-label { width: 140px; text-align: right; color: var(--text-dim); flex-shrink: 0; }
+  .bar-track { flex: 1; height: 22px; background: var(--bg-code); border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.75rem; font-weight: 600; color: #fff; min-width: fit-content; }
+  .bar-value { width: 90px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--text); flex-shrink: 0; }
+
+  /* BUTTONS */
+  .btn-group { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 2rem 0; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #cf2f3c; }
+  .btn-outline { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--text-dim); color: var(--text); }
+
+  /* ALERT BOX */
+  .alert {
+    background: rgba(230,57,70,0.08);
+    border: 1px solid rgba(230,57,70,0.2);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  .alert-title { font-weight: 600; color: var(--accent); margin-bottom: 0.25rem; }
+
+  /* CONFIDENCE BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    letter-spacing: 0.02em;
+  }
+  .badge-green { background: rgba(46,204,113,0.15); color: var(--green); }
+  .badge-yellow { background: rgba(241,196,15,0.15); color: var(--yellow); }
+  .badge-red { background: rgba(230,57,70,0.15); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    margin-top: 3rem;
+  }
+  footer a { color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+
+  /* DISCLAIMER */
+  .disclaimer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin: 2rem 0;
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: #fff; color: #111; }
+    nav { display: none; }
+    .container { max-width: 100%; padding: 0; }
+    pre { background: #f5f5f5; border-color: #ddd; color: #333; }
+    table, th, td { border-color: #ccc; }
+    thead th { background: #eee; color: #111; }
+    tbody td { color: #333; }
+    blockquote { background: #fef2f2; border-color: #E63946; }
+    .stat-card { border-color: #ddd; background: #f9f9f9; }
+    .btn-group { display: none; }
+    footer { border-color: #ddd; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    nav { padding: 0 1rem; }
+    .container { padding: 1rem; }
+    .hero { padding: 2.5rem 0 2rem; }
+    .hero h1 { font-size: 1.75rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .tl-item { grid-template-columns: 60px 1fr; }
+    .tl-amount { grid-column: 2; }
+    .tl-desc { padding-left: 0; }
+    .bar-label { width: 100px; font-size: 0.78rem; }
+    h2 { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><span class="logo-merkle">Merkle</span><span class="logo-claw">Claw</span></div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">Reports</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">公开发布版 · 2026年4月</div>
+  <h1>MerkleClaw 威胁情报季报</h1>
+  <p class="subtitle">2026 年 Q1 链上安全威胁报告</p>
+  <div class="hero-meta">
+    <span>📅 2026-01-01 — 2026-03-31</span>
+    <span>📊 66条情报（已验证26 · 疑似40）</span>
+    <span>🔗 多源交叉验证 + 链上追踪</span>
+  </div>
+</section>
+
+<!-- SUMMARY STATS -->
+<h2>本季核心数字</h2>
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">$53.4M+</div>
+    <div class="stat-label">已知总损失</div>
+    <div class="stat-delta">↓ 显著（Q4受Bybit影响）</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">20+</div>
+    <div class="stat-label">独立攻击事件</div>
+    <div class="stat-delta">持平</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">$27.3M</div>
+    <div class="stat-label">最大单次损失</div>
+    <div class="stat-delta">Step Finance ↓</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">Oracle</div>
+    <div class="stat-label">最高频攻击向量</div>
+    <div class="stat-delta">连续3季度第一</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">6+2</div>
+    <div class="stat-label">OFAC 新增制裁</div>
+    <div class="stat-delta">6名个人 + 2实体</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">2类</div>
+    <div class="stat-label">AI 相关新型威胁</div>
+    <div class="stat-delta">⚠️ 首次出现</div>
+  </div>
+</div>
+
+<!-- KEY CONCLUSIONS -->
+<h2>Q1 最重要结论</h2>
+
+<blockquote>
+  <strong>社会工程攻击超越技术漏洞，成为Q1最大单次损失来源。</strong> Step Finance $27.3M 通过邮箱钓鱼完成，智能合约零漏洞。这标志着攻击者重心从"破代码"转向"破人"。
+</blockquote>
+
+<blockquote>
+  <strong>AI 辅助漏洞首次被正式记录。</strong> Moonwell Oracle 漏洞的 commit 由 Claude 联署，Vidar infostealer 开始针对 AI Agent 配置目录——AI 时代的攻击面已悄然扩大。
+</blockquote>
+
+<!-- SECTION 1: 攻击事件总览 -->
+<h2>一、Q1 攻击事件总览</h2>
+
+<h3>1.1 重大事件时间线</h3>
+
+<div class="timeline">
+  <div class="tl-month">1月</div>
+  <div class="tl-item">
+    <span class="tl-date">01-31</span>
+    <span class="tl-name">Step Finance</span>
+    <span class="tl-amount">$27.3M</span>
+    <span class="tl-desc">高管邮箱钓鱼 → SOL解质押</span>
+  </div>
+
+  <div class="tl-month">2月</div>
+  <div class="tl-item">
+    <span class="tl-date">02-18</span>
+    <span class="tl-name">Moonwell cbETH</span>
+    <span class="tl-amount">$1.78M</span>
+    <span class="tl-desc">Oracle配置错误（AI协作代码）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-21</span>
+    <span class="tl-name">IoTeX ioTube桥</span>
+    <span class="tl-amount">$4.4M</span>
+    <span class="tl-desc">私钥泄露 → 跨链全取</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-22</span>
+    <span class="tl-name">YieldBlox (Stellar)</span>
+    <span class="tl-amount">$10.97M</span>
+    <span class="tl-desc">Oracle操纵（USTRY拉升100x）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-23</span>
+    <span class="tl-name">WLFI USD1</span>
+    <span class="tl-amount">—</span>
+    <span class="tl-desc">社工+做空未遂</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-25</span>
+    <span class="tl-name">Holdstation DeFAI</span>
+    <span class="tl-amount">$462K</span>
+    <span class="tl-desc">AI钱包未授权（手法未公开）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-26</span>
+    <span class="tl-name">FOOMCASH</span>
+    <span class="tl-amount">$2.26M</span>
+    <span class="tl-desc">ZK验证密钥未完成</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">02-27</span>
+    <span class="tl-name">Stake Nova</span>
+    <span class="tl-amount">$137K</span>
+    <span class="tl-desc">闪贷+业务逻辑漏洞</span>
+  </div>
+
+  <div class="tl-month">3月</div>
+  <div class="tl-item">
+    <span class="tl-date">03-02</span>
+    <span class="tl-name">Inverse Finance</span>
+    <span class="tl-amount">$240K</span>
+    <span class="tl-desc">DOLA价格操纵</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-06</span>
+    <span class="tl-name">Solv Protocol BRO</span>
+    <span class="tl-amount">$2.7M</span>
+    <span class="tl-desc">重入漏洞（→ Tornado Cash）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-10</span>
+    <span class="tl-name">Gondi NFT</span>
+    <span class="tl-amount">$230K</span>
+    <span class="tl-desc">合约逻辑（NFT所有者未验证）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-10</span>
+    <span class="tl-name">Aave wstETH</span>
+    <span class="tl-amount">$27.78M</span>
+    <span class="tl-desc">Oracle配置错误（非恶意）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-12</span>
+    <span class="tl-name">DBXen</span>
+    <span class="tl-amount">$150K</span>
+    <span class="tl-desc">ERC-2771身份伪造</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-12</span>
+    <span class="tl-name">bonk.fun</span>
+    <span class="tl-amount">—</span>
+    <span class="tl-desc">域名劫持+Wallet Drainer</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-15</span>
+    <span class="tl-name">Venus Protocol</span>
+    <span class="tl-amount">$2.15M</span>
+    <span class="tl-desc">捐赠攻击（9个月潜伏）</span>
+  </div>
+  <div class="tl-item">
+    <span class="tl-date">03-22</span>
+    <span class="tl-name">Resolv Labs</span>
+    <span class="tl-amount">—</span>
+    <span class="tl-desc">$USR异常大额铸造（调查中）</span>
+  </div>
+</div>
+
+<h3>1.2 损失分布（按攻击类别）</h3>
+
+<div class="bar-chart">
+  <div class="bar-row">
+    <span class="bar-label">社会工程</span>
+    <div class="bar-track"><div class="bar-fill" style="width:51.1%">51.1%</div></div>
+    <span class="bar-value">$27.3M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">Oracle操纵/配置</span>
+    <div class="bar-track"><div class="bar-fill" style="width:29%">29.0%</div></div>
+    <span class="bar-value">$15.5M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">私钥泄露</span>
+    <div class="bar-track"><div class="bar-fill" style="width:8.2%"></div></div>
+    <span class="bar-value">$4.4M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">合约漏洞</span>
+    <div class="bar-track"><div class="bar-fill" style="width:5.8%"></div></div>
+    <span class="bar-value">$3.1M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">重入漏洞</span>
+    <div class="bar-track"><div class="bar-fill" style="width:5.1%"></div></div>
+    <span class="bar-value">$2.7M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">ZK配置错误</span>
+    <div class="bar-track"><div class="bar-fill" style="width:4.3%"></div></div>
+    <span class="bar-value">$2.3M</span>
+  </div>
+  <div class="bar-row">
+    <span class="bar-label">其他</span>
+    <div class="bar-track"><div class="bar-fill" style="width:1.5%"></div></div>
+    <span class="bar-value">$0.8M</span>
+  </div>
+</div>
+
+<p><strong>按目标链：</strong> ETH 44% · SOL 31%（Step Finance 主导）· Stellar 21%（YieldBlox）· 其他 4%</p>
+
+<h3>1.3 置信度说明</h3>
+<p>
+  <span class="badge badge-green">🟢 已确认</span> Confirmed，26条：多源交叉验证，损失金额可核实<br>
+  <span class="badge badge-yellow">🟡 疑似</span> Suspected，40条：单源报告或链上数据待核实
+</p>
+
+<!-- SECTION 2: 攻击向量分析 -->
+<h2>二、Q1 攻击向量深度分析</h2>
+
+<h3>2.1 Oracle 操纵：连续三季度高频攻击向量</h3>
+<p>本季4起 Oracle 相关事件，合计损失 <strong>$40M+</strong>：</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>事件</th><th>损失</th><th>子类型</th><th>是否恶意</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Aave wstETH</td><td>$27.78M</td><td>配置错误</td><td>❌ 否（协议失误）</td></tr>
+    <tr><td>YieldBlox</td><td>$10.97M</td><td>价格操纵</td><td>✅ 是</td></tr>
+    <tr><td>Moonwell</td><td>$1.78M</td><td>配置错误+AI代码</td><td>⚠️ 边界模糊</td></tr>
+    <tr><td>Inverse Finance</td><td>$240K</td><td>价格操纵</td><td>✅ 是</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>趋势：</strong> 恶意操纵和配置错误各占一半。配置错误损失实际更大（$27.78M vs $11.2M）——这意味着"人为失误"比"黑客攻击"造成的直接损失更高。</p>
+
+<div class="alert">
+  <div class="alert-title">防御建议</div>
+  <ul style="margin:0.5rem 0 0 1.25rem; color:#D0D0DA; font-size:0.9rem;">
+    <li>所有借贷协议的 Oracle 必须配置价格上下限（cap/floor）</li>
+    <li>引入多源 Oracle 聚合（Chainlink + Pyth + 自有）</li>
+    <li>Oracle 配置变更必须经过安全委员会独立审核</li>
+  </ul>
+</div>
+
+<h3>2.2 社会工程：从边缘威胁到头号杀手</h3>
+<p>Step Finance 的 $27.3M 损失是本季最大单次事件，且没有任何链上漏洞：</p>
+
+<pre><code>高管邮箱被攻陷
+      ↓
+攻击者获得内部系统访问权
+      ↓
+执行大额 SOL 解质押操作
+      ↓
+$27.3M SOL 转出
+      ↓
+智能合约全程正常工作</code></pre>
+
+<p><strong>核心教训：</strong> 最昂贵的漏洞有时不在代码里。多签+时间锁+内部异常操作告警是必要防线。</p>
+
+<h3>2.3 ZK 加密配置错误：新兴但快速增长的攻击类别</h3>
+<p>本季度出现 ZK 行业首次被记录的生产环境利用：</p>
+<ul style="margin:0 0 1rem 1.25rem; color:#D0D0DA;">
+  <li><strong>Veil Cash：</strong>ZK 电路 <code>=</code> vs <code>&lt;==</code> 单字符错误，$9K 损失（首个案例）</li>
+  <li><strong>FOOMCASH：</strong>复制 Veil Cash 漏洞模板，$2.26M 损失（模式复用）</li>
+</ul>
+<p><strong>模式：</strong> 攻击者不需要"发现"新漏洞，只需阅读已有事后分析并寻找类似实现。ZK 协议上线前的可信设置验证和电路审计变得至关重要。</p>
+
+<h3>2.4 AI 相关威胁：首次正式记录（新类别）</h3>
+
+<div class="alert">
+  <div class="alert-title">类型1：AI 辅助代码引入漏洞</div>
+  <p style="margin:0.5rem 0 0; color:#D0D0DA; font-size:0.9rem;">
+    Moonwell cbETH Oracle 漏洞的 commit 由 Claude Opus 4.6 联署。漏洞：缺失一个乘法步骤（cbETH/ETH × ETH/USD）。<br>
+    <strong>教训：</strong>AI 生成的金融计算代码必须人工逐步验证。
+  </p>
+</div>
+
+<div class="alert">
+  <div class="alert-title">类型2：AI Agent 身份窃取</div>
+  <p style="margin:0.5rem 0 0; color:#D0D0DA; font-size:0.9rem;">
+    Vidar infostealer 变种开始针对 <code>.openclaw/</code> 等 AI Agent 配置目录。20% OpenClaw Skills 已确认被投毒（来源：rekt.news）。<br>
+    这是2026年新增的独立威胁类别，预计持续升级。
+  </p>
+</div>
+
+<!-- SECTION 3: 资金流向 -->
+<h2>三、资金流向追踪</h2>
+
+<h3>3.1 已追踪资金去向</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>事件</th><th>金额</th><th>洗钱路径</th><th>追踪状态</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Solv Protocol</td><td>$2.7M</td><td>→ Tornado Cash</td><td>已进混币，追踪中断</td></tr>
+    <tr><td>IoTeX ioTube</td><td>$4.4M</td><td>→ ETH → THORChain → BTC（~66.6 BTC）</td><td>已追踪至 BTC</td></tr>
+    <tr><td>Step Finance</td><td>$27.3M</td><td>SOL 转移</td><td>部分追踪中</td></tr>
+    <tr><td>Gondi NFT</td><td>$230K</td><td>NFT 转售</td><td>部分追踪</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>3.2 混币工具使用情况</h3>
+<p><strong>Q1 已确认使用：</strong></p>
+<ul style="margin:0 0 1rem 1.25rem; color:#D0D0DA;">
+  <li><strong>Tornado Cash：</strong>仍为最主要出口（Solv 攻击者确认使用）</li>
+  <li><strong>THORChain：</strong>IoTeX 攻击者使用，实现 ETH→BTC 跨链</li>
+</ul>
+<p><strong>未观察到（本季）：</strong> RailGun（有使用能力但本季无确认记录）· Monero（暂无记录，但为盲点，无法排除）</p>
+
+<h3>3.3 OFAC 新增制裁（2026-03-12）</h3>
+<p>美国财政部新增制裁 DPRK IT 工人欺诈网络：<strong>6名个人 + 2个实体</strong>。涉及加密货币收款地址已同步至 MerkleClaw L1 黑名单。</p>
+<p style="font-size:0.95rem;"><strong>总计 L1 制裁地址：3,273个</strong></p>
+
+<!-- SECTION 4: 分类统计 -->
+<h2>四、Q1 安全事件分类统计</h2>
+
+<h3>4.1 按攻击向量</h3>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>攻击类型</th><th>事件数</th><th>占比</th><th>总损失</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Oracle 操纵/配置错误</td><td>4</td><td>20%</td><td>$40.2M</td></tr>
+    <tr><td>社会工程</td><td>3</td><td>15%</td><td>$27.8M</td></tr>
+    <tr><td>合约逻辑漏洞</td><td>5</td><td>25%</td><td>$3.5M</td></tr>
+    <tr><td>重入漏洞</td><td>2</td><td>10%</td><td>$2.8M</td></tr>
+    <tr><td>ZK 配置错误</td><td>2</td><td>10%</td><td>$2.4M</td></tr>
+    <tr><td>私钥泄露</td><td>2</td><td>10%</td><td>$4.4M</td></tr>
+    <tr><td>前端/域名攻击</td><td>2</td><td>10%</td><td>未披露</td></tr>
+    <tr style="font-weight:700;"><td>合计</td><td>20</td><td></td><td>$81.1M+</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>4.2 按目标类型</h3>
+<ul style="margin:0 0 1rem 1.25rem; color:#D0D0DA;">
+  <li>DeFi 协议：65%</li>
+  <li>跨链桥：15%</li>
+  <li>个人/EOA：15%</li>
+  <li>交易所：5%</li>
+</ul>
+
+<h3>4.3 按置信度来源质量</h3>
+<ul style="margin:0 0 1rem 1.25rem; color:#D0D0DA;">
+  <li><span class="badge badge-green">A 级</span> 情报（OFAC/SlowMist/Rekt）：42%</li>
+  <li><span class="badge badge-yellow">B 级</span> 情报（CertiK/BlockSec）：31%</li>
+  <li><span class="badge badge-red">C 级</span> 情报（PeckShield速报）：27%</li>
+</ul>
+
+<!-- SECTION 5: 预警 -->
+<h2>五、季度重点预警</h2>
+
+<h3>5.1 最高风险地址（本季新增 L2 黑名单）</h3>
+<p style="color:var(--text-dim); font-size:0.85rem;">完整黑名单请访问 MerkleClaw 平台或通过 ThreatLedger API 查询</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>地址（脱敏）</th><th>关联事件</th><th>层级</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>0xSolv...001</code></td><td>Solv BRO 重入攻击</td><td><span class="badge badge-red">L2</span></td></tr>
+    <tr><td><code>0xIoTeX...001</code></td><td>IoTeX 桥私钥泄露</td><td><span class="badge badge-red">L2</span></td></tr>
+    <tr><td><code>0xStep...001</code></td><td>Step Finance 钓鱼</td><td><span class="badge badge-red">L2</span></td></tr>
+    <tr><td><code>0xFOOM...001</code></td><td>FOOMCASH ZK 漏洞</td><td><span class="badge badge-red">L2</span></td></tr>
+    <tr><td><code>0xVenus...001</code></td><td>Venus 捐赠攻击</td><td><span class="badge badge-red">L2</span></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>5.2 Q2 高风险预警</h3>
+
+<div class="alert">
+  <div class="alert-title">持续关注</div>
+  <ol style="margin:0.5rem 0 0 1.25rem; color:#D0D0DA; font-size:0.9rem;">
+    <li><strong>AI Agent 攻击面扩大</strong> — ERC-8004 标准推进中，AI Agent 获得链上操作权限将引入新攻击向量</li>
+    <li><strong>ZK 协议配置错误传播</strong> — FOOMCASH 复制 Veil Cash 模式，预计更多攻击者扫描类似配置</li>
+    <li><strong>DPRK IT 工人渗透加速</strong> — OFAC 新制裁显示该网络仍在扩张</li>
+  </ol>
+</div>
+
+<div class="alert">
+  <div class="alert-title">可能出现（需监控）</div>
+  <ul style="margin:0.5rem 0 0 1.25rem; color:#D0D0DA; font-size:0.9rem;">
+    <li>LayerZero 生态跨链桥攻击（高 TVL + 新协议）</li>
+    <li>亚洲新兴 DeFi 协议 Oracle 攻击（监管宽松地区）</li>
+  </ul>
+</div>
+
+<!-- SECTION 6: 平台能力 -->
+<h2>六、MerkleClaw 平台能力说明</h2>
+<p>本报告数据由 MerkleClaw Intelligence Platform 自动化收集与分析：</p>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>能力模块</th><th>说明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>实时情报采集</td><td>SlowMist/PeckShield/CertiK/Beosin/DeFiHackLabs 多源自动入库</td></tr>
+    <tr><td>攻击模式匹配</td><td>30种攻击手法特征库，自动比对相似度</td></tr>
+    <tr><td>威胁行为者匹配</td><td>6大组织画像，输出"与Lazarus相似度XX%"评分</td></tr>
+    <tr><td>统一风险评分</td><td>7维度0-100分评分，含完整拆解说明</td></tr>
+    <tr><td>OFAC 自动同步</td><td>每日06:00 UTC拉取，新增立即告警</td></tr>
+    <tr><td>实时告警推送</td><td>Discord Webhook + 桌面通知</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p><strong>接入方式：</strong> ThreatLedger API（公测筹备中）| 企业版：<code>enterprise@merkleclaw.io</code></p>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <strong>免责声明</strong><br>
+  本报告基于公开情报整理，所有损失数据均来源于公开披露。OFAC 数据来源于美国财政部。本报告不构成法律、投资或合规建议。
+</div>
+
+<!-- BUTTONS -->
+<div class="btn-group">
+  <a href="#" class="btn btn-primary" onclick="alert('PDF 下载功能即将上线'); return false;">📥 Download PDF</a>
+  <a href="#" class="btn btn-outline">← Back to Reports</a>
+</div>
+
+<pre style="text-align:center; border:none; background:transparent; color:var(--text-dim); font-size:0.82rem; margin-top:2rem;">MerkleClaw Intelligence Platform
+https://merkleclaw.io | intelligence@merkleclaw.io
+报告版本：v1.0-PUBLIC | 发布日期：2026-04-01</pre>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 ZeroVector Limited · MerkleClaw Intelligence Platform</p>
+  <p style="margin-top:0.5rem;">
+    <a href="#">merkleclaw.io</a> · <a href="mailto:intelligence@merkleclaw.io">intelligence@merkleclaw.io</a>
+  </p>
+</footer>
+
+</body>
+</html>
