@@ -761,6 +761,23 @@
     </script>
 </head>
 <body>
+<!-- v0.1.0 LAUNCH BANNER (auto-hide after 7 days) -->
+<div id="launchBanner" style="background:linear-gradient(90deg,#E63946,#B71C1C);color:#fff;text-align:center;padding:10px 16px;font-size:0.85rem;position:relative;z-index:100;">
+  🎉 <strong>MerkleClaw v0.1.0 正式发布！</strong> — 9链覆盖 · AI自动调查 · 本地优先
+  <a href="https://github.com/zerovector-hk/MerkleClaw/releases/tag/v0.1.0" target="_blank" rel="noopener" style="color:#fff;margin-left:12px;text-decoration:underline;font-weight:600;">下载 Download →</a>
+  <button onclick="document.getElementById('launchBanner').remove();localStorage.setItem('mc_banner_dismissed','1')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.7);cursor:pointer;font-size:1rem;">✕</button>
+</div>
+<script>
+// Auto-hide after 7 days (2026-03-31) or if dismissed
+(function(){
+  var exp = new Date('2026-03-31T23:59:59Z');
+  if (Date.now() > exp.getTime() || localStorage.getItem('mc_banner_dismissed') === '1') {
+    var b = document.getElementById('launchBanner');
+    if (b) b.remove();
+  }
+})();
+</script>
+
 
 <!-- NAV -->
 <nav>
