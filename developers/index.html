@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw — Developer Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0A0A0F;--bg-card:#10101A;--bg-code:#12121A;--text:#F0F0F5;--text-dim:#9999AA;--accent:#E63946;--accent-hover:#FF4D5A;--border:#1E1E2E;--radius:8px}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;transition:color .2s}
+a:hover{color:var(--accent-hover)}
+code,pre{font-family:'JetBrains Mono',monospace}
+pre{background:var(--bg-code);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;overflow-x:auto;font-size:.85rem;line-height:1.6;margin:1rem 0}
+code:not(pre code){background:var(--bg-code);padding:2px 7px;border-radius:4px;font-size:.88em;border:1px solid var(--border)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:60px}
+.nav-logo{font-weight:700;font-size:1.15rem;display:flex;align-items:center;gap:.5rem;color:var(--text)}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem;font-size:.9rem;font-weight:500}
+.nav-links a{color:var(--text-dim)}
+.nav-links a:hover{color:var(--accent)}
+
+/* LAYOUT */
+.container{max-width:860px;margin:0 auto;padding:0 1.5rem}
+section{padding:4rem 0}
+section+section{border-top:1px solid var(--border)}
+
+/* HERO */
+.hero{text-align:center;padding:5rem 0 4rem}
+.hero h1{font-size:2.6rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.5rem}
+.hero .subtitle{font-size:1.3rem;color:var(--text-dim);font-weight:400}
+.hero .badge{display:inline-block;margin-top:1.2rem;background:var(--accent);color:#fff;font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase}
+
+/* HEADINGS */
+h2{font-size:1.6rem;font-weight:700;margin-bottom:1.2rem;letter-spacing:-.01em}
+h2 .tag{font-size:.7rem;background:var(--accent);color:#fff;padding:3px 8px;border-radius:4px;vertical-align:middle;margin-left:.5rem;font-weight:600;letter-spacing:.03em}
+h3{font-size:1.15rem;font-weight:600;margin:1.8rem 0 .6rem;color:var(--text)}
+h4{font-size:.95rem;font-weight:600;margin:1.2rem 0 .4rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em}
+
+p{margin:.6rem 0;color:var(--text-dim)}
+p strong{color:var(--text)}
+
+/* STEPS */
+.steps{counter-reset:step;list-style:none;padding:0}
+.steps li{counter-increment:step;position:relative;padding:1rem 1rem 1rem 3.5rem;margin:.75rem 0;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)}
+.steps li::before{content:counter(step);position:absolute;left:1rem;top:1rem;width:1.8rem;height:1.8rem;background:var(--accent);color:#fff;font-weight:700;font-size:.85rem;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.steps li strong{color:var(--text)}
+
+/* ENDPOINT CARDS */
+.endpoint{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin:1rem 0}
+.endpoint .method{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;padding:3px 8px;border-radius:4px;margin-right:.5rem}
+.method.get{background:#1a3a2a;color:#4ade80}
+.method.post{background:#3a2a1a;color:#fbbf24}
+.endpoint .path{font-family:'JetBrains Mono',monospace;font-size:.9rem;color:var(--text)}
+.endpoint p{font-size:.88rem;margin-top:.4rem}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.88rem}
+th,td{text-align:left;padding:.75rem 1rem;border-bottom:1px solid var(--border)}
+th{color:var(--text);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+td{color:var(--text-dim)}
+td code{font-size:.8rem}
+tr:last-child td{border-bottom:none}
+
+/* FOOTER */
+footer{text-align:center;padding:3rem 0;color:var(--text-dim);font-size:.82rem;border-top:1px solid var(--border)}
+
+/* TOC */
+.toc{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0 2rem}
+.toc a{background:var(--bg-card);border:1px solid var(--border);padding:.4rem .9rem;border-radius:20px;font-size:.82rem;font-weight:500;color:var(--text-dim);transition:all .2s}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+
+@media(max-width:640px){
+  .hero h1{font-size:1.8rem}
+  .hero .subtitle{font-size:1rem}
+  nav{padding:0 1rem}
+  pre{font-size:.78rem;padding:.9rem}
+  .steps li{padding-left:3rem}
+  table{font-size:.8rem}
+  th,td{padding:.5rem .6rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><span>⛓</span> Merkle<span>Claw</span></div>
+  <div class="nav-links">
+    <a href="https://merkleclaw.com">Home</a>
+    <a href="https://merkleclaw.com/pricing">Pricing</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Developer Documentation</h1>
+  <p class="subtitle">开发者文档</p>
+  <span class="badge">v1.0</span>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <a href="#quickstart">Quick Start</a>
+  <a href="#api">Backend API</a>
+  <a href="#threatledger">ThreatLedger API</a>
+  <a href="#sdk">SDK Examples</a>
+  <a href="#rate-limits">Rate Limits</a>
+  <a href="#errors">Error Codes</a>
+</div>
+
+<!-- QUICK START -->
+<section id="quickstart">
+<h2>Quick Start</h2>
+<p>Get up and running with MerkleClaw in four steps.</p>
+<ol class="steps">
+  <li><strong>Install MerkleClaw</strong><br><span style="color:var(--text-dim)">Download the latest release from <a href="https://merkleclaw.com">merkleclaw.com</a> and follow the installer for your platform.</span></li>
+  <li><strong>Get an Etherscan API Key</strong><br><span style="color:var(--text-dim)">Sign up at <a href="https://etherscan.io/apis" target="_blank">etherscan.io</a> and generate a free API key from your account dashboard.</span></li>
+  <li><strong>Configure API Key in Settings</strong><br><span style="color:var(--text-dim)">Open MerkleClaw → <code>Settings → API Keys</code> → paste your Etherscan key and hit <strong>Save</strong>.</span></li>
+  <li><strong>Start Investigating</strong><br><span style="color:var(--text-dim)">Navigate to the Dashboard, enter a wallet address, and let MerkleClaw trace the money flow.</span></li>
+</ol>
+</section>
+
+<!-- API REFERENCE -->
+<section id="api">
+<h2>API Reference <span class="tag">Backend</span></h2>
+<p>The MerkleClaw Backend API runs locally on <code>http://localhost:3001</code>.</p>
+
+<h3>Authentication</h3>
+<p>All requests require a <strong>JWT Bearer token</strong> in the <code>Authorization</code> header:</p>
+<pre>Authorization: Bearer &lt;your-jwt-token&gt;</pre>
+
+<h3>Endpoints</h3>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/api/chain/:chain/balance/:address</span>
+  <p>Returns the native token balance for the given address on the specified chain.</p>
+</div>
+
+<pre><span style="color:#4ade80"># Example: Get ETH balance</span>
+curl -s http://localhost:3001/api/chain/eth/balance/0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B \
+  -H "Authorization: Bearer eyJhbGciOi..."</pre>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/api/chain/:chain/txlist/:address</span>
+  <p>Returns the transaction history for the given address, sorted by block number descending.</p>
+</div>
+
+<pre><span style="color:#4ade80"># Example: Get transaction list</span>
+curl -s http://localhost:3001/api/chain/eth/txlist/0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B \
+  -H "Authorization: Bearer eyJhbGciOi..."</pre>
+</section>
+
+<!-- THREATLEDGER API -->
+<section id="threatledger">
+<h2>ThreatLedger API <span class="tag">External</span></h2>
+<p>Base URL: <code>https://api.threatledger.net/v1</code></p>
+<p>ThreatLedger provides on-chain threat intelligence — flagged addresses, incident reports, actor profiles, and attack patterns.</p>
+
+<h3>Endpoints</h3>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/health</span>
+  <p>Service health check.</p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/addresses/check</span>
+  <p>Check if an address is flagged as malicious. Query param: <code>?address=0x...</code></p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/incidents</span>
+  <p>List recent on-chain security incidents.</p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/actors</span>
+  <p>Known threat actor profiles and attribution data.</p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/patterns</span>
+  <p>Common attack patterns and signatures.</p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/latest</span>
+  <p>Latest threat intelligence feed entries.</p>
+</div>
+
+<div class="endpoint">
+  <span class="method get">GET</span>
+  <span class="path">/usage</span>
+  <p>Your current API usage and quota status.</p>
+</div>
+
+<h3>Example Response — Address Check</h3>
+<pre>{
+  "address": "0x1234...abcd",
+  "flagged": true,
+  "risk_score": 92,
+  "labels": ["phishing", "mixer"],
+  "first_seen": "2025-08-14T03:22:00Z",
+  "incidents": ["INC-2025-0412"],
+  "source": "threatledger"
+}</pre>
+
+<h3>Example Response — Incidents</h3>
+<pre>{
+  "incidents": [
+    {
+      "id": "INC-2026-0087",
+      "title": "Cross-chain bridge exploit",
+      "severity": "critical",
+      "loss_usd": 12400000,
+      "chains": ["ethereum", "bsc"],
+      "date": "2026-02-19T14:05:00Z",
+      "actors": ["ACT-0023"]
+    }
+  ],
+  "total": 1,
+  "page": 1
+}</pre>
+</section>
+
+<!-- SDK -->
+<section id="sdk">
+<h2>SDK Examples</h2>
+<p>Integrate MerkleClaw into your own tooling with these quick-start snippets.</p>
+
+<h3>JavaScript</h3>
+<pre><span style="color:var(--text-dim)">// Check address against ThreatLedger</span>
+const res = await fetch(
+  "https://api.threatledger.net/v1/addresses/check?address=0x1234...abcd",
+  {
+    headers: {
+      "Authorization": "Bearer YOUR_API_KEY",
+      "Content-Type": "application/json"
+    }
+  }
+);
+
+const data = await res.json();
+console.log(data.flagged);   <span style="color:var(--text-dim)">// true</span>
+console.log(data.risk_score); <span style="color:var(--text-dim)">// 92</span></pre>
+
+<h3>Python</h3>
+<pre><span style="color:var(--text-dim)"># Check address against ThreatLedger</span>
+import requests
+
+resp = requests.get(
+    "https://api.threatledger.net/v1/addresses/check",
+    params={"address": "0x1234...abcd"},
+    headers={"Authorization": "Bearer YOUR_API_KEY"}
+)
+
+data = resp.json()
+print(data["flagged"])     <span style="color:var(--text-dim)"># True</span>
+print(data["risk_score"])  <span style="color:var(--text-dim)"># 92</span></pre>
+</section>
+
+<!-- RATE LIMITS -->
+<section id="rate-limits">
+<h2>Rate Limits</h2>
+<p>Rate limits are applied per API key. Exceeding limits returns <code>429 Too Many Requests</code>.</p>
+<table>
+  <thead>
+    <tr><th>Plan</th><th>Requests / min</th><th>Daily Limit</th><th>Burst</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Free</td><td>30</td><td>1,000</td><td>10</td></tr>
+    <tr><td>Pro</td><td>120</td><td>50,000</td><td>40</td></tr>
+    <tr><td>Enterprise</td><td>600</td><td>Unlimited</td><td>200</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ERROR CODES -->
+<section id="errors">
+<h2>Error Codes</h2>
+<table>
+  <thead>
+    <tr><th>Code</th><th>Meaning</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>400</code></td><td>Bad Request</td><td>Invalid parameters or malformed address</td></tr>
+    <tr><td><code>401</code></td><td>Unauthorized</td><td>Missing or invalid JWT / API key</td></tr>
+    <tr><td><code>403</code></td><td>Forbidden</td><td>Insufficient permissions for this resource</td></tr>
+    <tr><td><code>404</code></td><td>Not Found</td><td>Endpoint or resource does not exist</td></tr>
+    <tr><td><code>429</code></td><td>Rate Limited</td><td>Too many requests — slow down or upgrade plan</td></tr>
+    <tr><td><code>500</code></td><td>Server Error</td><td>Internal error — retry or contact support</td></tr>
+    <tr><td><code>502</code></td><td>Bad Gateway</td><td>Upstream chain RPC node unreachable</td></tr>
+    <tr><td><code>503</code></td><td>Service Unavailable</td><td>Maintenance window — check status page</td></tr>
+  </tbody>
+</table>
+</section>
+
+</div>
+
+<footer>
+  <p>© 2026 ZeroVector Limited. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
