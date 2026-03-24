@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MerkleClaw — Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0A0A0F;--bg-surface:#101018;--bg-code:#12121A;--text:#F0F0F5;--text-muted:#8A8A9A;--accent:#E63946;--accent-hover:#ff4d5a;--border:#1E1E2A;--sidebar-w:260px;--nav-h:60px}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px)}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none;transition:color .15s}
+a:hover{color:var(--accent-hover)}
+code,pre{font-family:'JetBrains Mono',monospace}
+code{background:var(--bg-code);padding:2px 6px;border-radius:4px;font-size:.88em}
+pre{background:var(--bg-code);padding:16px 20px;border-radius:8px;overflow-x:auto;font-size:.88em;line-height:1.6}
+
+/* ── Nav ── */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(10,10,15,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:100}
+.nav-left{display:flex;align-items:center;gap:24px}
+.logo{font-weight:700;font-size:1.15rem;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;color:var(--text)}
+.logo svg{width:28px;height:28px}
+.nav-links{display:flex;gap:20px;font-size:.9rem}
+.nav-links a{color:var(--text-muted);font-weight:500}
+.nav-links a:hover,.nav-links a.active{color:var(--text)}
+.lang-toggle{display:flex;gap:2px;background:var(--bg-code);border-radius:6px;padding:3px;font-size:.82rem;font-weight:600}
+.lang-toggle span,.lang-toggle a{padding:4px 10px;border-radius:4px;display:block}
+.lang-toggle .active{background:var(--accent);color:#fff}
+.lang-toggle a{color:var(--text-muted)}
+.lang-toggle a:hover{color:var(--text)}
+
+/* ── Hamburger ── */
+.hamburger{display:none;background:none;border:none;color:var(--text);cursor:pointer;padding:4px}
+.hamburger svg{width:24px;height:24px}
+
+/* ── Layout ── */
+.layout{display:flex;margin-top:var(--nav-h);min-height:calc(100vh - var(--nav-h))}
+
+/* ── Sidebar ── */
+.sidebar{position:fixed;top:var(--nav-h);left:0;width:var(--sidebar-w);height:calc(100vh - var(--nav-h));overflow-y:auto;padding:28px 20px;border-right:1px solid var(--border);background:var(--bg)}
+.sidebar-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:12px;font-weight:600}
+.sidebar ul{list-style:none}
+.sidebar li{margin-bottom:2px}
+.sidebar li a{display:block;padding:7px 12px;border-radius:6px;font-size:.88rem;color:var(--text-muted);font-weight:500;transition:background .15s,color .15s}
+.sidebar li a:hover{background:var(--bg-surface);color:var(--text)}
+.sidebar li a.active{background:rgba(230,57,70,.12);color:var(--accent)}
+.sidebar li.section{margin-top:18px}
+.sidebar li.section>span{display:block;padding:7px 12px;font-size:.82rem;font-weight:600;color:var(--text);cursor:default}
+.sidebar li.sub a{padding-left:28px;font-size:.84rem}
+
+/* ── Main ── */
+.main{margin-left:var(--sidebar-w);flex:1;max-width:820px;padding:40px 48px 80px}
+.main h1{font-size:2rem;font-weight:700;margin-bottom:8px;letter-spacing:-.03em}
+.main .subtitle{color:var(--text-muted);font-size:1.05rem;margin-bottom:40px}
+.main h2{font-size:1.45rem;font-weight:700;margin-top:56px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.02em}
+.main h3{font-size:1.1rem;font-weight:600;margin-top:32px;margin-bottom:10px}
+.main p{margin-bottom:14px;color:var(--text);font-size:.95rem}
+.main ul,.main ol{margin-bottom:14px;padding-left:22px}
+.main li{margin-bottom:6px;font-size:.95rem}
+.main li::marker{color:var(--accent)}
+
+/* ── Callout ── */
+.callout{background:var(--bg-surface);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;font-size:.9rem}
+.callout strong{color:var(--accent)}
+
+/* ── Table ── */
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.9rem}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
+th{font-weight:600;color:var(--text-muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+
+/* ── Badge ── */
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.76rem;font-weight:600;vertical-align:middle}
+.badge-required{background:rgba(230,57,70,.15);color:var(--accent)}
+.badge-optional{background:rgba(138,138,154,.15);color:var(--text-muted)}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--border);padding:28px;text-align:center;font-size:.82rem;color:var(--text-muted);margin-left:var(--sidebar-w)}
+
+/* ── Mobile ── */
+@media(max-width:860px){
+  .hamburger{display:block}
+  .nav-links{display:none}
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease;z-index:90}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:28px 20px 60px}
+  footer{margin-left:0}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:80}
+  .overlay.show{display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-left">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="28" height="28" rx="6" fill="#E63946"/>
+        <path d="M7 14l4.5-5.5L14 12l3.5-3.5L21 14l-7 8-7-8z" fill="#fff" fill-opacity=".95"/>
+        <path d="M14 10l-2.5 4h5L14 10z" fill="#fff"/>
+      </svg>
+      MerkleClaw
+    </a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/developers">Developers</a>
+      <a href="/docs/en/" class="active">Docs</a>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <div class="lang-toggle">
+      <span class="active">EN</span>
+      <a href="/docs/">中文</a>
+    </div>
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Layout -->
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">Documentation</div>
+    <ul>
+      <li class="section"><span>Getting Started</span></li>
+      <li><a href="#installation" class="active" onclick="closeSidebar()">1 &middot; Installation</a></li>
+      <li class="sub"><a href="#macos" onclick="closeSidebar()">macOS</a></li>
+      <li class="sub"><a href="#windows" onclick="closeSidebar()">Windows</a></li>
+      <li class="sub"><a href="#requirements" onclick="closeSidebar()">Requirements</a></li>
+      <li class="sub"><a href="#first-launch" onclick="closeSidebar()">First Launch</a></li>
+
+      <li class="section"><span>Configuration</span></li>
+      <li><a href="#api-key-setup" onclick="closeSidebar()">2 &middot; API Key Setup</a></li>
+      <li class="sub"><a href="#etherscan-key" onclick="closeSidebar()">Etherscan</a></li>
+      <li class="sub"><a href="#helius-key" onclick="closeSidebar()">Helius (Solana)</a></li>
+      <li class="sub"><a href="#trongrid-key" onclick="closeSidebar()">TronGrid (TRON)</a></li>
+
+      <li class="section"><span>Usage</span></li>
+      <li><a href="#first-investigation" onclick="closeSidebar()">3 &middot; Your First Investigation</a></li>
+      <li class="sub"><a href="#search" onclick="closeSidebar()">Search</a></li>
+      <li class="sub"><a href="#risk-score" onclick="closeSidebar()">Risk Score</a></li>
+      <li class="sub"><a href="#tabs" onclick="closeSidebar()">Tabs &amp; AI</a></li>
+
+      <li class="section"><span>Reporting</span></li>
+      <li><a href="#exporting-reports" onclick="closeSidebar()">4 &middot; Exporting Reports</a></li>
+      <li class="sub"><a href="#generate-pdf" onclick="closeSidebar()">Generate PDF</a></li>
+      <li class="sub"><a href="#verify" onclick="closeSidebar()">Verify Integrity</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <h1>MerkleClaw Documentation</h1>
+    <p class="subtitle">Crypto-forensics investigation tool — trace, score, and report on-chain activity.</p>
+
+    <!-- Chapter 1 -->
+    <h2 id="installation">Chapter 1 &middot; Installation</h2>
+
+    <h3 id="macos">macOS</h3>
+    <ol>
+      <li>Go to the <a href="https://github.com/nicejuice-cc/MerkleClaw/releases" target="_blank">GitHub Releases</a> page.</li>
+      <li>Download the latest <code>.dmg</code> file.</li>
+      <li>Open the DMG and drag <strong>MerkleClaw</strong> into your <strong>Applications</strong> folder.</li>
+      <li>Launch MerkleClaw from Applications or Spotlight.</li>
+    </ol>
+    <div class="callout">
+      <strong>Tip:</strong> If macOS shows "unidentified developer", go to <strong>System Settings → Privacy &amp; Security</strong> and click <strong>Open Anyway</strong>.
+    </div>
+
+    <h3 id="windows">Windows</h3>
+    <ol>
+      <li>Go to the <a href="https://github.com/nicejuice-cc/MerkleClaw/releases" target="_blank">GitHub Releases</a> page.</li>
+      <li>Download the <code>.msi</code> or <code>.exe</code> installer.</li>
+      <li>Run the installer and follow the on-screen prompts.</li>
+      <li>Launch MerkleClaw from the Start Menu or Desktop shortcut.</li>
+    </ol>
+
+    <h3 id="requirements">System Requirements</h3>
+    <table>
+      <thead><tr><th>Platform</th><th>Minimum Version</th></tr></thead>
+      <tbody>
+        <tr><td>macOS</td><td>12 Monterey or later</td></tr>
+        <tr><td>Windows</td><td>10 (64-bit) or later</td></tr>
+      </tbody>
+    </table>
+    <p>You will also need an <strong>Etherscan API Key</strong> (free) to query EVM-compatible chains. See <a href="#api-key-setup">Chapter 2</a> for details.</p>
+
+    <h3 id="first-launch">First Launch</h3>
+    <p>On first launch, MerkleClaw opens an <strong>onboarding guide</strong> that walks you through entering your API keys and configuring preferences. Follow the prompts to get started in under two minutes.</p>
+
+    <!-- Chapter 2 -->
+    <h2 id="api-key-setup">Chapter 2 &middot; API Key Setup</h2>
+    <p>MerkleClaw uses external API keys to fetch on-chain data. Open <strong>Settings ⚙️</strong> to enter your keys.</p>
+
+    <h3 id="etherscan-key">Etherscan API Key <span class="badge badge-required">Required</span></h3>
+    <ol>
+      <li>Create a free account at <a href="https://etherscan.io/myapikey" target="_blank">etherscan.io/myapikey</a>.</li>
+      <li>Generate an API key.</li>
+      <li>Paste it into <strong>Settings → Etherscan API Key</strong>.</li>
+    </ol>
+    <div class="callout">
+      <strong>One key, six chains.</strong> A single Etherscan key covers <strong>Ethereum, BSC, Polygon, Arbitrum, Optimism, and Avalanche</strong> via their shared explorer APIs.
+    </div>
+
+    <h3 id="helius-key">Helius API Key <span class="badge badge-optional">Optional</span></h3>
+    <p>Required only if you investigate <strong>Solana</strong> addresses.</p>
+    <ol>
+      <li>Sign up at <a href="https://helius.xyz" target="_blank">helius.xyz</a>.</li>
+      <li>Generate an API key from your dashboard.</li>
+      <li>Paste it into <strong>Settings → Helius API Key</strong>.</li>
+    </ol>
+
+    <h3 id="trongrid-key">TronGrid API Key <span class="badge badge-optional">Optional</span></h3>
+    <p>Required only if you investigate <strong>TRON</strong> addresses.</p>
+    <ol>
+      <li>Sign up at <a href="https://www.trongrid.io" target="_blank">trongrid.io</a>.</li>
+      <li>Create an API key.</li>
+      <li>Paste it into <strong>Settings → TronGrid API Key</strong>.</li>
+    </ol>
+
+    <!-- Chapter 3 -->
+    <h2 id="first-investigation">Chapter 3 &middot; Your First Investigation</h2>
+
+    <h3 id="search">Search an Address</h3>
+    <p>Paste any blockchain address into the <strong>search bar</strong> at the top of the window. MerkleClaw's <strong>smart detection</strong> automatically identifies the chain:</p>
+    <table>
+      <thead><tr><th>Prefix / Format</th><th>Detected Chain</th></tr></thead>
+      <tbody>
+        <tr><td><code>0x…</code> (42 chars)</td><td>Ethereum / EVM</td></tr>
+        <tr><td><code>1…</code> or <code>3…</code> or <code>bc1…</code></td><td>Bitcoin</td></tr>
+        <tr><td>Base58 (32–44 chars)</td><td>Solana</td></tr>
+        <tr><td><code>T…</code> (34 chars)</td><td>TRON</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="risk-score">Risk Score</h3>
+    <p>Every address receives a <strong>Risk Score</strong> from <strong>0</strong> (clean) to <strong>100</strong> (critical), computed across seven dimensions:</p>
+    <table>
+      <thead><tr><th>#</th><th>Dimension</th><th>What It Measures</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Blacklist</td><td>Presence on OFAC, FBI, or exchange blacklists</td></tr>
+        <tr><td>2</td><td>Actor Match</td><td>Links to known threat actors or hacking groups</td></tr>
+        <tr><td>3</td><td>Mixer</td><td>Interaction with mixing / tumbling services</td></tr>
+        <tr><td>4</td><td>Cross-Chain</td><td>Bridge hops designed to obscure fund trails</td></tr>
+        <tr><td>5</td><td>Behavior</td><td>Anomalous transaction patterns (velocity, fan-out)</td></tr>
+        <tr><td>6</td><td>Monero</td><td>Swaps to/from privacy coins (XMR, etc.)</td></tr>
+        <tr><td>7</td><td>Incidents</td><td>Connection to reported scams, exploits, or rug-pulls</td></tr>
+      </tbody>
+    </table>
+
+    <h3 id="tabs">Tabs &amp; AI Assistant</h3>
+    <p>Once a search completes, four tabs are available:</p>
+    <ul>
+      <li><strong>Overview</strong> — Summary card, risk score breakdown, and key metadata.</li>
+      <li><strong>Graph</strong> — Interactive flow-of-funds visualization. Drag to explore, scroll to zoom.</li>
+      <li><strong>AI Assistant</strong> — Ask natural-language questions about the address. Click <strong>"Full Investigation"</strong> to trigger an automated 7-step deep analysis that examines every risk dimension and produces a narrative report.</li>
+      <li><strong>Export Report</strong> — Generate a professional PDF report (see <a href="#exporting-reports">Chapter 4</a>).</li>
+    </ul>
+
+    <!-- Chapter 4 -->
+    <h2 id="exporting-reports">Chapter 4 &middot; Exporting Reports</h2>
+
+    <h3 id="generate-pdf">Generate a PDF Report</h3>
+    <ol>
+      <li>Click the <strong>Export Report</strong> tab.</li>
+      <li>Fill in the metadata fields:
+        <ul>
+          <li><strong>Case Number</strong> — your internal reference ID</li>
+          <li><strong>Client Name</strong> — the requesting party</li>
+          <li><strong>Analyst</strong> — your name or team</li>
+        </ul>
+      </li>
+      <li>Preview and edit the <strong>Executive Summary</strong> — MerkleClaw auto-generates one, but you can refine it.</li>
+      <li>Click <strong>Generate PDF</strong>.</li>
+    </ol>
+    <div class="callout">
+      <strong>Tamper-proof.</strong> Every exported PDF is signed with a <strong>SHA-256 hash</strong> embedded in its metadata. This lets anyone verify the report hasn't been altered after generation.
+    </div>
+
+    <h3 id="verify">Verify Report Integrity</h3>
+    <p>To verify a MerkleClaw report:</p>
+    <ol>
+      <li>Go to <a href="https://merkleclaw.com/verify/" target="_blank">merkleclaw.com/verify/</a>.</li>
+      <li>Upload the PDF or paste its SHA-256 hash.</li>
+      <li>The page confirms whether the report is <strong>authentic and unmodified</strong>.</li>
+    </ol>
+    <p>This verification is useful for courts, compliance teams, and third-party auditors who need proof of report integrity.</p>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2026 ZeroVector Limited. All rights reserved.
+</footer>
+
+<script>
+// Sidebar toggle for mobile
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// Active sidebar link on scroll
+const sections=document.querySelectorAll('h2[id],h3[id]');
+const links=document.querySelectorAll('.sidebar a[href^="#"]');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id});
+  links.forEach(l=>{
+    l.classList.remove('active');
+    if(l.getAttribute('href')==='#'+current)l.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
