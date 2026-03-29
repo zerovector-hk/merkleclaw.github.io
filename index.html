@@ -671,7 +671,7 @@
         /* ── TRUST ── */
         .trust-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
         .trust-item {
@@ -778,6 +778,11 @@
 })();
 </script>
 
+
+<!-- RESTRICTED BANNER -->
+<div style="background:#1a1a2e;text-align:center;padding:8px 16px;font-size:13px;color:#a0a0b0;border-bottom:1px solid rgba(255,255,255,0.05);">
+  <span data-i18n="banner.restricted"></span>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -1072,6 +1077,7 @@
             </div>
 
         </div>
+        <p data-i18n="pricing.restriction" style="text-align:center;color:#71717a;font-size:13px;margin-top:32px;max-width:600px;margin-left:auto;margin-right:auto;"></p>
     </div>
 </section>
 
@@ -1088,7 +1094,8 @@
                 <input type="hidden" name="access_key" value="0594432c-2702-4f3b-860f-552d00a16d23">
                 <input type="hidden" name="subject" value="MerkleClaw Pilot Application">
                 <input type="text" name="name" required data-i18n-placeholder="pilot.form.name" placeholder="">
-                <input type="email" name="email" required data-i18n-placeholder="pilot.form.email" placeholder="">
+                <input type="email" name="email" required data-i18n-placeholder="pilot.form.email" placeholder="name@agency.gov">
+                <p data-i18n="pilot.form.emailNote" style="color:#71717a;font-size:12px;margin:-8px 0 0 4px;"></p>
                 <input type="text" name="agency" required data-i18n-placeholder="pilot.form.agency" placeholder="">
                 <input type="text" name="department" data-i18n-placeholder="pilot.form.dept" placeholder="">
                 <button type="submit" data-i18n="pilot.form.submit"></button>
@@ -1112,6 +1119,12 @@
             </div>
             <div class="trust-item">
                 <p data-i18n="trust.4"></p>
+            </div>
+            <div class="trust-item">
+                <p data-i18n="trust.5"></p>
+            </div>
+            <div class="trust-item">
+                <p data-i18n="trust.6"></p>
             </div>
         </div>
     </div>
@@ -1142,23 +1155,24 @@ const translations = {
         'nav.law_enforcement': 'Law Enforcement',
         'nav.compare': 'Compare',
         'nav.blog': 'Blog',
-        'hero.subtitle': 'Chain Intelligence Desktop',
+        'banner.restricted': '🔒 MerkleClaw is restricted to verified law enforcement agencies only',
+        'hero.subtitle': 'Exclusive Intelligence Platform for Law Enforcement',
         'hero.tagline': 'Every transaction tells a story.<br><span class="accent">We help you read it.</span>',
-        'hero.cta': 'Apply for Pilot Access',
+        'hero.cta': 'Request Agency Access',
         'features.title': 'Core <span>Features</span>',
-        'features.subtitle': 'Purpose-built for law enforcement. From address profiling to court-ready reports.',
+        'features.subtitle': 'Built for investigators. Trusted by agencies. Not available to the public.',
         'feature.intel.title': 'Address Intelligence Hub',
-        'feature.intel.desc': 'Proprietary risk engine + AI identity profiling + multi-chain support. Full address intelligence in one click.',
+        'feature.intel.desc': 'Investigator-grade on-chain identity profiling for evidence collection at law enforcement standards.',
         'feature.trace.title': 'Cross-Chain Fund Tracing',
-        'feature.trace.desc': 'ETH / BTC / TRON full-path graph, up to 5 hops deep. Crystal-clear fund flow visualization.',
+        'feature.trace.desc': 'Court-ready cross-chain tracing that meets judicial forensic requirements.',
         'feature.report.title': 'Court-Grade Forensic Reports',
-        'feature.report.desc': 'PDF export + SHA-256 digital signature + bilingual EN/CN. Meets judicial evidence standards.',
+        'feature.report.desc': 'One-click court-admissible PDF reports with SHA-256 digital signatures.',
         'feature.ai.title': 'AI Detective Assistant',
-        'feature.ai.desc': 'Natural language investigation, auto-invokes on-chain APIs. Analysis as simple as conversation.',
+        'feature.ai.desc': 'Natural language investigation — even non-technical law enforcement officers can use it.',
         'feature.monitor.title': 'Real-Time Monitoring & Alerts',
-        'feature.monitor.desc': 'Batch address monitoring + large transfers + blacklist contact detection. Instant push alerts.',
+        'feature.monitor.desc': '24/7 suspect address monitoring with immediate alerts to investigation teams.',
         'feature.case.title': 'Case Management',
-        'feature.case.desc': 'Independent case archiving + investigation notes + address tracking. Keep every case organized.',
+        'feature.case.desc': 'Independent case archiving that meets law enforcement chain-of-custody requirements.',
         'screenshots.title': 'Product <span>Preview</span>',
         'screenshots.subtitle': 'See how MerkleClaw works in practice.',
         'screenshot.intel.title': '🔍 Address Intelligence',
@@ -1175,7 +1189,7 @@ const translations = {
         'screenshot.ai.msg4': '✓ Report generated. SHA-256 signed. Ready to download.',
         'screenshot.case.title': '📁 Case Management',
         'screenshot.case.desc': 'Organized case files with notes, address tracking, and reports',
-        'pricing.title': 'Pricing for <span>Law Enforcement</span> Agencies',
+        'pricing.title': 'Agency <span>Access Programs</span>',
         'pricing.subtitle': 'Purpose-built for law enforcement. Pricing is tailored to agency size and deployment requirements. Contact us for a quote.',
         'pricing.starter.name': 'Agency Starter',
         'pricing.starter.fit': 'For: Small LE units / single department pilots',
@@ -1203,21 +1217,26 @@ const translations = {
         'pricing.enterprise.f6': '2–3 year framework contract',
         'pricing.contact': 'Contact Sales for Quote',
         'pricing.badge': '⭐ Recommended',
-        'pilot.section.title': '🦞 Law Enforcement <span>Pilot Program</span>',
+        'pricing.restriction': 'MerkleClaw is not available for individual purchase. All access requires agency verification through official government email.',
+        'pilot.section.title': '🦞 Restricted Access: <span>Law Enforcement Pilot Program</span>',
         'pilot.title': '90-Day Free Pilot',
         'pilot.desc': 'Complimentary 90-day pilot for verified law enforcement agencies. Full Agency Professional access. No procurement commitment required. Apply with your official agency email.',
         'pilot.form.name': 'Name',
         'pilot.form.agency': 'Agency Name',
         'pilot.form.dept': 'Department',
         'pilot.form.submit': 'Apply for Pilot Access',
+        'pilot.form.email': 'name@agency.gov',
+        'pilot.form.emailNote': 'Only .gov and official government domain emails accepted',
         'trust.1': '🔒 Local-first architecture — case data never leaves agency network',
         'trust.2': '📋 Formal contracts and invoices provided for all tiers',
         'trust.3': '🌐 Multi-language support: English / 普通话 / 粵語',
         'trust.4': '⚖️ Forensic report format meets multi-jurisdictional court requirements',
-        'footer.text': '© 2026 ZEROVECTOR · MerkleClaw',
-        'pilot.form.email': 'Email',
+        'trust.5': '🛡️ Restricted distribution — not available in app stores or public channels',
+        'trust.6': '🔐 Air-gapped deployment available — case data never touches the internet',
+        'footer.text': '© 2026 ZEROVECTOR LIMITED. MerkleClaw is a restricted-access platform for authorized law enforcement agencies.',
         'mock.riskScore': 'Risk Score',
         'mock.reportCase': 'Case: CASE-20260316-A1B2',
+
         'mock.sanctioned': '🔴 Sanctioned',
         'mock.mixer': '🟡 Mixer',
         'mock.flowMeta': '5 hops · 23 transactions',
@@ -1241,23 +1260,24 @@ const translations = {
         'nav.law_enforcement': '执法合作',
         'nav.compare': '对比',
         'nav.blog': '博客',
-        'hero.subtitle': '链上情报分析桌面工具',
+        'banner.restricted': '🔒 MerkleClaw 仅向经过验证的执法机构提供',
+        'hero.subtitle': '执法机构专属链上情报平台',
         'hero.tagline': '每一笔交易都在讲述一个故事，<br><span class="accent">我们帮你读懂它。</span>',
-        'hero.cta': '申请试点资格',
+        'hero.cta': '申请机构访问权限',
         'features.title': '核心<span>功能</span>',
-        'features.subtitle': '专为执法机构设计，从地址画像到法庭级取证报告，一站式解决方案。',
+        'features.subtitle': '为调查员而生，获机构信赖，不对公众开放。',
         'feature.intel.title': '地址情报中心',
-        'feature.intel.desc': '自研风险引擎 + AI 身份画像 + 多链支持，一键掌握地址全貌。',
+        'feature.intel.desc': '为调查员提供链上身份画像，支持执法级别的证据收集。',
         'feature.trace.title': '跨链资金追踪',
-        'feature.trace.desc': 'ETH / BTC / TRON 全路径图谱，最深 5 跳，资金流向一目了然。',
+        'feature.trace.desc': '法庭级跨链追踪，满足司法取证要求。',
         'feature.report.title': '法庭级取证报告',
-        'feature.report.desc': 'PDF 导出 + SHA-256 数字签名 + 中英双语，满足司法取证要求。',
+        'feature.report.desc': '一键生成符合法庭证据标准的PDF报告，含数字签名。',
         'feature.ai.title': 'AI 侦探助手',
-        'feature.ai.desc': '自然语言调查，自动调用链上 API，让分析像对话一样简单。',
+        'feature.ai.desc': '自然语言驱动调查，即使非技术背景的执法人员也能使用。',
         'feature.monitor.title': '实时监控告警',
-        'feature.monitor.desc': '批量地址监控 + 大额转账 + 黑名单接触，第一时间推送告警。',
+        'feature.monitor.desc': '7×24小时嫌疑地址监控，第一时间通知办案团队。',
         'feature.case.title': '案件管理',
-        'feature.case.desc': '独立案件存档 + 调查笔记 + 地址追踪，让每个案件井井有条。',
+        'feature.case.desc': '独立案件存档，符合执法机构证据链保管要求。',
         'screenshots.title': '产品<span>预览</span>',
         'screenshots.subtitle': '看看 MerkleClaw 实际操作效果。',
         'screenshot.intel.title': '🔍 地址情报中心',
@@ -1274,7 +1294,7 @@ const translations = {
         'screenshot.ai.msg4': '✓ 报告已生成。SHA-256 已签名。可供下载。',
         'screenshot.case.title': '📁 案件管理',
         'screenshot.case.desc': '有序的案件文件，含笔记、地址追踪和报告',
-        'pricing.title': '执法机构<span>专属定价</span>',
+        'pricing.title': '机构<span>准入方案</span>',
         'pricing.subtitle': '专为执法机构设计，定价根据机构规模和部署需求定制，请联系我们获取报价。',
         'pricing.starter.name': 'Agency Starter',
         'pricing.starter.fit': '适合：小型执法单位 / 单一部门试点',
@@ -1302,19 +1322,23 @@ const translations = {
         'pricing.enterprise.f6': '2–3 年框架合同',
         'pricing.contact': '联系销售获取报价',
         'pricing.badge': '⭐ 推荐',
-        'pilot.section.title': '🦞 执法机构<span>试点计划</span>',
+        'pricing.restriction': 'MerkleClaw 不接受个人购买。所有访问权限需通过政府官方邮箱进行机构验证。',
+        'pilot.section.title': '🦞 限定准入：<span>执法机构试点计划</span>',
         'pilot.title': '90 天免费试点',
         'pilot.desc': '为经认证的执法机构提供 90 天免费试点，完整 Agency Professional 功能，无需采购承诺，使用机构官方邮箱即可申请。',
         'pilot.form.name': '姓名',
         'pilot.form.agency': '机构名称',
         'pilot.form.dept': '部门',
         'pilot.form.submit': '申请试点资格',
+        'pilot.form.email': 'name@agency.gov',
+        'pilot.form.emailNote': '仅接受 .gov 及政府官方域名邮箱申请',
         'trust.1': '🔒 本地优先架构，案件数据不离开机构网络',
         'trust.2': '📋 所有套餐提供正式合同和发票',
         'trust.3': '🌐 多语言支持：English / 普通话 / 粵語',
         'trust.4': '⚖️ 取证报告格式符合多司法管辖区法庭要求',
-        'footer.text': '© 2026 ZEROVECTOR · MerkleClaw',
-        'pilot.form.email': '电子邮箱',
+        'trust.5': '🛡️ 限定分发——不在应用商店或公开渠道提供',
+        'trust.6': '🔐 支持离线隔离部署——案件数据不经过互联网',
+        'footer.text': '© 2026 ZEROVECTOR LIMITED. MerkleClaw 是面向授权执法机构的限定准入平台。',
         'mock.riskScore': '风险评分',
         'mock.reportCase': '案件：CASE-20260316-A1B2',
         'mock.sanctioned': '🔴 受制裁',
@@ -1340,23 +1364,24 @@ const translations = {
         'nav.law_enforcement': '執法合作',
         'nav.compare': '對比',
         'nav.blog': '部落格',
-        'hero.subtitle': '鏈上情報分析桌面工具',
+        'banner.restricted': '🔒 MerkleClaw 僅向經過驗證的執法機構提供',
+        'hero.subtitle': '執法機構專屬鏈上情報平台',
         'hero.tagline': '每一筆交易背後都有故事，<br><span class="accent">我們幫你看清全貌。</span>',
-        'hero.cta': '申請試用資格',
+        'hero.cta': '申請機構存取權限',
         'features.title': '核心<span>功能</span>',
-        'features.subtitle': '專為執法機構打造，從地址分析到法庭級報告，一站搞定。',
+        'features.subtitle': '為調查員而生，獲機構信賴，不對公眾開放。',
         'feature.intel.title': '地址情報中心',
-        'feature.intel.desc': '自研風險引擎 + AI 身分識別 + 多鏈支援，一鍵掌握地址全貌。',
+        'feature.intel.desc': '為調查員提供鏈上身份畫像，支援執法級別的證據收集。',
         'feature.trace.title': '跨鏈資金追蹤',
-        'feature.trace.desc': 'ETH / BTC / TRON 全路徑圖譜，最深 5 跳，資金流向一目了然。',
+        'feature.trace.desc': '法庭級跨鏈追蹤，滿足司法取證要求。',
         'feature.report.title': '法庭級鑑識報告',
-        'feature.report.desc': 'PDF 匯出 + SHA-256 數位簽章 + 中英雙語，符合司法取證標準。',
+        'feature.report.desc': '一鍵生成符合法庭證據標準的PDF報告，含數位簽名。',
         'feature.ai.title': 'AI 偵探助手',
-        'feature.ai.desc': '用自然語言查案，自動呼叫鏈上 API，分析就像聊天一樣簡單。',
+        'feature.ai.desc': '自然語言驅動調查，即使非技術背景的執法人員也能使用。',
         'feature.monitor.title': '即時監控與警示',
-        'feature.monitor.desc': '批次地址監控 + 大額轉帳 + 黑名單接觸偵測，第一時間推送警示。',
+        'feature.monitor.desc': '7×24小時嫌疑地址監控，第一時間通知辦案團隊。',
         'feature.case.title': '案件管理',
-        'feature.case.desc': '獨立案件歸檔 + 調查筆記 + 地址追蹤，所有案件井然有序。',
+        'feature.case.desc': '獨立案件存檔，符合執法機構證據鏈保管要求。',
         'screenshots.title': '產品<span>預覽</span>',
         'screenshots.subtitle': '了解 MerkleClaw 的實際操作體驗。',
         'screenshot.intel.title': '🔍 地址情報中心',
@@ -1373,7 +1398,7 @@ const translations = {
         'screenshot.ai.msg4': '✓ 報告已產生。SHA-256 已簽章。可立即下載。',
         'screenshot.case.title': '📁 案件管理',
         'screenshot.case.desc': '有條理的案件檔案，含筆記、地址追蹤及報告',
-        'pricing.title': '執法機構<span>專屬方案</span>',
+        'pricing.title': '機構<span>準入方案</span>',
         'pricing.subtitle': '專為執法機構設計，依機構規模與部署需求量身定價，歡迎聯繫取得報價。',
         'pricing.starter.name': 'Agency Starter',
         'pricing.starter.fit': '適合：小型執法單位 / 單一部門試行',
@@ -1401,19 +1426,23 @@ const translations = {
         'pricing.enterprise.f6': '2–3 年框架合約',
         'pricing.contact': '聯繫銷售取得報價',
         'pricing.badge': '⭐ 推薦',
-        'pilot.section.title': '🦞 執法機構<span>試用計劃</span>',
+        'pricing.restriction': 'MerkleClaw 不接受個人購買。所有存取權限需通過政府官方郵箱進行機構驗證。',
+        'pilot.section.title': '🦞 限定準入：<span>執法機構試點計劃</span>',
         'pilot.title': '90 天免費試用',
         'pilot.desc': '為經驗證的執法機構提供 90 天免費試用，完整 Agency Professional 功能，無需採購承諾，以機構官方信箱申請即可。',
         'pilot.form.name': '姓名',
         'pilot.form.agency': '機構名稱',
         'pilot.form.dept': '部門',
         'pilot.form.submit': '申請試用資格',
+        'pilot.form.email': 'name@agency.gov',
+        'pilot.form.emailNote': '僅接受 .gov 及政府官方域名郵箱申請',
         'trust.1': '🔒 本地優先架構，案件資料不離開機構網路',
         'trust.2': '📋 所有方案皆提供正式合約與發票',
         'trust.3': '🌐 多語系支援：English / 普通话 / 粵語',
         'trust.4': '⚖️ 鑑識報告格式符合多司法管轄區法庭要求',
-        'footer.text': '© 2026 ZEROVECTOR · MerkleClaw',
-        'pilot.form.email': '電子郵箱',
+        'trust.5': '🛡️ 限定分發——不在應用商店或公開渠道提供',
+        'trust.6': '🔐 支援離線隔離部署——案件資料不經過互聯網',
+        'footer.text': '© 2026 ZEROVECTOR LIMITED. MerkleClaw 是面向授權執法機構的限定準入平台。',
         'mock.riskScore': '風險評分',
         'mock.reportCase': '案件：CASE-20260316-A1B2',
         'mock.sanctioned': '🔴 受制裁',
